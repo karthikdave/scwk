@@ -6,17 +6,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans">
 
 <!-- NAVBAR -->
 <nav class="bg-white shadow-md px-6 py-3 flex justify-between items-center">
 
-  <!-- LOGO ONLY -->
   <div class="flex items-center gap-3">
     <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
   </div>
 
-  <!-- NAV LINKS -->
   <div class="space-x-6 text-gray-700 font-medium">
     <a href="index.html" class="hover:text-blue-600">Home</a>
     <a href="post.html" class="hover:text-blue-600">AI Shots</a>
@@ -27,29 +25,81 @@
 </nav>
 
 <!-- HERO -->
-<section class="text-center mt-20 px-4">
-
-  <!-- PRODUCT NAME -->
-  <h1 class="text-5xl font-bold mb-4">
-    ⚡ SCWK
-  </h1>
-
-  <!-- WHAT IT IS -->
-  <p class="text-xl text-gray-700 mb-4">
-    Scrum & Coffee with Karthik
+<section class="text-center mt-16 px-4">
+  <h1 class="text-4xl font-bold mb-3">⚡ SCWK</h1>
+  <p class="text-lg text-gray-600 max-w-xl mx-auto">
+    Scrum & Coffee with Karthik — where AI meets Agile with sharp, practical insights.
   </p>
+</section>
 
-  <!-- VALUE -->
-  <p class="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
-    A platform where AI meets Agile — delivering sharp, practical insights 
-    you can actually use in real-world projects.
-  </p>
+<!-- CONTENT GRID -->
+<section class="max-w-6xl mx-auto mt-12 px-4">
 
-  <!-- CTA -->
-  <a href="post.html" 
-     class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
-     Explore AI Shots
-  </a>
+  <h2 class="text-2xl font-semibold mb-6">Latest AI Shots</h2>
+
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <!-- CARD 1 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #1</span>
+      <h3 class="text-lg font-bold mt-2">AI ≠ Automation</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        Most teams think AI is just automation. That’s where they go wrong.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+    <!-- CARD 2 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #2</span>
+      <h3 class="text-lg font-bold mt-2">Scrum without Value</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        Teams follow Scrum rituals but miss the core — delivering value.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+    <!-- CARD 3 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #3</span>
+      <h3 class="text-lg font-bold mt-2">AI + Agile = Power</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        When AI meets Agile thinking, teams unlock real acceleration.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+    <!-- CARD 4 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #4</span>
+      <h3 class="text-lg font-bold mt-2">Velocity is a Trap</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        High velocity doesn’t mean high value. Most teams confuse this.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+    <!-- CARD 5 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #5</span>
+      <h3 class="text-lg font-bold mt-2">AI as Teammate</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        Stop treating AI as a tool. Start treating it like a collaborator.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+    <!-- CARD 6 -->
+    <a href="post.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition block">
+      <span class="text-sm text-blue-600 font-semibold">AI Shot #6</span>
+      <h3 class="text-lg font-bold mt-2">Agile is Thinking</h3>
+      <p class="text-gray-600 text-sm mt-2">
+        Agile is not ceremonies. It’s a mindset shift most miss.
+      </p>
+      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    </a>
+
+  </div>
 
 </section>
 
