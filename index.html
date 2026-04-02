@@ -8,8 +8,8 @@
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-<!-- NAVBAR -->
-<nav class="bg-white shadow-md px-6 py-3 flex justify-between items-center">
+<!-- NAVBAR (Sticky) -->
+<nav class="bg-white shadow-md px-6 py-3 flex justify-between items-center sticky top-0 z-50">
 
   <div class="flex items-center gap-3">
     <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
@@ -32,41 +32,59 @@
   </p>
 </section>
 
-<!-- CONTENT GRID -->
-<section class="max-w-5xl mx-auto mt-12 px-4">
+<!-- CONTENT -->
+<section class="max-w-6xl mx-auto mt-14 px-4">
 
-  <h2 class="text-2xl font-semibold mb-6">Latest AI Shots</h2>
+  <h2 class="text-2xl font-semibold mb-8">Latest AI Shots</h2>
 
-  <div class="grid md:grid-cols-3 gap-6">
+  <div class="grid md:grid-cols-3 gap-8">
 
     <!-- CARD 1 -->
-    <a href="post1.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition duration-300 block">
-      <span class="text-sm text-blue-600 font-semibold">AI Shot #1</span>
-      <h3 class="text-lg font-bold mt-2">AI Won’t Replace You — But This Will</h3>
-      <p class="text-gray-600 text-sm mt-2">
-        The real threat isn’t AI — it’s people who know how to use it.
-      </p>
-      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    <a href="post1.html" class="bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden block">
+
+      <div class="h-40 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+
+      <div class="p-5">
+        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">AI Shot #1</span>
+        <h3 class="text-lg font-bold mt-3">AI Won’t Replace You — But This Will</h3>
+        <p class="text-gray-600 text-sm mt-2">
+          The real threat isn’t AI — it’s people who know how to use it.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Read more →</p>
+      </div>
+
     </a>
 
     <!-- CARD 2 -->
-    <a href="post2.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition duration-300 block">
-      <span class="text-sm text-blue-600 font-semibold">AI Shot #2</span>
-      <h3 class="text-lg font-bold mt-2">AI ≠ Automation</h3>
-      <p class="text-gray-600 text-sm mt-2">
-        If you treat AI like automation, you’ll miss its true power.
-      </p>
-      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    <a href="post2.html" class="bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden block">
+
+      <div class="h-40 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+
+      <div class="p-5">
+        <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">AI Shot #2</span>
+        <h3 class="text-lg font-bold mt-3">AI ≠ Automation</h3>
+        <p class="text-gray-600 text-sm mt-2">
+          If you treat AI like automation, you’ll miss its real power.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Read more →</p>
+      </div>
+
     </a>
 
     <!-- CARD 3 -->
-    <a href="post3.html" class="bg-white p-5 rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition duration-300 block">
-      <span class="text-sm text-blue-600 font-semibold">AI Shot #3</span>
-      <h3 class="text-lg font-bold mt-2">Velocity is a Trap</h3>
-      <p class="text-gray-600 text-sm mt-2">
-        High speed means nothing if you’re delivering the wrong value.
-      </p>
-      <p class="text-xs text-gray-400 mt-3">Read more →</p>
+    <a href="post3.html" class="bg-white rounded-2xl shadow hover:shadow-xl hover:-translate-y-1 transition duration-300 overflow-hidden block">
+
+      <div class="h-40 bg-gradient-to-r from-green-500 to-teal-500"></div>
+
+      <div class="p-5">
+        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">AI Shot #3</span>
+        <h3 class="text-lg font-bold mt-3">Velocity is a Trap</h3>
+        <p class="text-gray-600 text-sm mt-2">
+          High speed means nothing if you're delivering the wrong value.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Read more →</p>
+      </div>
+
     </a>
 
   </div>
