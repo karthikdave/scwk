@@ -1,151 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SCWK</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCWK | Scrum & Coffee with Karthik</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Carousel styles */
-    .carousel-track {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-    .carousel-slide {
-      min-width: 100%;
-      flex-shrink: 0;
-    }
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      font-size: 2rem;
-      padding: 5px 12px;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 0.25rem;
-    }
-    .dots .dot.active {
-      background-color: #2563eb; /* Tailwind blue-600 */
-    }
-  </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-<!-- NAVBAR -->
-<nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0 z-50">
-  <div class="flex items-center gap-3">
-    <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
-  </div>
-  <div class="space-x-6 text-gray-700 font-medium">
-    <a href="index.html" class="text-blue-600 font-semibold">Home</a>
-    <a href="post1.html" class="hover:text-blue-600">AI Shots</a>
-    <a href="scwk-dose.html" class="hover:text-blue-600">SCWK Dose</a>
-    <a href="about.html" class="hover:text-blue-600">About</a>
-  </div>
-</nav>
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
+      </a>
 
-<!-- HERO -->
-<section class="text-center mt-16 px-4">
-  <h1 class="text-4xl font-bold mb-3">⚡ SCWK</h1>
-  <p class="text-lg text-gray-600 max-w-xl mx-auto">
-    Scrum & Coffee with Karthik — where AI meets Agile with sharp, practical insights.
-  </p>
-</section>
+      <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
+        <a href="index.html" class="text-blue-600 font-semibold">Home</a>
+        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
+        <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
+        <a href="about.html" class="hover:text-blue-600 transition">About</a>
+      </div>
+    </div>
+  </nav>
 
-<!-- PDF CAROUSEL -->
-<section class="max-w-5xl mx-auto mt-14 px-4">
-  <h2 class="text-2xl font-semibold mb-4">SCWK PDF Carousel</h2>
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
+          Scrum & Coffee with Karthik
+        </p>
 
-  <div class="relative overflow-hidden">
-    <div class="carousel-track">
-      <!-- PDF slides -->
-      <div class="carousel-slide">
-        <embed src="SCWK_Carousel.pdf#page=1" type="application/pdf" class="w-full h-[500px] rounded-xl shadow-sm">
+        <h1 class="text-4xl sm:text-5xl font-bold leading-tight text-gray-900">
+          Sharp takes on <span class="text-blue-600">Agile, Scrum & AI</span> — built for real-world teams.
+        </h1>
+
+        <p class="mt-5 text-lg text-gray-600 max-w-xl leading-relaxed">
+          SCWK is where practical Agile thinking meets modern AI curiosity — through concise insights, 
+          swipe-worthy carousels, and structured content that helps professionals think clearer and execute better.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="scwk-bites.html" class="px-5 py-3 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition font-medium">
+            Explore SCWK Bites
+          </a>
+          <a href="scwk-dose.html" class="px-5 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
+            Read SCWK Dose
+          </a>
+        </div>
       </div>
-      <div class="carousel-slide">
-        <embed src="SCWK_Carousel.pdf#page=2" type="application/pdf" class="w-full h-[500px] rounded-xl shadow-sm">
+
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">What you’ll find here</h2>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+            <h3 class="font-semibold text-blue-700">SCWK Bites</h3>
+            <p class="text-sm text-gray-600 mt-1">
+              Scroll-stopping short-form insights designed like LinkedIn carousel posts.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-purple-50 border border-purple-100">
+            <h3 class="font-semibold text-purple-700">SCWK Dose</h3>
+            <p class="text-sm text-gray-600 mt-1">
+              Deeper reflections and structured takes on Agile, Scrum, delivery, and AI.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-amber-50 border border-amber-100">
+            <h3 class="font-semibold text-amber-700">Practical Thinking</h3>
+            <p class="text-sm text-gray-600 mt-1">
+              No fluff. Just ideas you can apply in delivery, teams, leadership, and execution.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="carousel-slide">
-        <embed src="SCWK_Carousel.pdf#page=3" type="application/pdf" class="w-full h-[500px] rounded-xl shadow-sm">
-      </div>
-      <!-- Add more pages as needed -->
+
+    </div>
+  </section>
+
+  <!-- FEATURED CONTENT -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Featured Content</h2>
     </div>
 
-    <!-- Arrows -->
-    <button class="carousel-btn prev left-2">‹</button>
-    <button class="carousel-btn next right-2">›</button>
+    <div class="grid md:grid-cols-2 gap-6">
+      
+      <!-- Featured Bite -->
+      <a href="bite-001.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
+        <div class="h-2 bg-blue-600"></div>
+        <div class="p-6">
+          <span class="text-xs font-semibold uppercase tracking-wide text-blue-600">Featured SCWK Bite</span>
+          <h3 class="text-xl font-bold mt-3 text-gray-900">AI Won’t Replace You — But This Will</h3>
+          <p class="text-gray-600 mt-3 leading-relaxed">
+            A sharp, practical carousel-style take on what actually creates career risk in the AI era.
+          </p>
+          <p class="text-sm text-blue-600 font-medium mt-5">Open Bite →</p>
+        </div>
+      </a>
 
-    <!-- Dots -->
-    <div class="dots flex justify-center mt-4 gap-2">
-      <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer"></span>
-      <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer"></span>
-      <span class="dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer"></span>
+      <!-- Featured Dose -->
+      <a href="scwk-dose.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
+        <div class="h-2 bg-purple-600"></div>
+        <div class="p-6">
+          <span class="text-xs font-semibold uppercase tracking-wide text-purple-600">Featured SCWK Dose</span>
+          <h3 class="text-xl font-bold mt-3 text-gray-900">Structured thinking for modern delivery teams</h3>
+          <p class="text-gray-600 mt-3 leading-relaxed">
+            Explore deeper reflections on Scrum, Agile execution, team effectiveness, and AI-informed work.
+          </p>
+          <p class="text-sm text-purple-600 font-medium mt-5">Read Doses →</p>
+        </div>
+      </a>
+
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer class="bg-white mt-16 border-t">
-  <div class="max-w-5xl mx-auto px-4 py-8 text-center">
-    <p class="text-gray-600 text-sm">
-      © 2026 SCWK — Scrum & Coffee with Karthik
-    </p>
-    <p class="text-gray-500 text-xs mt-2">
-      Built with clarity. Powered by consistency.
-    </p>
-  </div>
-</footer>
+  <!-- BRAND NOTE -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900">Why SCWK?</h2>
+      <p class="mt-4 text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        Because strong delivery is not just about frameworks — it’s about clarity, judgment, and practical execution. 
+        SCWK brings together Agile thinking, Scrum discipline, and AI-era perspective in a format that’s useful, sharp, and shareable.
+      </p>
+    </div>
+  </section>
 
-<!-- Carousel JS -->
-<script>
-const track = document.querySelector('.carousel-track');
-const slides = Array.from(track.children);
-const nextBtn = document.querySelector('.carousel-btn.next');
-const prevBtn = document.querySelector('.carousel-btn.prev');
-const dots = document.querySelectorAll('.dot');
-let currentIndex = 0;
-
-function updateSlide(index) {
-  const slideWidth = slides[0].getBoundingClientRect().width;
-  track.style.transform = `translateX(-${index * slideWidth}px)`;
-  dots.forEach((dot,i)=>dot.classList.toggle('active', i===index));
-}
-
-// Arrow navigation
-nextBtn.addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % slides.length;
-  updateSlide(currentIndex);
-});
-prevBtn.addEventListener('click', () => {
-  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-  updateSlide(currentIndex);
-});
-
-// Dot navigation
-dots.forEach((dot,i) => dot.addEventListener('click', () => {
-  currentIndex = i;
-  updateSlide(currentIndex);
-}));
-
-// Swipe support
-let startX = 0;
-track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-track.addEventListener('touchend', e => {
-  const endX = e.changedTouches[0].clientX;
-  if(endX < startX - 50) nextBtn.click();
-  else if(endX > startX + 50) prevBtn.click();
-});
-
-// Initial render
-updateSlide(currentIndex);
-
-// Update on resize
-window.addEventListener('resize', () => updateSlide(currentIndex));
-</script>
+  <!-- FOOTER -->
+  <footer class="bg-white border-t">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
+      <p class="text-gray-600 text-sm">
+        © 2026 SCWK — Scrum & Coffee with Karthik
+      </p>
+      <p class="text-gray-500 text-xs mt-2">
+        Built with clarity. Powered by consistency.
+      </p>
+    </div>
+  </footer>
 
 </body>
 </html>
