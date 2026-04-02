@@ -59,35 +59,29 @@
     <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
 
       <!-- Viewer Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-        <div>
-          <h2 class="text-lg sm:text-xl font-bold text-gray-900">Carousel Viewer</h2>
-          <p class="text-sm text-gray-500">LinkedIn-style slide reading experience for SCWK content</p>
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold border border-blue-100">
+          <span id="page-info">Loading...</span>
         </div>
-
-        <div class="text-sm text-gray-600">
-          <span id="page-info" class="font-medium">Loading...</span>
-        </div>
+        <p class="mt-3 text-sm text-gray-500">A compact, LinkedIn-style SCWK carousel experience</p>
       </div>
 
-      <!-- Canvas Wrapper -->
+      <!-- Compact Portrait Viewer -->
       <div class="flex justify-center">
-        <div class="w-full max-w-2xl bg-gray-50 rounded-2xl border border-gray-200 p-3 sm:p-5 overflow-auto">
-          <canvas id="pdf-canvas" class="mx-auto rounded-xl shadow-md max-w-full h-auto block"></canvas>
+        <div class="w-full max-w-md sm:max-w-sm md:max-w-md bg-gray-50 rounded-3xl border border-gray-200 p-3 sm:p-4 shadow-inner">
+          <div class="rounded-2xl overflow-hidden bg-white shadow-lg border border-gray-200">
+            <canvas id="pdf-canvas" class="mx-auto block w-full h-auto"></canvas>
+          </div>
         </div>
       </div>
 
       <!-- Controls -->
-      <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-        <button id="prev-btn" onclick="prevPage()" class="w-full sm:w-auto px-5 py-3 bg-gray-200 text-gray-800 rounded-xl hover:bg-gray-300 transition font-medium">
+      <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
+        <button id="prev-btn" onclick="prevPage()" class="px-5 py-3 bg-white border border-gray-300 text-gray-800 rounded-xl hover:bg-gray-50 transition font-medium shadow-sm">
           ← Previous
         </button>
 
-        <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
-          <span>Use buttons to navigate slides</span>
-        </div>
-
-        <button id="next-btn" onclick="nextPage()" class="w-full sm:w-auto px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium">
+        <button id="next-btn" onclick="nextPage()" class="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium shadow-sm">
           Next →
         </button>
       </div>
@@ -128,7 +122,7 @@
 
   <script>
     // ===== CONFIG =====
-    const url = "ai-shot-1.pdf"; // keep existing filename for safety
+    const url = "ai-shot-1.pdf";
 
     // ===== PDF STATE =====
     let pdfDoc = null;
@@ -149,19 +143,19 @@
     function getScale(page) {
       const viewport = page.getViewport({ scale: 1 });
 
-      // LinkedIn-style smaller portrait card feel
+      // Much smaller, true LinkedIn-like compact portrait feel
       let targetWidth;
 
       if (window.innerWidth < 640) {
-        targetWidth = window.innerWidth - 40; // mobile
+        targetWidth = Math.min(window.innerWidth - 48, 320); // mobile
       } else if (window.innerWidth < 1024) {
-        targetWidth = 420; // tablet / small laptop
+        targetWidth = 300; // tablet / small laptop
       } else {
-        targetWidth = 480; // desktop intentionally smaller
+        targetWidth = 320; // desktop intentionally compact
       }
 
       const scale = targetWidth / viewport.width;
-      return Math.max(0.55, Math.min(scale, 1.1));
+      return Math.max(0.42, Math.min(scale, 0.85));
     }
 
     function updateButtons() {
@@ -246,7 +240,7 @@
       }
     });
 
-    // Basic keyboard navigation
+    // Keyboard navigation
     document.addEventListener("keydown", function(e) {
       if (e.key === "ArrowRight") nextPage();
       if (e.key === "ArrowLeft") prevPage();
