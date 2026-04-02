@@ -62,7 +62,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <div>
           <h2 class="text-lg sm:text-xl font-bold text-gray-900">Carousel Viewer</h2>
-          <p class="text-sm text-gray-500">Swipe-style reading experience for SCWK content</p>
+          <p class="text-sm text-gray-500">LinkedIn-style slide reading experience for SCWK content</p>
         </div>
 
         <div class="text-sm text-gray-600">
@@ -72,8 +72,8 @@
 
       <!-- Canvas Wrapper -->
       <div class="flex justify-center">
-        <div class="w-full max-w-4xl bg-gray-50 rounded-2xl border border-gray-200 p-2 sm:p-4 overflow-auto">
-          <canvas id="pdf-canvas" class="mx-auto rounded-xl shadow-sm max-w-full h-auto block"></canvas>
+        <div class="w-full max-w-2xl bg-gray-50 rounded-2xl border border-gray-200 p-3 sm:p-5 overflow-auto">
+          <canvas id="pdf-canvas" class="mx-auto rounded-xl shadow-md max-w-full h-auto block"></canvas>
         </div>
       </div>
 
@@ -128,7 +128,7 @@
 
   <script>
     // ===== CONFIG =====
-    const url = "ai-shot-1.pdf"; // keep your existing PDF filename for safety
+    const url = "ai-shot-1.pdf"; // keep existing filename for safety
 
     // ===== PDF STATE =====
     let pdfDoc = null;
@@ -147,14 +147,26 @@
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
     function getScale(page) {
-      const containerWidth = Math.min(window.innerWidth - 80, 900);
       const viewport = page.getViewport({ scale: 1 });
-      const scale = containerWidth / viewport.width;
-      return Math.max(0.8, Math.min(scale, 1.6));
+
+      // LinkedIn-style smaller portrait card feel
+      let targetWidth;
+
+      if (window.innerWidth < 640) {
+        targetWidth = window.innerWidth - 40; // mobile
+      } else if (window.innerWidth < 1024) {
+        targetWidth = 420; // tablet / small laptop
+      } else {
+        targetWidth = 480; // desktop intentionally smaller
+      }
+
+      const scale = targetWidth / viewport.width;
+      return Math.max(0.55, Math.min(scale, 1.1));
     }
 
     function updateButtons() {
       if (!pdfDoc) return;
+
       prevBtn.disabled = pageNum <= 1;
       nextBtn.disabled = pageNum >= pdfDoc.numPages;
 
