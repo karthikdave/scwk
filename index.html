@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
 
   <!-- NAVBAR -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
@@ -25,114 +25,116 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-    <div class="grid lg:grid-cols-2 gap-10 items-center">
-      
-      <div>
-        <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
-          Scrum & Coffee with Karthik
-        </p>
+  <main class="flex-grow">
+    <!-- HERO -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
+            Scrum & Coffee with Karthik
+          </p>
 
-        <h1 class="text-4xl sm:text-5xl font-bold leading-tight text-gray-900">
-          Sharp takes on <span class="text-blue-600">Agile, Scrum & AI</span> — built for real-world teams.
-        </h1>
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight text-gray-900">
+            Sharp takes on <span class="text-blue-600">Agile, Scrum & AI</span> — built for real-world teams.
+          </h1>
 
-        <p class="mt-5 text-lg text-gray-600 max-w-xl leading-relaxed">
-          SCWK is where practical Agile thinking meets modern AI curiosity — through concise insights, 
-          swipe-worthy carousels, and structured content that helps professionals think clearer and execute better.
-        </p>
+          <p class="mt-5 text-lg text-gray-600 max-w-xl leading-relaxed">
+            SCWK is where practical Agile thinking meets modern AI curiosity — through concise insights,
+            swipe-worthy carousels, and structured content that helps professionals think clearer and execute better.
+          </p>
 
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="scwk-bites.html" class="px-5 py-3 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition font-medium">
-            Explore SCWK Bites
-          </a>
-          <a href="scwk-dose.html" class="px-5 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
-            Read SCWK Dose
-          </a>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="scwk-bites.html" class="px-5 py-3 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition font-medium">
+              Explore SCWK Bites
+            </a>
+            <a href="scwk-dose.html" class="px-5 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
+              Read SCWK Dose
+            </a>
+          </div>
         </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">What you’ll find here</h2>
+
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+              <h3 class="font-semibold text-blue-700">SCWK Bites</h3>
+              <p class="text-sm text-gray-600 mt-1">
+                Scroll-stopping short-form insights designed like LinkedIn carousel posts.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-purple-50 border border-purple-100">
+              <h3 class="font-semibold text-purple-700">SCWK Dose</h3>
+              <p class="text-sm text-gray-600 mt-1">
+                Deeper reflections and structured takes on Agile, Scrum, delivery, and AI.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-100">
+              <h3 class="font-semibold text-amber-700">Practical Thinking</h3>
+              <p class="text-sm text-gray-600 mt-1">
+                No fluff. Just ideas you can apply in delivery, teams, leadership, and execution.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FEATURED CONTENT -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Featured Content</h2>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">What you’ll find here</h2>
-
-        <div class="space-y-4">
-          <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
-            <h3 class="font-semibold text-blue-700">SCWK Bites</h3>
-            <p class="text-sm text-gray-600 mt-1">
-              Scroll-stopping short-form insights designed like LinkedIn carousel posts.
+      <div class="grid md:grid-cols-2 gap-6">
+        
+        <!-- Featured Bite -->
+        <a href="bite-001.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
+          <div class="h-2 bg-blue-600"></div>
+          <div class="p-6">
+            <span class="text-xs font-semibold uppercase tracking-wide text-blue-600">Featured SCWK Bite</span>
+            <h3 class="text-xl font-bold mt-3 text-gray-900">AI Won’t Replace You — But This Will</h3>
+            <p class="text-gray-600 mt-3 leading-relaxed">
+              A sharp, practical carousel-style take on what actually creates career risk in the AI era.
             </p>
+            <p class="text-sm text-blue-600 font-medium mt-5">Open Bite →</p>
           </div>
+        </a>
 
-          <div class="p-4 rounded-xl bg-purple-50 border border-purple-100">
-            <h3 class="font-semibold text-purple-700">SCWK Dose</h3>
-            <p class="text-sm text-gray-600 mt-1">
-              Deeper reflections and structured takes on Agile, Scrum, delivery, and AI.
+        <!-- Featured Dose -->
+        <a href="scwk-dose.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
+          <div class="h-2 bg-purple-600"></div>
+          <div class="p-6">
+            <span class="text-xs font-semibold uppercase tracking-wide text-purple-600">Featured SCWK Dose</span>
+            <h3 class="text-xl font-bold mt-3 text-gray-900">Structured thinking for modern delivery teams</h3>
+            <p class="text-gray-600 mt-3 leading-relaxed">
+              Explore deeper reflections on Scrum, Agile execution, team effectiveness, and AI-informed work.
             </p>
+            <p class="text-sm text-purple-600 font-medium mt-5">Read Doses →</p>
           </div>
+        </a>
 
-          <div class="p-4 rounded-xl bg-amber-50 border border-amber-100">
-            <h3 class="font-semibold text-amber-700">Practical Thinking</h3>
-            <p class="text-sm text-gray-600 mt-1">
-              No fluff. Just ideas you can apply in delivery, teams, leadership, and execution.
-            </p>
-          </div>
-        </div>
       </div>
+    </section>
 
-    </div>
-  </section>
-
-  <!-- FEATURED CONTENT -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Featured Content</h2>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6">
-      
-      <!-- Featured Bite -->
-      <a href="bite-001.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
-        <div class="h-2 bg-blue-600"></div>
-        <div class="p-6">
-          <span class="text-xs font-semibold uppercase tracking-wide text-blue-600">Featured SCWK Bite</span>
-          <h3 class="text-xl font-bold mt-3 text-gray-900">AI Won’t Replace You — But This Will</h3>
-          <p class="text-gray-600 mt-3 leading-relaxed">
-            A sharp, practical carousel-style take on what actually creates career risk in the AI era.
-          </p>
-          <p class="text-sm text-blue-600 font-medium mt-5">Open Bite →</p>
-        </div>
-      </a>
-
-      <!-- Featured Dose -->
-      <a href="scwk-dose.html" class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-200 overflow-hidden">
-        <div class="h-2 bg-purple-600"></div>
-        <div class="p-6">
-          <span class="text-xs font-semibold uppercase tracking-wide text-purple-600">Featured SCWK Dose</span>
-          <h3 class="text-xl font-bold mt-3 text-gray-900">Structured thinking for modern delivery teams</h3>
-          <p class="text-gray-600 mt-3 leading-relaxed">
-            Explore deeper reflections on Scrum, Agile execution, team effectiveness, and AI-informed work.
-          </p>
-          <p class="text-sm text-purple-600 font-medium mt-5">Read Doses →</p>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- BRAND NOTE -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-      <h2 class="text-2xl font-bold text-gray-900">Why SCWK?</h2>
-      <p class="mt-4 text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        Because strong delivery is not just about frameworks — it’s about clarity, judgment, and practical execution. 
-        SCWK brings together Agile thinking, Scrum discipline, and AI-era perspective in a format that’s useful, sharp, and shareable.
-      </p>
-    </div>
-  </section>
+    <!-- BRAND NOTE -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-900">Why SCWK?</h2>
+        <p class="mt-4 text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Because strong delivery is not just about frameworks — it’s about clarity, judgment, and practical execution.
+          SCWK brings together Agile thinking, Scrum discipline, and AI-era perspective in a format that’s useful, sharp, and shareable.
+        </p>
+      </div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white border-t">
+  <footer class="bg-white border-t mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
       <p class="text-gray-600 text-sm">
         © 2026 SCWK — Scrum & Coffee with Karthik
