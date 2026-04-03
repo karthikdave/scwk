@@ -17,8 +17,8 @@
     }
 
     .carousel-container {
-      width: 90vw;          /* 📱 Mobile full feel */
-      max-width: 420px;     /* 💻 Desktop slim */
+      width: 100%;
+      max-width: 420px;
       overflow: hidden;
       position: relative;
     }
@@ -100,18 +100,26 @@ const container = document.getElementById("carousel");
 
 let currentIndex = 0;
 let totalPages = 0;
+let pdfDoc = null;
 
 /* LOAD PDF */
 pdfjsLib.getDocument(url).promise.then(pdf => {
+  pdfDoc = pdf;
   totalPages = pdf.numPages;
+  renderAllPages();
+});
+
+/* RENDER FUNCTION (🔥 key fix) */
+function renderAllPages() {
+  track.innerHTML = "";
+  dotsContainer.innerHTML = "";
+
+  const containerWidth = container.clientWidth;
 
   for (let i = 1; i <= totalPages; i++) {
-    pdf.getPage(i).then(page => {
+    pdfDoc.getPage(i).then(page => {
 
       const viewport = page.getViewport({ scale: 1 });
-
-      /* 🔥 Responsive scaling */
-      const containerWidth = container.clientWidth;
       const scale = containerWidth / viewport.width;
       const scaledViewport = page.getViewport({ scale });
 
@@ -141,7 +149,7 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
       updateSlide(currentIndex);
     });
   }
-});
+}
 
 /* SLIDE CONTROL */
 function updateSlide(index) {
@@ -184,9 +192,14 @@ track.addEventListener("touchend", e => {
   else if (endX > startX + 50) prevBtn.click();
 });
 
-/* 🔥 Handle resize properly */
+/* 🔥 REAL FIX: Re-render on resize (no reload) */
+let resizeTimeout;
+
 window.addEventListener("resize", () => {
-  location.reload(); // ensures PDF rescales correctly
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    if (pdfDoc) renderAllPages();
+  }, 300);
 });
 </script>
 
