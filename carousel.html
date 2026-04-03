@@ -5,40 +5,56 @@
   <title>SCWK Carousel</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- PDF.js CDN -->
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <style>
+    .carousel-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .carousel-container {
+      width: 420px; /* 🔥 LinkedIn-like slim width */
+      overflow: hidden;
+      position: relative;
+    }
+
     .carousel-track {
       display: flex;
-      transition: transform 0.5s ease-in-out;
+      transition: transform 0.4s ease;
     }
+
     .carousel-slide {
       min-width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
+
     canvas {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 100%;
+      width: 100%;
       height: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
     }
+
     .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.6);
       color: white;
-      font-size: 2rem;
-      padding: 6px 14px;
+      font-size: 22px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
       z-index: 10;
     }
+
     .dot.active {
       background-color: #2563eb;
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -54,24 +70,27 @@
 <!-- HEADER -->
 <section class="text-center mt-10">
   <h1 class="text-3xl font-bold">🚀 SCWK Carousel</h1>
-  <p class="text-gray-600">True LinkedIn-style experience</p>
+  <p class="text-gray-600">LinkedIn-style PDF carousel</p>
 </section>
 
 <!-- CAROUSEL -->
-<section class="max-w-4xl mx-auto mt-10 px-4">
-  <div class="relative overflow-hidden">
+<section class="mt-10">
+  <div class="carousel-wrapper">
+    <div class="carousel-container">
 
-    <div id="track" class="carousel-track"></div>
+      <div id="track" class="carousel-track"></div>
 
-    <button id="prev" class="carousel-btn left-2">‹</button>
-    <button id="next" class="carousel-btn right-2">›</button>
+      <button id="prev" class="carousel-btn left-2">‹</button>
+      <button id="next" class="carousel-btn right-2">›</button>
+
+    </div>
   </div>
 
   <div id="dots" class="flex justify-center mt-4 gap-2"></div>
 </section>
 
 <script>
-const url = "ai-shot-1.pdf"; // your PDF
+const url = "ai-shot-1.pdf";
 
 const track = document.getElementById("track");
 const dotsContainer = document.getElementById("dots");
@@ -86,17 +105,21 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
   for (let i = 1; i <= totalPages; i++) {
     pdf.getPage(i).then(page => {
 
-      const viewport = page.getViewport({ scale: 1.5 });
+      const viewport = page.getViewport({ scale: 1 });
+      const containerWidth = 420;
+
+      const scale = containerWidth / viewport.width;
+      const scaledViewport = page.getViewport({ scale });
 
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
 
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+      canvas.width = scaledViewport.width;
+      canvas.height = scaledViewport.height;
 
       page.render({
         canvasContext: context,
-        viewport: viewport
+        viewport: scaledViewport
       });
 
       const slide = document.createElement("div");
@@ -105,9 +128,9 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
 
       track.appendChild(slide);
 
-      // DOT
+      /* DOT */
       const dot = document.createElement("span");
-      dot.className = "dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer";
+      dot.className = "dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer transition";
       dot.onclick = () => goToSlide(i - 1);
       dotsContainer.appendChild(dot);
 
@@ -116,13 +139,9 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
   }
 });
 
-/* SLIDE CONTROL */
+/* SLIDE CONTROL (🔥 % based, no jitter) */
 function updateSlide(index) {
-  const slides = document.querySelectorAll(".carousel-slide");
-  if (!slides.length) return;
-
-  const width = slides[0].getBoundingClientRect().width;
-  track.style.transform = `translateX(-${index * width}px)`;
+  track.style.transform = `translateX(-${index * 100}%)`;
 
   const dots = document.querySelectorAll(".dot");
   dots.forEach((d,i)=>d.classList.toggle("active", i===index));
@@ -134,17 +153,20 @@ function goToSlide(index) {
 }
 
 /* BUTTONS */
-document.getElementById("next").onclick = () => {
+const nextBtn = document.getElementById("next");
+const prevBtn = document.getElementById("prev");
+
+nextBtn.onclick = () => {
   currentIndex = (currentIndex + 1) % totalPages;
   updateSlide(currentIndex);
 };
 
-document.getElementById("prev").onclick = () => {
+prevBtn.onclick = () => {
   currentIndex = (currentIndex - 1 + totalPages) % totalPages;
   updateSlide(currentIndex);
 };
 
-/* SWIPE */
+/* SWIPE (clean + stable) */
 let startX = 0;
 
 track.addEventListener("touchstart", e => {
@@ -154,11 +176,9 @@ track.addEventListener("touchstart", e => {
 track.addEventListener("touchend", e => {
   let endX = e.changedTouches[0].clientX;
 
-  if (endX < startX - 50) next.click();
-  else if (endX > startX + 50) prev.click();
+  if (endX < startX - 50) nextBtn.click();
+  else if (endX > startX + 50) prevBtn.click();
 });
-
-window.addEventListener("resize", () => updateSlide(currentIndex));
 </script>
 
 </body>
