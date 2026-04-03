@@ -17,7 +17,7 @@
   <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
+        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto" />
       </a>
 
       <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
@@ -31,17 +31,21 @@
 
   <!-- BACK LINK -->
   <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-6">
-    <a href="scwk-bites.html" class="text-sm text-blue-600 hover:underline">
-      ← Back to SCWK Bites
+    <a href="scwk-bites.html" class="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline">
+      <span>←</span>
+      <span>Back to SCWK Bites</span>
     </a>
   </section>
 
   <!-- POST HEADER -->
   <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-4">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-      <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
-        SCWK Bite #001
-      </p>
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs sm:text-sm font-semibold border border-blue-100">
+          Featured SCWK Bite
+        </span>
+        <span class="text-xs sm:text-sm text-gray-400">#001</span>
+      </div>
 
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
         AI Won’t Replace You — But This Will
@@ -63,12 +67,24 @@
         <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold border border-blue-100">
           <span id="page-info">Loading...</span>
         </div>
-        <p class="mt-3 text-sm text-gray-500">A compact, LinkedIn-style SCWK carousel experience</p>
+
+        <p class="mt-3 text-sm text-gray-500">
+          A compact, LinkedIn-style SCWK carousel experience
+        </p>
+
+        <p class="mt-2 text-xs text-gray-400">
+          Swipe on mobile • Use arrow keys on desktop
+        </p>
+      </div>
+
+      <!-- Error Message -->
+      <div id="error-box" class="hidden mb-6 rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm text-center">
+        Unable to load the PDF. Please confirm the file exists in your repo as <span class="font-semibold">ai-shot-1.pdf</span>.
       </div>
 
       <!-- Compact Portrait Viewer -->
       <div class="flex justify-center">
-        <div class="w-full max-w-md sm:max-w-sm md:max-w-md bg-gray-50 rounded-3xl border border-gray-200 p-3 sm:p-4 shadow-inner">
+        <div class="w-full max-w-[340px] sm:max-w-[320px] md:max-w-[340px] bg-gray-50 rounded-3xl border border-gray-200 p-3 sm:p-4 shadow-inner">
           <div class="rounded-2xl overflow-hidden bg-white shadow-lg border border-gray-200">
             <canvas id="pdf-canvas" class="mx-auto block w-full h-auto"></canvas>
           </div>
@@ -77,11 +93,19 @@
 
       <!-- Controls -->
       <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
-        <button id="prev-btn" onclick="prevPage()" class="px-5 py-3 bg-white border border-gray-300 text-gray-800 rounded-xl hover:bg-gray-50 transition font-medium shadow-sm">
+        <button
+          id="prev-btn"
+          onclick="prevPage()"
+          class="px-5 py-3 bg-white border border-gray-300 text-gray-800 rounded-xl hover:bg-gray-50 transition font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           ← Previous
         </button>
 
-        <button id="next-btn" onclick="nextPage()" class="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium shadow-sm">
+        <button
+          id="next-btn"
+          onclick="nextPage()"
+          class="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           Next →
         </button>
       </div>
@@ -91,7 +115,12 @@
   <!-- CTA / NEXT ACTION -->
   <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-16">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
-      <h2 class="text-2xl font-bold text-gray-900">More from SCWK</h2>
+      <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
+        Continue the SCWK journey
+      </p>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">More from SCWK</h2>
+
       <p class="mt-3 text-gray-600 max-w-2xl mx-auto leading-relaxed">
         If this Bite sparked a thought, explore more SCWK content designed to make Agile, Scrum,
         and AI feel practical — not performative.
@@ -135,6 +164,7 @@
     const pageInfo = document.getElementById("page-info");
     const prevBtn = document.getElementById("prev-btn");
     const nextBtn = document.getElementById("next-btn");
+    const errorBox = document.getElementById("error-box");
 
     // PDF.js worker
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -143,15 +173,14 @@
     function getScale(page) {
       const viewport = page.getViewport({ scale: 1 });
 
-      // Much smaller, true LinkedIn-like compact portrait feel
       let targetWidth;
 
       if (window.innerWidth < 640) {
-        targetWidth = Math.min(window.innerWidth - 48, 320); // mobile
+        targetWidth = Math.min(window.innerWidth - 48, 320);
       } else if (window.innerWidth < 1024) {
-        targetWidth = 300; // tablet / small laptop
+        targetWidth = 300;
       } else {
-        targetWidth = 320; // desktop intentionally compact
+        targetWidth = 320;
       }
 
       const scale = targetWidth / viewport.width;
@@ -163,12 +192,6 @@
 
       prevBtn.disabled = pageNum <= 1;
       nextBtn.disabled = pageNum >= pdfDoc.numPages;
-
-      prevBtn.classList.toggle("opacity-50", pageNum <= 1);
-      prevBtn.classList.toggle("cursor-not-allowed", pageNum <= 1);
-
-      nextBtn.classList.toggle("opacity-50", pageNum >= pdfDoc.numPages);
-      nextBtn.classList.toggle("cursor-not-allowed", pageNum >= pdfDoc.numPages);
     }
 
     function renderPage(num) {
@@ -199,6 +222,11 @@
             renderPage(nextPending);
           }
         });
+      }).catch(function(error) {
+        console.error("Page render error:", error);
+        isRendering = false;
+        pageInfo.innerText = "Unable to render PDF";
+        errorBox.classList.remove("hidden");
       });
     }
 
@@ -225,12 +253,15 @@
     // Load PDF
     pdfjsLib.getDocument(url).promise.then(function(pdf) {
       pdfDoc = pdf;
+      errorBox.classList.add("hidden");
       pageInfo.innerText = "Slide 1 of " + pdfDoc.numPages;
       renderPage(pageNum);
     }).catch(function(error) {
       console.error("PDF load error:", error);
       pageInfo.innerText = "Unable to load PDF";
-      alert("Could not load the PDF. Please confirm the file name exists in your repo: " + url);
+      errorBox.classList.remove("hidden");
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
     });
 
     // Re-render on resize
