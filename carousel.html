@@ -13,10 +13,12 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      padding: 0 10px;
     }
 
     .carousel-container {
-      width: 420px; /* 🔥 LinkedIn-like slim width */
+      width: 90vw;          /* 📱 Mobile full feel */
+      max-width: 420px;     /* 💻 Desktop slim */
       overflow: hidden;
       position: relative;
     }
@@ -76,7 +78,7 @@
 <!-- CAROUSEL -->
 <section class="mt-10">
   <div class="carousel-wrapper">
-    <div class="carousel-container">
+    <div class="carousel-container" id="carousel">
 
       <div id="track" class="carousel-track"></div>
 
@@ -94,6 +96,7 @@ const url = "ai-shot-1.pdf";
 
 const track = document.getElementById("track");
 const dotsContainer = document.getElementById("dots");
+const container = document.getElementById("carousel");
 
 let currentIndex = 0;
 let totalPages = 0;
@@ -106,8 +109,9 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
     pdf.getPage(i).then(page => {
 
       const viewport = page.getViewport({ scale: 1 });
-      const containerWidth = 420;
 
+      /* 🔥 Responsive scaling */
+      const containerWidth = container.clientWidth;
       const scale = containerWidth / viewport.width;
       const scaledViewport = page.getViewport({ scale });
 
@@ -139,7 +143,7 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
   }
 });
 
-/* SLIDE CONTROL (🔥 % based, no jitter) */
+/* SLIDE CONTROL */
 function updateSlide(index) {
   track.style.transform = `translateX(-${index * 100}%)`;
 
@@ -166,7 +170,7 @@ prevBtn.onclick = () => {
   updateSlide(currentIndex);
 };
 
-/* SWIPE (clean + stable) */
+/* SWIPE */
 let startX = 0;
 
 track.addEventListener("touchstart", e => {
@@ -178,6 +182,11 @@ track.addEventListener("touchend", e => {
 
   if (endX < startX - 50) nextBtn.click();
   else if (endX > startX + 50) prevBtn.click();
+});
+
+/* 🔥 Handle resize properly */
+window.addEventListener("resize", () => {
+  location.reload(); // ensures PDF rescales correctly
 });
 </script>
 
