@@ -4,20 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SCWK Dose | Scrum & Coffee with Karthik</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
 
   <!-- NAVBAR -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto" />
+        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
       </a>
 
+      <!-- Desktop Nav -->
       <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
+        <a href="index.html" class="hover:text-blue-600 transition">Home</a>
+        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
+        <a href="scwk-dose.html" class="text-blue-600 font-semibold">SCWK Dose</a>
+        <a href="about.html" class="hover:text-blue-600 transition">About</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition" aria-label="Toggle menu">
+        <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-white">
+      <div class="px-4 py-3 flex flex-col gap-3 text-sm font-medium text-gray-700">
         <a href="index.html" class="hover:text-blue-600 transition">Home</a>
         <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
         <a href="scwk-dose.html" class="text-blue-600 font-semibold">SCWK Dose</a>
@@ -26,155 +46,54 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-10 sm:pt-14">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 md:p-10 text-center">
-      <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
-        SCWK Long-Form Insights
+  <!-- HEADER -->
+  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-12 pb-6">
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 sm:p-10">
+      <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-4">
+        SCWK Series
       </p>
-
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
         SCWK Dose
       </h1>
-
-      <p class="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
-        Deep dives into Agile, Scrum, and AI — structured thinking for professionals who want
-        clarity, not noise.
+      <p class="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed max-w-3xl">
+        Deeper, more thoughtful SCWK perspectives on Agile, Scrum, AI, adaptability, and the
+        professional mindset shifts that matter in real work.
       </p>
     </div>
   </section>
 
-  <!-- INTRO / POSITIONING -->
-  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-8">
-    <div class="grid md:grid-cols-3 gap-4">
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
-        <p class="text-sm font-semibold text-gray-900">Thoughtful over trendy</p>
-        <p class="text-sm text-gray-600 mt-2">
-          SCWK Dose focuses on practical insights, not generic Agile theory.
-        </p>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
-        <p class="text-sm font-semibold text-gray-900">Built for working professionals</p>
-        <p class="text-sm text-gray-600 mt-2">
-          Content designed for real teams, real delivery pressure, and real decisions.
-        </p>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
-        <p class="text-sm font-semibold text-gray-900">Clarity that compounds</p>
-        <p class="text-sm text-gray-600 mt-2">
-          The goal is simple: help you think better, communicate better, and lead better.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- LATEST DOSES -->
-  <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-12">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-      <div>
-        <p class="text-sm font-semibold uppercase tracking-wide text-blue-600 mb-2">
-          Long-form content
-        </p>
-        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">
-          Latest Doses
-        </h2>
-      </div>
-
-      <p class="text-sm text-gray-500">
-        In-depth ideas, frameworks, and practical reflections from SCWK.
-      </p>
-    </div>
-
+  <!-- POSTS GRID -->
+  <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 pb-16">
     <div class="grid md:grid-cols-2 gap-6">
 
-      <!-- DOSE 1 -->
-      <a href="#" class="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 block border border-gray-200 overflow-hidden">
-        <div class="h-2 bg-blue-600"></div>
+      <!-- Post Card 1 -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-3">SCWK Dose #001</p>
+        <h2 class="text-2xl font-bold text-gray-900 leading-snug">
+          Why Adaptability Is the Real Career Insurance in the AI Era
+        </h2>
+        <p class="mt-4 text-gray-600 leading-relaxed">
+          AI is not the only threat. The bigger risk is staying static while the world changes.
+          This SCWK Dose explores why adaptability has become the real differentiator.
+        </p>
+        <button class="mt-5 px-5 py-3 bg-gray-100 text-gray-500 rounded-xl font-medium cursor-not-allowed">
+          Full post coming soon
+        </button>
+      </div>
 
-        <div class="p-6 sm:p-7">
-          <div class="flex items-center justify-between gap-3">
-            <span class="text-xs font-semibold uppercase tracking-wide text-blue-600">
-              SCWK Dose #001
-            </span>
-            <span class="text-xs text-gray-400">
-              Coming Soon
-            </span>
-          </div>
-
-          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-4 group-hover:text-blue-700 transition">
-            Scrum Is Not About Speed
-          </h3>
-
-          <p class="text-gray-600 text-sm sm:text-base mt-4 leading-relaxed">
-            Teams often chase velocity as if it defines success. But sustainable delivery is not about moving faster —
-            it’s about consistently delivering the right value with clarity, discipline, and purpose.
-          </p>
-
-          <div class="mt-6 flex items-center justify-between">
-            <span class="text-sm text-gray-500">Long-form insight</span>
-            <span class="text-sm font-medium text-blue-600 group-hover:translate-x-1 transition inline-flex items-center gap-1">
-              Coming soon →
-            </span>
-          </div>
-        </div>
-      </a>
-
-      <!-- DOSE 2 -->
-      <a href="#" class="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 block border border-gray-200 overflow-hidden">
-        <div class="h-2 bg-purple-600"></div>
-
-        <div class="p-6 sm:p-7">
-          <div class="flex items-center justify-between gap-3">
-            <span class="text-xs font-semibold uppercase tracking-wide text-purple-600">
-              SCWK Dose #002
-            </span>
-            <span class="text-xs text-gray-400">
-              Coming Soon
-            </span>
-          </div>
-
-          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-4 group-hover:text-purple-700 transition">
-            AI + Scrum = A Misunderstood Combination
-          </h3>
-
-          <p class="text-gray-600 text-sm sm:text-base mt-4 leading-relaxed">
-            AI doesn’t replace Scrum. It changes how teams gather context, reduce friction, and make decisions faster —
-            but only when fundamentals like collaboration, intent, and accountability are still intact.
-          </p>
-
-          <div class="mt-6 flex items-center justify-between">
-            <span class="text-sm text-gray-500">Long-form insight</span>
-            <span class="text-sm font-medium text-purple-600 group-hover:translate-x-1 transition inline-flex items-center gap-1">
-              Coming soon →
-            </span>
-          </div>
-        </div>
-      </a>
+      <!-- Placeholder Card -->
+      <div class="bg-white rounded-2xl border border-dashed border-gray-300 shadow-sm p-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Coming Soon</p>
+        <h2 class="text-2xl font-bold text-gray-500 leading-snug">
+          Next SCWK Dose
+        </h2>
+        <p class="mt-4 text-gray-500 leading-relaxed">
+          Longer-form SCWK content will expand here as your knowledge library grows.
+        </p>
+      </div>
 
     </div>
   </main>
-
-  <!-- CTA -->
-  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-16">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
-      <h2 class="text-2xl font-bold text-gray-900">Explore More from SCWK</h2>
-      <p class="mt-3 text-gray-600 max-w-2xl mx-auto leading-relaxed">
-        Prefer quick, swipeable content? SCWK Bites gives you concise carousel-style insights designed
-        for fast learning and practical takeaways.
-      </p>
-
-      <div class="mt-6 flex flex-wrap justify-center gap-3">
-        <a href="scwk-bites.html" class="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium">
-          Explore SCWK Bites
-        </a>
-        <a href="index.html" class="px-5 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
-          Back to Home
-        </a>
-      </div>
-    </div>
-  </section>
 
   <!-- FOOTER -->
   <footer class="bg-white border-t mt-auto">
@@ -187,6 +106,19 @@
       </p>
     </div>
   </footer>
+
+  <script>
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuOpenIcon = document.getElementById("menu-open-icon");
+    const menuCloseIcon = document.getElementById("menu-close-icon");
+
+    mobileMenuBtn.addEventListener("click", function () {
+      mobileMenu.classList.toggle("hidden");
+      menuOpenIcon.classList.toggle("hidden");
+      menuCloseIcon.classList.toggle("hidden");
+    });
+  </script>
 
 </body>
 </html>
