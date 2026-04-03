@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>SCWK Carousel</title>
+
+  <!-- 🔥 THIS WAS MISSING -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- PDF.js -->
@@ -15,7 +19,6 @@
       position: relative;
     }
 
-    /* 💻 Desktop only */
     @media (min-width: 768px) {
       .carousel-container {
         max-width: 420px;
@@ -37,10 +40,8 @@
     canvas {
       width: 100%;
       height: auto;
-      border-radius: 0; /* 🔥 edge-to-edge on mobile */
     }
 
-    /* 💻 Rounded only on desktop */
     @media (min-width: 768px) {
       canvas {
         border-radius: 12px;
@@ -81,7 +82,7 @@
   <h1 class="text-2xl font-bold">🚀 SCWK Carousel</h1>
 </section>
 
-<!-- CAROUSEL (🔥 NO SIDE PADDING) -->
+<!-- CAROUSEL -->
 <section class="mt-4">
   <div class="carousel-container" id="carousel">
 
@@ -106,14 +107,12 @@ let currentIndex = 0;
 let totalPages = 0;
 let pdfDoc = null;
 
-/* LOAD PDF */
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalPages = pdf.numPages;
   renderAllPages();
 });
 
-/* RENDER */
 function renderAllPages() {
   track.innerHTML = "";
   dotsContainer.innerHTML = "";
@@ -154,7 +153,6 @@ function renderAllPages() {
   }
 }
 
-/* SLIDE */
 function updateSlide(index) {
   track.style.transform = `translateX(-${index * 100}%)`;
 
@@ -167,7 +165,6 @@ function goToSlide(index) {
   updateSlide(currentIndex);
 }
 
-/* BUTTONS */
 document.getElementById("next").onclick = () => {
   currentIndex = (currentIndex + 1) % totalPages;
   updateSlide(currentIndex);
@@ -178,7 +175,6 @@ document.getElementById("prev").onclick = () => {
   updateSlide(currentIndex);
 };
 
-/* SWIPE */
 let startX = 0;
 
 track.addEventListener("touchstart", e => {
@@ -192,7 +188,6 @@ track.addEventListener("touchend", e => {
   else if (endX > startX + 50) prev.click();
 });
 
-/* RESIZE */
 let resizeTimeout;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
