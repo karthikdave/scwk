@@ -1,77 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SCWK Dose</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCWK Dose | Scrum & Coffee with Karthik</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen">
 
-<!-- NAVBAR -->
-<nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0 z-50">
-  <div class="flex items-center gap-3">
-    <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
-  </div>
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto" />
+      </a>
 
-  <div class="space-x-6 text-gray-700 font-medium">
-    <a href="index.html" class="hover:text-blue-600">Home</a>
-    <a href="post1.html" class="hover:text-blue-600">AI Shots</a>
-    <a href="scwk-dose.html" class="text-blue-600 font-semibold">SCWK Dose</a>
-    <a href="about.html" class="hover:text-blue-600">About</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="text-center mt-16 px-4">
-  <h1 class="text-4xl font-bold mb-3">📘 SCWK Dose</h1>
-  <p class="text-lg text-gray-600 max-w-xl mx-auto">
-    Deep dives into Agile, Scrum, and AI — structured thinking for real-world execution.
-  </p>
-</section>
-
-<!-- CONTENT -->
-<section class="max-w-5xl mx-auto mt-14 px-4">
-  <h2 class="text-2xl font-semibold mb-8">Latest Doses</h2>
-
-  <div class="grid md:grid-cols-2 gap-6">
-
-    <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-md transition block border-t-4 border-blue-500">
-      <div class="p-5">
-        <span class="text-xs text-blue-600 font-semibold">SCWK Dose #1</span>
-        <h3 class="text-lg font-bold mt-2">Scrum is Not About Speed</h3>
-        <p class="text-gray-600 text-sm mt-2">
-          Teams chase velocity, but real success comes from delivering the right value consistently.
-        </p>
-        <p class="text-xs text-gray-400 mt-4">Coming soon →</p>
+      <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
+        <a href="index.html" class="hover:text-blue-600 transition">Home</a>
+        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
+        <a href="scwk-dose.html" class="text-blue-600 font-semibold">SCWK Dose</a>
+        <a href="about.html" class="hover:text-blue-600 transition">About</a>
       </div>
-    </a>
+    </div>
+  </nav>
 
-    <a href="#" class="bg-white rounded-xl shadow-sm hover:shadow-md transition block border-t-4 border-purple-500">
-      <div class="p-5">
-        <span class="text-xs text-purple-600 font-semibold">SCWK Dose #2</span>
-        <h3 class="text-lg font-bold mt-2">AI + Scrum = Misunderstood Combo</h3>
-        <p class="text-gray-600 text-sm mt-2">
-          AI doesn’t replace Scrum — it reshapes how teams think, decide, and execute.
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-10 sm:pt-14">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 md:p-10 text-center">
+      <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3">
+        SCWK Long-Form Insights
+      </p>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+        SCWK Dose
+      </h1>
+
+      <p class="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
+        Deep dives into Agile, Scrum, and AI — structured thinking for professionals who want
+        clarity, not noise.
+      </p>
+    </div>
+  </section>
+
+  <!-- INTRO / POSITIONING -->
+  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pt-8">
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+        <p class="text-sm font-semibold text-gray-900">Thoughtful over trendy</p>
+        <p class="text-sm text-gray-600 mt-2">
+          SCWK Dose focuses on practical insights, not generic Agile theory.
         </p>
-        <p class="text-xs text-gray-400 mt-4">Coming soon →</p>
       </div>
-    </a>
 
-  </div>
-</section>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+        <p class="text-sm font-semibold text-gray-900">Built for working professionals</p>
+        <p class="text-sm text-gray-600 mt-2">
+          Content designed for real teams, real delivery pressure, and real decisions.
+        </p>
+      </div>
 
-<!-- FOOTER -->
-<footer class="bg-white mt-16 border-t">
-  <div class="max-w-5xl mx-auto px-4 py-8 text-center">
-    <p class="text-gray-600 text-sm">
-      © 2026 SCWK — Scrum & Coffee with Karthik
-    </p>
-    <p class="text-gray-500 text-xs mt-2">
-      Built with clarity. Powered by consistency.
-    </p>
-  </div>
-</footer>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+        <p class="text-sm font-semibold text-gray-900">Clarity that compounds</p>
+        <p class="text-sm text-gray-600 mt-2">
+          The goal is simple: help you think better, communicate better, and lead better.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST DOSES -->
+  <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-12">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-blue-600 mb-2">
+          Long-form content
+        </p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">
+          Latest Doses
+        </h2>
+      </div>
+
+      <p class="text-sm text-gray-500">
+        In-depth ideas, frameworks, and practical reflections from SCWK.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- DOSE 1 -->
+      <a href="#" class="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 block border border-gray-200 overflow-hidden">
+        <div class="h-2 bg-blue-600"></div>
+
+        <div class="p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold uppercase tracking-wide text-blue-600">
+              SCWK Dose #001
+            </span>
+            <span class="text-xs text-gray-400">
+              Coming Soon
+            </span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-4 group-hover:text-blue-700 transition">
+            Scrum Is Not About Speed
+          </h3>
+
+          <p class="text-gray-600 text-sm sm:text-base mt-4 leading-relaxed">
+            Teams often chase velocity as if it defines success. But sustainable delivery is not about moving faster —
+            it’s about consistently delivering the right value with clarity, discipline, and purpose.
+          </p>
+
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-sm text-gray-500">Long-form insight</span>
+            <span class="text-sm font-medium text-blue-600 group-hover:translate-x-1 transition inline-flex items-center gap-1">
+              Coming soon →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- DOSE 2 -->
+      <a href="#" class="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 block border border-gray-200 overflow-hidden">
+        <div class="h-2 bg-purple-600"></div>
+
+        <div class="p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold uppercase tracking-wide text-purple-600">
+              SCWK Dose #002
+            </span>
+            <span class="text-xs text-gray-400">
+              Coming Soon
+            </span>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-4 group-hover:text-purple-700 transition">
+            AI + Scrum = A Misunderstood Combination
+          </h3>
+
+          <p class="text-gray-600 text-sm sm:text-base mt-4 leading-relaxed">
+            AI doesn’t replace Scrum. It changes how teams gather context, reduce friction, and make decisions faster —
+            but only when fundamentals like collaboration, intent, and accountability are still intact.
+          </p>
+
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-sm text-gray-500">Long-form insight</span>
+            <span class="text-sm font-medium text-purple-600 group-hover:translate-x-1 transition inline-flex items-center gap-1">
+              Coming soon →
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- CTA -->
+  <section class="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-16">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900">Explore More from SCWK</h2>
+      <p class="mt-3 text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Prefer quick, swipeable content? SCWK Bites gives you concise carousel-style insights designed
+        for fast learning and practical takeaways.
+      </p>
+
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="scwk-bites.html" class="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium">
+          Explore SCWK Bites
+        </a>
+        <a href="index.html" class="px-5 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
+      <p class="text-gray-600 text-sm">
+        © 2026 SCWK — Scrum & Coffee with Karthik
+      </p>
+      <p class="text-gray-500 text-xs mt-2">
+        Built with clarity. Powered by consistency.
+      </p>
+    </div>
+  </footer>
 
 </body>
 </html>
