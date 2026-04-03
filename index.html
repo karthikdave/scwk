@@ -1,152 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK | Scrum & Coffee with Karthik</title>
+  <meta charset="UTF-8">
+  <title>SCWK</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-slide {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      padding: 6px 14px;
+      cursor: pointer;
+      border-radius: 6px;
+      z-index: 10;
+    }
+    .dot.active {
+      background-color: #2563eb;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-  <!-- NAVBAR -->
-  <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
-      </a>
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+  <img src="logo.png" class="h-10">
+  <div class="space-x-6 font-medium">
+    <a href="#" class="text-blue-600">Home</a>
+    <a href="#">Bites</a>
+    <a href="#">Dose</a>
+  </div>
+</nav>
 
-      <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
-        <a href="index.html" class="text-blue-600 font-semibold">Home</a>
-        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
-        <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
-        <a href="about.html" class="hover:text-blue-600 transition">About</a>
-      </div>
+<!-- HERO -->
+<section class="text-center mt-16 px-4">
+  <h1 class="text-4xl font-bold mb-3">⚡ SCWK</h1>
+  <p class="text-lg text-gray-600 max-w-xl mx-auto">
+    AI won’t replace you. But someone using it will.
+  </p>
+</section>
 
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition" aria-label="Toggle menu">
-        <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+<!-- CAROUSEL -->
+<section class="max-w-5xl mx-auto mt-14 px-4">
+
+  <h2 class="text-2xl font-semibold mb-6">🔥 Latest Dose</h2>
+
+  <div class="relative overflow-hidden">
+
+    <div class="carousel-track" id="track">
+      <!-- Slides will be injected -->
     </div>
 
-    <!-- Mobile Nav Menu -->
-    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-white">
-      <div class="px-4 py-3 flex flex-col gap-3 text-sm font-medium text-gray-700">
-        <a href="index.html" class="text-blue-600 font-semibold">Home</a>
-        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
-        <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
-        <a href="about.html" class="hover:text-blue-600 transition">About</a>
-      </div>
-    </div>
-  </nav>
+    <!-- Arrows -->
+    <button class="carousel-btn left-2" id="prev">‹</button>
+    <button class="carousel-btn right-2" id="next">›</button>
 
-  <!-- HERO -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-    <div class="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 sm:p-12">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-4">
-            Scrum & Coffee with Karthik
-          </p>
+  </div>
 
-          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
-            Agile clarity. AI practicality. Real-world insights.
-          </h1>
+  <!-- Dots -->
+  <div id="dots" class="flex justify-center mt-4 gap-2"></div>
 
-          <p class="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl">
-            SCWK is where Agile, Scrum, and AI meet practical execution. No fluff. Just sharp,
-            usable ideas that help professionals think better and build smarter.
-          </p>
+</section>
 
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="scwk-bites.html" class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium shadow-sm">
-              Explore SCWK Bites
-            </a>
-            <a href="scwk-dose.html" class="px-6 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium shadow-sm">
-              Read SCWK Dose
-            </a>
-          </div>
-        </div>
+<!-- FOOTER -->
+<footer class="bg-white mt-16 border-t text-center py-6 text-sm text-gray-600">
+  © 2026 SCWK — Scrum & Coffee with Karthik
+</footer>
 
-        <div class="bg-gray-50 rounded-3xl border border-gray-200 p-6 sm:p-8">
-          <div class="grid gap-4">
-            <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-              <p class="text-sm font-semibold text-blue-600">SCWK Bites</p>
-              <p class="mt-2 text-gray-700 text-sm leading-relaxed">
-                Carousel-style short-form insights built for quick consumption and strong recall.
-              </p>
-            </div>
+<script>
+/* ===========================
+   CONFIG (JUST CHANGE THIS)
+=========================== */
+const pdfFile = "ai-shot-1.pdf"; // your PDF
+const totalPages = 3; // 👈 ONLY thing you update per content
 
-            <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-              <p class="text-sm font-semibold text-blue-600">SCWK Dose</p>
-              <p class="mt-2 text-gray-700 text-sm leading-relaxed">
-                Deeper written perspectives on Agile, Scrum, AI, and the mindset shifts that matter.
-              </p>
-            </div>
+/* ===========================
+   INIT
+=========================== */
+const track = document.getElementById("track");
+const dotsContainer = document.getElementById("dots");
 
-            <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
-              <p class="text-sm font-semibold text-blue-600">Built for professionals</p>
-              <p class="mt-2 text-gray-700 text-sm leading-relaxed">
-                Designed for practitioners who value clarity, relevance, and consistent growth.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+let currentIndex = 0;
+let slides = [];
 
-  <!-- FEATURED SECTION -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
-    <div class="grid md:grid-cols-2 gap-6">
-      <a href="scwk-bites.html" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition block">
-        <p class="text-sm font-semibold uppercase tracking-wide text-blue-600">Featured</p>
-        <h2 class="mt-3 text-2xl font-bold text-gray-900">SCWK Bites</h2>
-        <p class="mt-3 text-gray-600 leading-relaxed">
-          Bite-sized LinkedIn-style carousel content that makes Agile, Scrum, and AI instantly actionable.
-        </p>
-      </a>
+/* ===========================
+   CREATE SLIDES
+=========================== */
+for (let i = 1; i <= totalPages; i++) {
+  const slide = document.createElement("div");
+  slide.className = "carousel-slide";
 
-      <a href="scwk-dose.html" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition block">
-        <p class="text-sm font-semibold uppercase tracking-wide text-blue-600">Featured</p>
-        <h2 class="mt-3 text-2xl font-bold text-gray-900">SCWK Dose</h2>
-        <p class="mt-3 text-gray-600 leading-relaxed">
-          Thoughtful, practical long-form posts built for professionals who want substance over noise.
-        </p>
-      </a>
-    </div>
-  </section>
+  slide.innerHTML = `
+    <embed src="${pdfFile}#page=${i}" type="application/pdf"
+      class="w-full h-[520px] rounded-xl shadow-sm">
+  `;
 
-  <!-- FOOTER -->
-  <footer class="bg-white border-t">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
-      <p class="text-gray-600 text-sm">
-        © 2026 SCWK — Scrum & Coffee with Karthik
-      </p>
-      <p class="text-gray-500 text-xs mt-2">
-        Built with clarity. Powered by consistency.
-      </p>
-    </div>
-  </footer>
+  track.appendChild(slide);
 
-  <script>
-    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuOpenIcon = document.getElementById("menu-open-icon");
-    const menuCloseIcon = document.getElementById("menu-close-icon");
+  // dot
+  const dot = document.createElement("span");
+  dot.className = "dot w-3 h-3 bg-gray-400 rounded-full cursor-pointer";
+  dot.addEventListener("click", () => goToSlide(i - 1));
+  dotsContainer.appendChild(dot);
+}
 
-    mobileMenuBtn.addEventListener("click", function () {
-      mobileMenu.classList.toggle("hidden");
-      menuOpenIcon.classList.toggle("hidden");
-      menuCloseIcon.classList.toggle("hidden");
-    });
-  </script>
+slides = Array.from(track.children);
+const dots = Array.from(dotsContainer.children);
+
+/* ===========================
+   FUNCTIONS
+=========================== */
+function updateSlide(index) {
+  const width = slides[0].getBoundingClientRect().width;
+  track.style.transform = `translateX(-${index * width}px)`;
+
+  dots.forEach((d, i) => {
+    d.classList.toggle("active", i === index);
+  });
+}
+
+function goToSlide(index) {
+  currentIndex = index;
+  updateSlide(currentIndex);
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+document.getElementById("next").onclick = () => {
+  currentIndex = (currentIndex + 1) % slides.length;
+  updateSlide(currentIndex);
+};
+
+document.getElementById("prev").onclick = () => {
+  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+  updateSlide(currentIndex);
+};
+
+/* ===========================
+   SWIPE
+=========================== */
+let startX = 0;
+
+track.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+track.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (endX < startX - 50) {
+    document.getElementById("next").click();
+  } else if (endX > startX + 50) {
+    document.getElementById("prev").click();
+  }
+});
+
+/* ===========================
+   INIT LOAD
+=========================== */
+updateSlide(currentIndex);
+
+window.addEventListener("resize", () => updateSlide(currentIndex));
+</script>
 
 </body>
 </html>
