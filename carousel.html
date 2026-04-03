@@ -35,11 +35,11 @@
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-<!-- NAVBAR (same style for consistency) -->
+<!-- NAVBAR -->
 <nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0 z-50">
   <img src="logo.png" class="h-10">
   <div class="space-x-6 font-medium">
-    <a href="index.html" class="hover:text-blue-600">Home</a>
+    <a href="index.html">Home</a>
     <span class="text-blue-600 font-semibold">Carousel Lab</span>
   </div>
 </nav>
@@ -47,11 +47,11 @@
 <!-- HEADER -->
 <section class="text-center mt-12 px-4">
   <h1 class="text-3xl font-bold">🚀 SCWK Carousel Lab</h1>
-  <p class="text-gray-600 mt-2">Testing LinkedIn-style PDF experience</p>
+  <p class="text-gray-600 mt-2">LinkedIn-style PDF experience</p>
 </section>
 
 <!-- CAROUSEL -->
-<section class="max-w-5xl mx-auto mt-10 px-4">
+<section class="max-w-4xl mx-auto mt-10 px-4">
 
   <div class="relative overflow-hidden">
 
@@ -69,25 +69,26 @@
 </section>
 
 <script>
-/* ================= CONFIG ================= */
-const pdfFile = "ai-shot-1.pdf"; // change this
-const totalPages = 3; // change this
+/* CONFIG */
+const pdfFile = "ai-shot-1.pdf";
+const totalPages = 3;
 
-/* ================= INIT ================= */
 const track = document.getElementById("track");
 const dotsContainer = document.getElementById("dots");
 
 let currentIndex = 0;
 let slides = [];
 
-/* ================= CREATE SLIDES ================= */
+/* CREATE SLIDES */
 for (let i = 1; i <= totalPages; i++) {
   const slide = document.createElement("div");
   slide.className = "carousel-slide";
 
   slide.innerHTML = `
-    <embed src="${pdfFile}#page=${i}" type="application/pdf"
-      class="w-full h-[520px] rounded-xl shadow-sm">
+    <iframe 
+      src="${pdfFile}#page=${i}&view=FitH" 
+      class="w-full h-[520px] rounded-xl shadow-sm border"
+    ></iframe>
   `;
 
   track.appendChild(slide);
@@ -101,7 +102,7 @@ for (let i = 1; i <= totalPages; i++) {
 slides = Array.from(track.children);
 const dots = Array.from(dotsContainer.children);
 
-/* ================= FUNCTIONS ================= */
+/* FUNCTIONS */
 function updateSlide(index) {
   const width = slides[0].getBoundingClientRect().width;
   track.style.transform = `translateX(-${index * width}px)`;
@@ -116,7 +117,7 @@ function goToSlide(index) {
   updateSlide(currentIndex);
 }
 
-/* ================= BUTTONS ================= */
+/* BUTTONS */
 document.getElementById("next").onclick = () => {
   currentIndex = (currentIndex + 1) % slides.length;
   updateSlide(currentIndex);
@@ -127,7 +128,7 @@ document.getElementById("prev").onclick = () => {
   updateSlide(currentIndex);
 };
 
-/* ================= SWIPE ================= */
+/* SWIPE */
 let startX = 0;
 
 track.addEventListener("touchstart", e => {
@@ -137,16 +138,12 @@ track.addEventListener("touchstart", e => {
 track.addEventListener("touchend", e => {
   let endX = e.changedTouches[0].clientX;
 
-  if (endX < startX - 50) {
-    document.getElementById("next").click();
-  } else if (endX > startX + 50) {
-    document.getElementById("prev").click();
-  }
+  if (endX < startX - 50) next.click();
+  else if (endX > startX + 50) prev.click();
 });
 
-/* ================= INIT ================= */
+/* INIT */
 updateSlide(currentIndex);
-
 window.addEventListener("resize", () => updateSlide(currentIndex));
 </script>
 
