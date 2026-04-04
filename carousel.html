@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SCWK Bites Carousel</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./lib/pdfjs/pdf.min.js"></script>
+
   <style>
     body {
       overflow-x: hidden;
@@ -20,6 +23,7 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       padding-bottom: 0.25rem;
+      min-height: 320px;
     }
 
     .carousel-container::-webkit-scrollbar {
@@ -27,96 +31,185 @@
     }
 
     .carousel-slide {
-      scroll-snap-align: start;
+      scroll-snap-align: center;
       flex: 0 0 auto;
       width: 90vw;
       max-width: 90vw;
-      height: 80vh;
-      min-height: 500px;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
       background: white;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
 
     @media (min-width: 768px) {
       .carousel-slide {
         width: 420px;
         max-width: 420px;
-        height: 85vh;
-        max-height: 760px;
       }
     }
 
-    .pdf-frame {
+    .pdf-wrapper {
+      position: relative;
       width: 100%;
-      height: 100%;
-      border: none;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+    }
+
+    .pdf-canvas {
+      width: 100%;
+      height: auto;
       display: block;
       background: white;
+    }
+
+    .overlay-msg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .loading-msg {
+      color: #6b7280;
+      background: #ffffff;
+    }
+
+    .error-msg {
+      color: #b91c1c;
+      background: #fef2f2;
     }
 
     .nav-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(17, 24, 39, 0.7);
       color: white;
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       border-radius: 9999px;
       cursor: pointer;
       z-index: 10;
       user-select: none;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: bold;
+      backdrop-filter: blur(4px);
+      border: none;
     }
 
     .nav-btn:hover {
-      background: rgba(0, 0, 0, 0.8);
-      transform: translateY(-50%) scale(1.04);
+      background: rgba(17, 24, 39, 0.9);
+      transform: translateY(-50%) scale(1.05);
     }
 
     .prev-btn { left: 0.5rem; }
     .next-btn { right: 0.5rem; }
 
     @media (min-width: 768px) {
-      .prev-btn { left: -3.25rem; }
-      .next-btn { right: -3.25rem; }
+      .prev-btn { left: -3.5rem; }
+      .next-btn { right: -3.5rem; }
+    }
+
+    .slide-counter {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #4b5563;
+      font-weight: 500;
+    }
+
+    .cta-row {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #111827;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      background: #000000;
+      transform: translateY(-1px);
     }
   </style>
 </head>
-<body class="bg-gray-50 p-4">
+<body class="bg-gray-50 p-4 md:p-6">
 
-  <h1 class="text-2xl font-bold mb-4">SCWK Bites</h1>
+  <h1 class="text-2xl md:text-3xl font-bold mb-5">SCWK Bites</h1>
 
-  <div class="relative w-full md:w-fit">
-    <div class="carousel-container" id="carouselContainer">
+  <div class="relative w-full md:w-fit mx-auto">
+    <div class="carousel-container" id="carouselContainer"></div>
 
-      <!-- Single PDF slide -->
-      <div class="carousel-slide">
-        <iframe
-          class="pdf-frame"
-          src="./pdf/bites.pdf#view=FitH"
-          title="SCWK Bites PDF">
-        </iframe>
-      </div>
+    <button class="nav-btn prev-btn" aria-label="Previous slide">&#10094;</button>
+    <button class="nav-btn next-btn" aria-label="Next slide">&#10095;</button>
+  </div>
 
-    </div>
+  <div class="slide-counter" id="slideCounter">Loading...</div>
 
-    <div class="nav-btn prev-btn" aria-label="Previous slide">&#10094;</div>
-    <div class="nav-btn next-btn" aria-label="Next slide">&#10095;</div>
+  <div class="cta-row">
+    <a href="./pdf/bites.pdf" target="_blank" class="cta-btn">Open Full PDF</a>
   </div>
 
   <script>
+    const pdfFile = './pdf/bites.pdf';
     const container = document.getElementById('carouselContainer');
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
+    const slideCounter = document.getElementById('slideCounter');
+
+    let totalSlides = 0;
+
+    function createMessageSlide(message, isError = false) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+
+      slide.innerHTML = `
+        <div class="pdf-wrapper">
+          <div class="overlay-msg ${isError ? 'error-msg' : 'loading-msg'}">
+            <div>${message}</div>
+          </div>
+        </div>
+      `;
+      return slide;
+    }
+
+    function createCanvasSlide(pageNumber) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+
+      slide.innerHTML = `
+        <div class="pdf-wrapper">
+          <canvas id="pdf-canvas-${pageNumber}" class="pdf-canvas"></canvas>
+          <div class="overlay-msg loading-msg" id="loading-${pageNumber}">
+            <div>Loading slide ${pageNumber}...</div>
+          </div>
+        </div>
+      `;
+      return slide;
+    }
 
     function getSlideWidth() {
       const firstSlide = container.querySelector('.carousel-slide');
@@ -124,17 +217,116 @@
       return firstSlide.offsetWidth + 16;
     }
 
+    function updateSlideCounter() {
+      const slideWidth = getSlideWidth();
+      if (!slideWidth || !totalSlides) return;
+      const currentIndex = Math.round(container.scrollLeft / slideWidth) + 1;
+      slideCounter.textContent = `Slide ${Math.min(currentIndex, totalSlides)} of ${totalSlides}`;
+    }
+
+    async function renderPage(pdf, pageNumber) {
+      const slide = createCanvasSlide(pageNumber);
+      container.appendChild(slide);
+
+      const canvas = document.getElementById(`pdf-canvas-${pageNumber}`);
+      const loadingEl = document.getElementById(`loading-${pageNumber}`);
+
+      try {
+        const page = await pdf.getPage(pageNumber);
+        const context = canvas.getContext('2d');
+
+        const slideWidth = slide.clientWidth || window.innerWidth * 0.9;
+        const unscaledViewport = page.getViewport(1);
+        const scale = slideWidth / unscaledViewport.width;
+        const viewport = page.getViewport(scale);
+
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        });
+
+        loadingEl.remove();
+      } catch (error) {
+        console.error(`Failed to render page ${pageNumber}`, error);
+        slide.querySelector('.pdf-wrapper').innerHTML = `
+          <div class="overlay-msg error-msg">
+            <div>
+              <strong>Failed to render page ${pageNumber}</strong><br><br>
+              <span style="font-size:12px;">${error.message || error}</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    async function initCarousel() {
+      container.innerHTML = '';
+      container.appendChild(createMessageSlide('Loading SCWK Bites PDF...'));
+      slideCounter.textContent = 'Loading...';
+
+      try {
+        if (!window.PDFJS) {
+          throw new Error('Local PDFJS not loaded. Check ./lib/pdfjs/pdf.min.js');
+        }
+
+        PDFJS.disableWorker = true;
+
+        const pdf = await PDFJS.getDocument(pdfFile);
+
+        totalSlides = pdf.numPages;
+        container.innerHTML = '';
+
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          await renderPage(pdf, pageNum);
+        }
+
+        if (pdf.numPages === 0) {
+          container.appendChild(createMessageSlide('PDF loaded but has no pages.', true));
+          slideCounter.textContent = 'No slides found';
+          return;
+        }
+
+        updateSlideCounter();
+      } catch (error) {
+        console.error('PDF load failed:', error);
+        container.innerHTML = '';
+        container.appendChild(
+          createMessageSlide(
+            `<strong>Failed to load PDF</strong><br><br>${pdfFile}<br><br><span style="font-size:12px;">${error.message || error}</span>`,
+            true
+          )
+        );
+        slideCounter.textContent = 'Error loading slides';
+      }
+    }
+
+    initCarousel();
+
     prevBtn.addEventListener('click', () => {
       const slideWidth = getSlideWidth();
       container.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      setTimeout(updateSlideCounter, 350);
     });
 
     nextBtn.addEventListener('click', () => {
       const slideWidth = getSlideWidth();
       container.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      setTimeout(updateSlideCounter, 350);
     });
 
-    // Desktop drag support
+    container.addEventListener('scroll', () => {
+      clearTimeout(container._scrollTimer);
+      container._scrollTimer = setTimeout(updateSlideCounter, 100);
+    });
+
     let isDown = false;
     let startX;
     let scrollLeft;
@@ -143,39 +335,22 @@
       isDown = true;
       startX = e.pageX - container.offsetLeft;
       scrollLeft = container.scrollLeft;
-      container.classList.add('cursor-grabbing');
     });
 
     container.addEventListener('mouseleave', () => {
       isDown = false;
-      container.classList.remove('cursor-grabbing');
     });
 
     container.addEventListener('mouseup', () => {
       isDown = false;
-      container.classList.remove('cursor-grabbing');
     });
 
     container.addEventListener('mousemove', (e) => {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 1.5;
+      const walk = (x - startX) * 1.3;
       container.scrollLeft = scrollLeft - walk;
-    });
-
-    // Mobile swipe support
-    let startTouchX = 0;
-
-    container.addEventListener('touchstart', (e) => {
-      startTouchX = e.touches[0].clientX;
-    });
-
-    container.addEventListener('touchmove', (e) => {
-      const touchX = e.touches[0].clientX;
-      const walk = startTouchX - touchX;
-      container.scrollLeft += walk;
-      startTouchX = touchX;
     });
   </script>
 
