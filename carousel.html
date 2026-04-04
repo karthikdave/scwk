@@ -6,239 +6,407 @@
 <title>SCWK Carousel</title>
 
 <style>
-
 body{
-margin:0;
-background:#020617;
-color:white;
-font-family:system-ui;
-overflow-x:hidden;
+  margin:0;
+  background:#020617;
+  color:white;
+  font-family:system-ui;
+  overflow-x:hidden;
 }
 
 .top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:16px 24px;
-background:#020617;
-border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  background:#020617;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .top a{
-color:#facc15;
-text-decoration:none;
-font-weight:700;
+  color:#facc15;
+  text-decoration:none;
+  font-weight:700;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-text-align:center;
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
+  text-align:center;
 }
 
 h1{
-margin:10px 0;
+  margin:10px 0;
 }
 
 .desc{
-color:#9ca3af;
-margin-bottom:30px;
+  color:#9ca3af;
+  margin-bottom:30px;
 }
 
 .viewer{
-position:relative;
-max-width:620px;
-margin:auto;
+  position:relative;
+  max-width:620px;
+  margin:auto;
 }
 
 .viewport{
-overflow:hidden;
-cursor:grab;
+  overflow:hidden;
+  cursor:grab;
+  touch-action:pan-y;
+  user-select:none;
+}
+
+.viewport.dragging{
+  cursor:grabbing;
 }
 
 .track{
-display:flex;
-transition:transform .35s ease;
+  display:flex;
+  transition:transform .35s ease;
+  will-change:transform;
 }
 
 .slide{
-min-width:100%;
-display:flex;
-justify-content:center;
+  min-width:100%;
+  display:flex;
+  justify-content:center;
 }
 
 .card{
-background:white;
-border-radius:16px;
-box-shadow:0 20px 50px rgba(0,0,0,.4);
-overflow:hidden;
-max-width:520px;
+  background:white;
+  border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+  overflow:hidden;
+  max-width:520px;
 }
 
 canvas{
-width:100%;
-height:auto;
-display:block;
+  width:100%;
+  height:auto;
+  display:block;
 }
 
 .nav{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-width:44px;
-height:44px;
-border-radius:50%;
-border:none;
-background:#111827;
-color:white;
-font-size:22px;
-cursor:pointer;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:none;
+  background:#111827;
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+  z-index:5;
 }
 
 .nav:hover{
-background:#1f2937;
+  background:#1f2937;
 }
 
 .prev{left:-60px}
 .next{right:-60px}
 
 .counter{
-margin-top:14px;
-color:#9ca3af;
-font-size:14px;
+  margin-top:14px;
+  color:#9ca3af;
+  font-size:14px;
+}
+
+.status{
+  margin-top:18px;
+  color:#9ca3af;
+  font-size:14px;
+}
+
+.error{
+  color:#fca5a5;
+  margin-top:16px;
+  font-size:14px;
+  line-height:1.5;
+  white-space:pre-wrap;
 }
 
 @media(max-width:700px){
-
-.prev{left:0}
-.next{right:0}
-
+  .prev{left:0}
+  .next{right:0}
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="top">
-<a href="./index.html">← Back</a>
-<a id="pdfLink" target="_blank">Open PDF</a>
+  <a href="./index.html">← Back</a>
+  <a id="pdfLink" target="_blank">Open PDF</a>
 </div>
 
 <div class="container">
 
-<h1 id="title">SCWK</h1>
-<p class="desc" id="desc"></p>
+  <h1 id="title">SCWK</h1>
+  <p class="desc" id="desc"></p>
 
-<div class="viewer">
+  <div class="viewer">
+    <button class="nav prev" id="prev" aria-label="Previous page">‹</button>
 
-<button class="nav prev" id="prev">‹</button>
+    <div class="viewport" id="viewport">
+      <div class="track" id="track"></div>
+    </div>
 
-<div class="viewport" id="viewport">
-<div class="track" id="track"></div>
-</div>
+    <button class="nav next" id="next" aria-label="Next page">›</button>
+  </div>
 
-<button class="nav next" id="next">›</button>
-
-</div>
-
-<div class="counter" id="counter"></div>
+  <div class="counter" id="counter"></div>
+  <div class="status" id="status">Loading PDF...</div>
+  <div class="error" id="error"></div>
 
 </div>
 
 <script src="./lib/pdfjs/pdf.min.js"></script>
 
 <script>
-
 const CONFIG = {
+  bites: {
+    title: "SCWK Bites",
+    desc: "Bite-sized agile thoughts. Quick insights for busy professionals.",
+    pdf: "./pdf/bites.pdf"
+  },
+  lites: {
+    title: "SCWK Lites",
+    desc: "Light-hearted agile reflections with a smile.",
+    pdf: "./pdf/lites.pdf"
+  }
+};
 
-bites:{
-title:"SCWK Bites",
-desc:"Bite-sized agile thoughts. Quick insights for busy professionals.",
-pdf:"./pdf/bites.pdf"
-},
+const params = new URLSearchParams(location.search);
+const id = params.get("id") || "bites";
+const data = CONFIG[id] || CONFIG.bites;
 
-lites:{
-title:"SCWK Lites",
-desc:"Light-hearted agile reflections with a smile.",
-pdf:"./pdf/lites.pdf"
+document.getElementById("title").innerText = data.title;
+document.getElementById("desc").innerText = data.desc;
+document.getElementById("pdfLink").href = data.pdf;
+
+const track = document.getElementById("track");
+const viewport = document.getElementById("viewport");
+const counter = document.getElementById("counter");
+const status = document.getElementById("status");
+const errorBox = document.getElementById("error");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+
+let index = 0;
+let pages = 0;
+let isAnimating = false;
+
+// Drag / swipe state
+let isPointerDown = false;
+let startX = 0;
+let currentDelta = 0;
+let isDragging = false;
+let pointerType = "mouse";
+
+function showError(msg){
+  errorBox.textContent = msg;
+  status.textContent = "";
 }
 
+function updateNav(){
+  prevBtn.style.opacity = index === 0 ? "0.45" : "1";
+  nextBtn.style.opacity = index === pages - 1 ? "0.45" : "1";
 }
 
-const params=new URLSearchParams(location.search)
-const id=params.get("id")||"bites"
-const data=CONFIG[id]||CONFIG.bites
+function getBaseTranslatePercent(){
+  return -(index * 100);
+}
 
-document.getElementById("title").innerText=data.title
-document.getElementById("desc").innerText=data.desc
-document.getElementById("pdfLink").href=data.pdf
+function setTrackPosition(extraPx = 0, animate = true){
+  if (animate) {
+    track.style.transition = "transform .35s ease";
+  } else {
+    track.style.transition = "none";
+  }
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js"
-
-const track=document.getElementById("track")
-const counter=document.getElementById("counter")
-
-let index=0
-let pages=0
+  if (extraPx === 0) {
+    track.style.transform = `translateX(${getBaseTranslatePercent()}%)`;
+  } else {
+    track.style.transform = `translateX(calc(${getBaseTranslatePercent()}% + ${extraPx}px))`;
+  }
+}
 
 function update(){
-track.style.transform=`translateX(-${index*100}%)`
-counter.innerText=`Page ${index+1} / ${pages}`
+  setTrackPosition(0, true);
+  counter.innerText = pages ? `Page ${index + 1} / ${pages}` : "";
+  updateNav();
 }
 
-document.getElementById("prev").onclick=()=>{
-if(index>0){index--;update()}
+function goTo(newIndex){
+  if (isAnimating) return;
+  if (newIndex < 0 || newIndex > pages - 1) return;
+
+  index = newIndex;
+  isAnimating = true;
+  update();
+
+  setTimeout(() => {
+    isAnimating = false;
+  }, 380);
 }
 
-document.getElementById("next").onclick=()=>{
-if(index<pages-1){index++;update()}
+prevBtn.onclick = () => goTo(index - 1);
+nextBtn.onclick = () => goTo(index + 1);
+
+function attachDragSwipe(){
+  const threshold = 70;
+
+  function pointerDown(clientX, type){
+    if (pages <= 1) return;
+    if (isAnimating) return;
+
+    isPointerDown = true;
+    isDragging = false;
+    startX = clientX;
+    currentDelta = 0;
+    pointerType = type;
+    viewport.classList.add("dragging");
+    setTrackPosition(0, false);
+  }
+
+  function pointerMove(clientX){
+    if (!isPointerDown) return;
+
+    currentDelta = clientX - startX;
+
+    if (Math.abs(currentDelta) > 6) {
+      isDragging = true;
+    }
+
+    if (isDragging) {
+      setTrackPosition(currentDelta, false);
+    }
+  }
+
+  function pointerUp(){
+    if (!isPointerDown) return;
+
+    viewport.classList.remove("dragging");
+
+    if (!isDragging) {
+      isPointerDown = false;
+      currentDelta = 0;
+      setTrackPosition(0, true);
+      return;
+    }
+
+    if (currentDelta <= -threshold && index < pages - 1) {
+      index++;
+    } else if (currentDelta >= threshold && index > 0) {
+      index--;
+    }
+
+    isPointerDown = false;
+    isDragging = false;
+    currentDelta = 0;
+    update();
+  }
+
+  // Desktop mouse
+  viewport.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    pointerDown(e.clientX, "mouse");
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    pointerMove(e.clientX);
+  });
+
+  window.addEventListener("mouseup", () => {
+    pointerUp();
+  });
+
+  // Touch mobile
+  viewport.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) return;
+    pointerDown(e.touches[0].clientX, "touch");
+  }, { passive: true });
+
+  viewport.addEventListener("touchmove", (e) => {
+    if (!isPointerDown) return;
+    if (e.touches.length !== 1) return;
+    pointerMove(e.touches[0].clientX);
+  }, { passive: true });
+
+  viewport.addEventListener("touchend", () => {
+    pointerUp();
+  });
+
+  viewport.addEventListener("touchcancel", () => {
+    pointerUp();
+  });
+
+  // Prevent image/canvas drag ghost
+  viewport.addEventListener("dragstart", (e) => e.preventDefault());
 }
 
 async function loadPDF(){
+  try {
+    if (typeof pdfjsLib === "undefined") {
+      showError("PDF viewer failed to load.\n\nLocal pdf.min.js loaded but pdfjsLib not found.");
+      return;
+    }
 
-const pdf=await pdfjsLib.getDocument(data.pdf).promise
-pages=pdf.numPages
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js";
 
-for(let i=1;i<=pages;i++){
+    const pdf = await pdfjsLib.getDocument(data.pdf).promise;
+    pages = pdf.numPages;
 
-const page=await pdf.getPage(i)
+    for (let i = 1; i <= pages; i++) {
+      const page = await pdf.getPage(i);
 
-const viewport=page.getViewport({scale:1})
-const scale=520/viewport.width
-const v=page.getViewport({scale})
+      const baseViewport = page.getViewport({ scale: 1 });
 
-const canvas=document.createElement("canvas")
-const ctx=canvas.getContext("2d")
+      // Compact LinkedIn-style size
+      const targetWidth = Math.min(window.innerWidth < 700 ? window.innerWidth - 80 : 520, 520);
+      const scale = targetWidth / baseViewport.width;
 
-canvas.width=v.width
-canvas.height=v.height
+      const viewportScaled = page.getViewport({ scale });
 
-await page.render({
-canvasContext:ctx,
-viewport:v
-}).promise
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-const slide=document.createElement("div")
-slide.className="slide"
+      canvas.width = viewportScaled.width;
+      canvas.height = viewportScaled.height;
 
-const card=document.createElement("div")
-card.className="card"
+      await page.render({
+        canvasContext: ctx,
+        viewport: viewportScaled
+      }).promise;
 
-card.appendChild(canvas)
-slide.appendChild(card)
-track.appendChild(slide)
+      const slide = document.createElement("div");
+      slide.className = "slide";
 
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.appendChild(canvas);
+      slide.appendChild(card);
+      track.appendChild(slide);
+    }
+
+    status.textContent = "";
+    update();
+    attachDragSwipe();
+
+  } catch (err) {
+    console.error(err);
+    showError("PDF failed to render.\n\n" + (err?.message || err));
+  }
 }
 
-update()
-
-}
-
-loadPDF()
-
+loadPDF();
 </script>
 
 </body>
