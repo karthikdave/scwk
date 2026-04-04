@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>SCWK Dose</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
@@ -26,66 +29,69 @@
 </section>
 
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
 const container = document.getElementById("posts");
 
-/* LOAD DATA */
 fetch("data.json")
-  .then(res => {
-    if (!res.ok) {
-      throw new Error("data.json not found");
-    }
-    return res.json();
-  })
+  .then(res => res.json())
   .then(data => {
 
-    console.log("Loaded data:", data); // 🔥 debug
+    const doses = data.posts.filter(p => p.type === "dose").reverse();
 
-    if (!data.posts || data.posts.length === 0) {
-      container.innerHTML = "<p class='text-center text-red-500'>No posts found in data.json</p>";
-      return;
-    }
-
-    const doses = data.posts.filter(p => p.type === "dose");
-
-    console.log("Dose posts:", doses); // 🔥 debug
-
-    if (doses.length === 0) {
-      container.innerHTML = "<p class='text-center text-gray-500'>No Dose posts yet.</p>";
-      return;
-    }
-
-    doses.reverse().forEach(post => {
+    doses.forEach(post => {
 
       const card = document.createElement("div");
       card.className = `
-        bg-white rounded-2xl shadow-sm p-5 
+        bg-white rounded-2xl shadow-sm overflow-hidden
         hover:shadow-md transition cursor-pointer
       `;
 
-      card.innerHTML = `
-        <h2 class="text-xl font-semibold">${post.title}</h2>
-        <p class="text-gray-500 text-sm mt-1">SCWK Dose</p>
+      const previewDiv = document.createElement("div");
+      previewDiv.className = "bg-gray-200 flex justify-center items-center";
 
-        <div class="mt-4">
-          <span class="text-blue-600 font-medium">View Carousel →</span>
-        </div>
+      const canvas = document.createElement("canvas");
+      previewDiv.appendChild(canvas);
+
+      const content = document.createElement("div");
+      content.className = "p-4";
+
+      content.innerHTML = `
+        <h2 class="text-lg font-semibold">${post.title}</h2>
+        <p class="text-gray-500 text-sm mt-1">SCWK Dose</p>
+        <div class="mt-3 text-blue-600 font-medium">View Carousel →</div>
       `;
+
+      card.appendChild(previewDiv);
+      card.appendChild(content);
 
       card.onclick = () => {
         window.location.href = `carousel.html?id=${post.id}`;
       };
 
       container.appendChild(card);
+
+      // 🔥 PREVIEW
+      pdfjsLib.getDocument(post.file).promise.then(pdf => {
+        pdf.getPage(1).then(page => {
+
+          const viewport = page.getViewport({ scale: 1 });
+          const scale = 300 / viewport.width;
+          const scaledViewport = page.getViewport({ scale });
+
+          const context = canvas.getContext("2d");
+          canvas.width = scaledViewport.width;
+          canvas.height = scaledViewport.height;
+
+          page.render({
+            canvasContext: context,
+            viewport: scaledViewport
+          });
+        });
+      });
+
     });
-  })
-  .catch(err => {
-    console.error(err);
-    container.innerHTML = `
-      <p class="text-center text-red-500">
-        Error loading data.json ❌ <br>
-        Check file path or JSON format
-      </p>
-    `;
   });
 </script>
 
