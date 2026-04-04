@@ -1,659 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK Carousel</title>
-  <style>
-    :root{
-      --bg:#020817;
-      --bg2:#0f172a;
-      --card:#111827;
-      --card2:#1f2937;
-      --line:rgba(255,255,255,.08);
-      --text:#e5e7eb;
-      --muted:#94a3b8;
-      --gold:#facc15;
-      --gold2:#f59e0b;
-      --danger:#fca5a5;
-      --dangerLine:rgba(252,165,165,.25);
-      --shadow:0 20px 60px rgba(0,0,0,.45);
-      --radius:28px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCWK Carousel</title>
 
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      padding:0;
-      background:
-        radial-gradient(circle at top right, rgba(245,158,11,.08), transparent 35%),
-        linear-gradient(180deg, var(--bg), #061021 40%, var(--bg));
-      color:var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      min-height:100%;
-      overflow-x:hidden;
-    }
+<style>
 
-    a{text-decoration:none;color:inherit}
+body{
+margin:0;
+background:#020617;
+color:white;
+font-family:system-ui;
+overflow-x:hidden;
+}
 
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(12px);
-      background:rgba(2,8,23,.78);
-      border-bottom:1px solid var(--line);
-    }
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 24px;
+background:#020617;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
 
-    .topbar-inner{
-      max-width:1400px;
-      margin:0 auto;
-      padding:16px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
+.top a{
+color:#facc15;
+text-decoration:none;
+font-weight:700;
+}
 
-    .back-link{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      color:var(--text);
-      font-weight:700;
-      font-size:15px;
-    }
+.container{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+text-align:center;
+}
 
-    .back-link span:first-child{
-      color:var(--gold);
-    }
+h1{
+margin:10px 0;
+}
 
-    .pdf-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 20px;
-      border-radius:999px;
-      border:1px solid rgba(250,204,21,.35);
-      background:rgba(250,204,21,.08);
-      color:var(--gold);
-      font-weight:800;
-      font-size:14px;
-      letter-spacing:.3px;
-      transition:.2s ease;
-      white-space:nowrap;
-    }
+.desc{
+color:#9ca3af;
+margin-bottom:30px;
+}
 
-    .pdf-btn:hover{
-      transform:translateY(-1px);
-      background:rgba(250,204,21,.14);
-    }
+.viewer{
+position:relative;
+max-width:620px;
+margin:auto;
+}
 
-    .page{
-      max-width:1400px;
-      margin:0 auto;
-      padding:40px 16px 56px;
-    }
+.viewport{
+overflow:hidden;
+cursor:grab;
+}
 
-    .hero{
-      max-width:1020px;
-      margin:0 auto 26px;
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:28px 28px 24px;
-    }
+.track{
+display:flex;
+transition:transform .35s ease;
+}
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      color:var(--gold);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      margin-bottom:16px;
-    }
+.slide{
+min-width:100%;
+display:flex;
+justify-content:center;
+}
 
-    .hero h1{
-      margin:0 0 10px;
-      font-size:clamp(34px,5vw,58px);
-      line-height:1.05;
-      font-weight:900;
-      letter-spacing:-.03em;
-    }
+.card{
+background:white;
+border-radius:16px;
+box-shadow:0 20px 50px rgba(0,0,0,.4);
+overflow:hidden;
+max-width:520px;
+}
 
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      font-size:clamp(16px,2vw,19px);
-      line-height:1.7;
-    }
+canvas{
+width:100%;
+height:auto;
+display:block;
+}
 
-    .status{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-    }
+.nav{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:44px;
+height:44px;
+border-radius:50%;
+border:none;
+background:#111827;
+color:white;
+font-size:22px;
+cursor:pointer;
+}
 
-    .viewer-shell{
-      max-width:1020px;
-      margin:0 auto;
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:20px;
-      overflow:hidden;
-    }
+.nav:hover{
+background:#1f2937;
+}
 
-    .stage{
-      position:relative;
-      width:100%;
-      min-height:220px;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.06);
-      background:
-        radial-gradient(circle at top left, rgba(250,204,21,.05), transparent 35%),
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.015));
-      padding:18px 12px 22px;
-      overflow:hidden;
-    }
+.prev{left:-60px}
+.next{right:-60px}
 
-    .viewport{
-      position:relative;
-      width:100%;
-      overflow:hidden;
-      touch-action:pan-y;
-      user-select:none;
-      cursor:grab;
-    }
+.counter{
+margin-top:14px;
+color:#9ca3af;
+font-size:14px;
+}
 
-    .viewport.dragging{
-      cursor:grabbing;
-    }
+@media(max-width:700px){
 
-    .track{
-      display:flex;
-      gap:18px;
-      transition:transform .35s ease;
-      will-change:transform;
-      align-items:flex-start;
-    }
+.prev{left:0}
+.next{right:0}
 
-    .slide{
-      flex:0 0 100%;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:0;
-    }
+}
 
-    .page-card{
-      width:100%;
-      max-width:760px; /* keeps PDF visually clean */
-      margin:0 auto;
-      background:#ffffff;
-      border-radius:18px;
-      overflow:hidden;
-      box-shadow:0 18px 50px rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .page-canvas{
-      display:block;
-      width:100%;
-      height:auto;
-      background:#fff;
-    }
-
-    .nav{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:52px;
-      height:52px;
-      border:none;
-      border-radius:999px;
-      background:rgba(15,23,42,.88);
-      color:#fff;
-      font-size:24px;
-      font-weight:900;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 10px 24px rgba(0,0,0,.35);
-      z-index:5;
-      transition:.2s ease;
-    }
-
-    .nav:hover:not(:disabled){
-      transform:translateY(-50%) scale(1.04);
-      background:rgba(30,41,59,.95);
-    }
-
-    .nav:disabled{
-      opacity:.35;
-      cursor:not-allowed;
-    }
-
-    .nav.prev{left:8px}
-    .nav.next{right:8px}
-
-    .meta{
-      margin-top:16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .counter{
-      color:var(--muted);
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .dots{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .dot{
-      width:9px;
-      height:9px;
-      border-radius:999px;
-      background:rgba(255,255,255,.18);
-      border:none;
-      cursor:pointer;
-      transition:.2s ease;
-      padding:0;
-    }
-
-    .dot.active{
-      width:28px;
-      background:linear-gradient(90deg, var(--gold), var(--gold2));
-    }
-
-    .hint{
-      color:var(--muted);
-      font-size:13px;
-      text-align:right;
-    }
-
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      padding:34px 18px;
-      border:1px dashed rgba(255,255,255,.08);
-      border-radius:20px;
-    }
-
-    .error{
-      text-align:center;
-      padding:40px 20px;
-      border-radius:22px;
-      border:1px solid var(--dangerLine);
-      background:rgba(127,29,29,.08);
-      color:var(--danger);
-    }
-
-    .error small{
-      display:block;
-      margin-top:10px;
-      color:#fecaca;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .error a{
-      display:inline-block;
-      margin-top:16px;
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.1);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      font-weight:700;
-    }
-
-    @media (max-width: 900px){
-      .hero, .viewer-shell{padding:18px}
-      .stage{padding:14px 8px 18px}
-      .nav{
-        width:44px;
-        height:44px;
-        font-size:20px;
-      }
-      .page-card{
-        max-width:100%;
-        border-radius:14px;
-      }
-      .hint{
-        width:100%;
-        text-align:left;
-      }
-    }
-
-    @media (max-width: 640px){
-      .topbar-inner{padding:14px 14px}
-      .page{padding:24px 12px 40px}
-      .hero h1{font-size:34px}
-      .hero p{font-size:15px}
-      .status{font-size:13px}
-      .nav{
-        width:40px;
-        height:40px;
-      }
-      .nav.prev{left:6px}
-      .nav.next{right:6px}
-      .slide{flex-basis:100%}
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="back-link" href="./index.html">
-        <span>←</span>
-        <span>Back to SCWK</span>
-      </a>
-      <a class="pdf-btn" id="openPdfTop" href="#" target="_blank" rel="noopener noreferrer">OPEN FULL PDF</a>
-    </div>
-  </header>
 
-  <main class="page">
-    <section class="hero">
-      <div class="eyebrow" id="eyebrow">Bites</div>
-      <h1 id="title">SCWK Bites</h1>
-      <p id="description">Bite-sized agile thoughts. Quick, sharp, and practical insights for busy professionals.</p>
-      <div class="status">
-        <span id="statusText">Loading pages...</span>
-        <span>•</span>
-        <span>Swipe on mobile / drag on desktop / use arrows</span>
-      </div>
-    </section>
+<div class="top">
+<a href="./index.html">← Back</a>
+<a id="pdfLink" target="_blank">Open PDF</a>
+</div>
 
-    <section class="viewer-shell">
-      <div class="stage">
-        <button class="nav prev" id="prevBtn" aria-label="Previous page">‹</button>
+<div class="container">
 
-        <div class="viewport" id="viewport">
-          <div class="track" id="track"></div>
-        </div>
+<h1 id="title">SCWK</h1>
+<p class="desc" id="desc"></p>
 
-        <button class="nav next" id="nextBtn" aria-label="Next page">›</button>
-      </div>
+<div class="viewer">
 
-      <div class="meta">
-        <div class="counter" id="counter">Page 1 of 1</div>
-        <div class="dots" id="dots"></div>
-        <div class="hint">Desktop: drag • Mobile: swipe</div>
-      </div>
-    </section>
-  </main>
+<button class="nav prev" id="prev">‹</button>
 
-  <script src="./lib/pdfjs/pdf.min.js"></script>
-  <script>
-    const CONFIG = {
-      bites: {
-        label: "Bites",
-        title: "SCWK Bites",
-        description: "Bite-sized agile thoughts. Quick, sharp, and practical insights for busy professionals.",
-        pdf: "./pdf/bites.pdf"
-      },
-      lites: {
-        label: "Lites",
-        title: "SCWK Lites",
-        description: "Light-hearted agile reflections. Easy-to-consume moments with a smile and a spark.",
-        pdf: "./pdf/lites.pdf"
-      }
-    };
+<div class="viewport" id="viewport">
+<div class="track" id="track"></div>
+</div>
 
-    const params = new URLSearchParams(window.location.search);
-    const id = (params.get("id") || "bites").toLowerCase();
-    const data = CONFIG[id] || CONFIG.bites;
+<button class="nav next" id="next">›</button>
 
-    document.getElementById("eyebrow").textContent = data.label;
-    document.getElementById("title").textContent = data.title;
-    document.getElementById("description").textContent = data.description;
-    document.getElementById("openPdfTop").href = data.pdf;
+</div>
 
-    const track = document.getElementById("track");
-    const dots = document.getElementById("dots");
-    const counter = document.getElementById("counter");
-    const statusText = document.getElementById("statusText");
-    const viewport = document.getElementById("viewport");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+<div class="counter" id="counter"></div>
 
-    let currentIndex = 0;
-    let totalPages = 0;
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragDeltaX = 0;
-    let baseTranslate = 0;
+</div>
 
-    function setStatus(msg){
-      statusText.textContent = msg;
-    }
+<script src="./lib/pdfjs/pdf.min.js"></script>
 
-    function setCounter(){
-      counter.textContent = `Page ${Math.min(currentIndex + 1, Math.max(totalPages, 1))} of ${Math.max(totalPages, 1)}`;
-    }
+<script>
 
-    function setNav(){
-      prevBtn.disabled = currentIndex <= 0;
-      nextBtn.disabled = currentIndex >= totalPages - 1;
-    }
+const CONFIG = {
 
-    function setDots(){
-      [...dots.children].forEach((dot, i) => {
-        dot.classList.toggle("active", i === currentIndex);
-      });
-    }
+bites:{
+title:"SCWK Bites",
+desc:"Bite-sized agile thoughts. Quick insights for busy professionals.",
+pdf:"./pdf/bites.pdf"
+},
 
-    function getSlideWidth(){
-      return viewport.clientWidth + 18; // slide width + gap
-    }
+lites:{
+title:"SCWK Lites",
+desc:"Light-hearted agile reflections with a smile.",
+pdf:"./pdf/lites.pdf"
+}
 
-    function applyTranslate(animate = true){
-      track.style.transition = animate ? "transform .35s ease" : "none";
-      const offset = -(currentIndex * getSlideWidth());
-      track.style.transform = `translateX(${offset}px)`;
-      baseTranslate = offset;
-      setCounter();
-      setNav();
-      setDots();
-    }
+}
 
-    function goTo(index){
-      currentIndex = Math.max(0, Math.min(index, totalPages - 1));
-      applyTranslate(true);
-    }
+const params=new URLSearchParams(location.search)
+const id=params.get("id")||"bites"
+const data=CONFIG[id]||CONFIG.bites
 
-    function next(){
-      if(currentIndex < totalPages - 1) goTo(currentIndex + 1);
-    }
+document.getElementById("title").innerText=data.title
+document.getElementById("desc").innerText=data.desc
+document.getElementById("pdfLink").href=data.pdf
 
-    function prev(){
-      if(currentIndex > 0) goTo(currentIndex - 1);
-    }
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js"
 
-    prevBtn.addEventListener("click", prev);
-    nextBtn.addEventListener("click", next);
+const track=document.getElementById("track")
+const counter=document.getElementById("counter")
 
-    async function renderPdf(){
-      try{
-        if(!window.pdfjsLib){
-          throw new Error("Local pdf.min.js loaded but pdfjsLib not found.");
-        }
+let index=0
+let pages=0
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js";
+function update(){
+track.style.transform=`translateX(-${index*100}%)`
+counter.innerText=`Page ${index+1} / ${pages}`
+}
 
-        setStatus("Loading PDF...");
+document.getElementById("prev").onclick=()=>{
+if(index>0){index--;update()}
+}
 
-        const loadingTask = pdfjsLib.getDocument(data.pdf);
-        const pdf = await loadingTask.promise;
-        totalPages = pdf.numPages;
+document.getElementById("next").onclick=()=>{
+if(index<pages-1){index++;update()}
+}
 
-        if(!totalPages){
-          track.innerHTML = '<div class="empty">No pages found in PDF.</div>';
-          setStatus("No pages found.");
-          return;
-        }
+async function loadPDF(){
 
-        setStatus(`Rendering ${totalPages} page${totalPages > 1 ? "s" : ""}...`);
+const pdf=await pdfjsLib.getDocument(data.pdf).promise
+pages=pdf.numPages
 
-        track.innerHTML = "";
-        dots.innerHTML = "";
+for(let i=1;i<=pages;i++){
 
-        for(let i = 1; i <= totalPages; i++){
-          const page = await pdf.getPage(i);
+const page=await pdf.getPage(i)
 
-          const unscaled = page.getViewport({ scale: 1 });
-          const maxWidth = Math.min(viewport.clientWidth - 24, 760);
-          const scale = maxWidth / unscaled.width;
-          const scaled = page.getViewport({ scale });
+const viewport=page.getViewport({scale:1})
+const scale=520/viewport.width
+const v=page.getViewport({scale})
 
-          const slide = document.createElement("div");
-          slide.className = "slide";
+const canvas=document.createElement("canvas")
+const ctx=canvas.getContext("2d")
 
-          const card = document.createElement("div");
-          card.className = "page-card";
+canvas.width=v.width
+canvas.height=v.height
 
-          const canvas = document.createElement("canvas");
-          canvas.className = "page-canvas";
-          const ctx = canvas.getContext("2d");
+await page.render({
+canvasContext:ctx,
+viewport:v
+}).promise
 
-          const dpr = window.devicePixelRatio || 1;
-          canvas.width = Math.floor(scaled.width * dpr);
-          canvas.height = Math.floor(scaled.height * dpr);
-          canvas.style.width = `${scaled.width}px`;
-          canvas.style.height = `${scaled.height}px`;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+const slide=document.createElement("div")
+slide.className="slide"
 
-          await page.render({
-            canvasContext: ctx,
-            viewport: scaled
-          }).promise;
+const card=document.createElement("div")
+card.className="card"
 
-          card.appendChild(canvas);
-          slide.appendChild(card);
-          track.appendChild(slide);
+card.appendChild(canvas)
+slide.appendChild(card)
+track.appendChild(slide)
 
-          const dot = document.createElement("button");
-          dot.className = "dot" + (i === 1 ? " active" : "");
-          dot.setAttribute("aria-label", `Go to page ${i}`);
-          dot.addEventListener("click", () => goTo(i - 1));
-          dots.appendChild(dot);
-        }
+}
 
-        currentIndex = 0;
-        setCounter();
-        setNav();
-        applyTranslate(false);
-        setStatus(`Loaded ${totalPages} page${totalPages > 1 ? "s" : ""}.`);
-      } catch (err){
-        console.error(err);
-        track.innerHTML = `
-          <div class="error">
-            <div><strong>PDF viewer failed to load.</strong></div>
-            <small>${err.message || "Unknown PDF loading error."}</small>
-            <a href="${data.pdf}" target="_blank" rel="noopener noreferrer">Open Full PDF Instead</a>
-          </div>
-        `;
-        dots.innerHTML = "";
-        totalPages = 1;
-        currentIndex = 0;
-        setCounter();
-        setNav();
-        setStatus("Viewer fallback active.");
-      }
-    }
+update()
 
-    function onDragStart(clientX){
-      if(totalPages <= 1) return;
-      isDragging = true;
-      dragStartX = clientX;
-      dragDeltaX = 0;
-      viewport.classList.add("dragging");
-      track.style.transition = "none";
-    }
+}
 
-    function onDragMove(clientX){
-      if(!isDragging) return;
-      dragDeltaX = clientX - dragStartX;
-      track.style.transform = `translateX(${baseTranslate + dragDeltaX}px)`;
-    }
+loadPDF()
 
-    function onDragEnd(){
-      if(!isDragging) return;
-      isDragging = false;
-      viewport.classList.remove("dragging");
+</script>
 
-      const threshold = Math.max(60, viewport.clientWidth * 0.12);
-
-      if(dragDeltaX < -threshold && currentIndex < totalPages - 1){
-        currentIndex++;
-      } else if(dragDeltaX > threshold && currentIndex > 0){
-        currentIndex--;
-      }
-
-      applyTranslate(true);
-      dragDeltaX = 0;
-    }
-
-    viewport.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      onDragStart(e.clientX);
-    });
-
-    window.addEventListener("mousemove", (e) => onDragMove(e.clientX));
-    window.addEventListener("mouseup", onDragEnd);
-    window.addEventListener("mouseleave", onDragEnd);
-
-    viewport.addEventListener("touchstart", (e) => {
-      if(e.touches.length === 1){
-        onDragStart(e.touches[0].clientX);
-      }
-    }, { passive: true });
-
-    viewport.addEventListener("touchmove", (e) => {
-      if(e.touches.length === 1){
-        onDragMove(e.touches[0].clientX);
-      }
-    }, { passive: true });
-
-    viewport.addEventListener("touchend", onDragEnd);
-
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "ArrowRight") next();
-      if(e.key === "ArrowLeft") prev();
-    });
-
-    window.addEventListener("resize", () => {
-      if(totalPages > 0){
-        applyTranslate(false);
-      }
-    });
-
-    renderPdf();
-  </script>
 </body>
 </html>
