@@ -3,13 +3,13 @@
     {
       "id": 1,
       "title": "SCWK Dose #1",
-      "file": "dose-1.pdf",
+      "file": "dose.pdf",
       "type": "dose"
     },
     {
       "id": 2,
       "title": "SCWK Bites #1",
-      "file": "bites-1.pdf",
+      "file": "bites.pdf",
       "type": "bites"
     }
   ]
