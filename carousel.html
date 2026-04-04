@@ -1,218 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SCWK Carousel</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-  <style>
-    .carousel-container {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-
-    @media (min-width: 768px) {
-      .carousel-container {
-        max-width: 420px;
-        margin: 0 auto;
-      }
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.35s ease;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    canvas {
-      width: 100%;
-      height: auto;
-    }
-
-    @media (min-width: 768px) {
-      canvas {
-        border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-      }
-    }
-
-    /* 🔥 NEW: Soft arrows */
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.2);   /* lighter */
-      color: white;
-      font-size: 18px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      z-index: 10;
-
-      opacity: 0.3;                 /* faded by default */
-      transition: all 0.3s ease;
-    }
-
-    /* 💻 Desktop hover effect */
-    .carousel-container:hover .carousel-btn {
-      opacity: 0.8;
-      background: rgba(0,0,0,0.5);
-    }
-
-    /* 📱 Mobile: keep very subtle */
-    @media (max-width: 768px) {
-      .carousel-btn {
-        opacity: 0.2;
-        font-size: 16px;
-        padding: 3px 8px;
-      }
-    }
-
-    .dot.active {
-      background-color: #2563eb;
-      transform: scale(1.2);
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Carousel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-black flex flex-col items-center justify-center min-h-screen">
 
-<!-- NAV -->
-<nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0">
-  <img src="logo.png" class="h-10">
-  <a href="index.html" class="text-blue-600 font-semibold">Home</a>
-</nav>
+<div id="viewer" class="w-full max-w-3xl"></div>
 
-<!-- HEADER -->
-<section class="text-center mt-6">
-  <h1 class="text-2xl font-bold">🚀 SCWK Carousel</h1>
-</section>
-
-<!-- CAROUSEL -->
-<section class="mt-4">
-  <div class="carousel-container" id="carousel">
-
-    <div id="track" class="carousel-track"></div>
-
-    <button id="prev" class="carousel-btn left-2">‹</button>
-    <button id="next" class="carousel-btn right-2">›</button>
-
-  </div>
-
-  <div id="dots" class="flex justify-center mt-4 gap-2"></div>
-</section>
+<div class="flex justify-between w-full max-w-3xl mt-4 px-4">
+  <button onclick="prevPage()" class="bg-white px-4 py-2 rounded">Prev</button>
+  <button onclick="nextPage()" class="bg-white px-4 py-2 rounded">Next</button>
+</div>
 
 <script>
-const url = "ai-shot-1.pdf";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const track = document.getElementById("track");
-const dotsContainer = document.getElementById("dots");
-const container = document.getElementById("carousel");
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
 
-let currentIndex = 0;
-let totalPages = 0;
 let pdfDoc = null;
+let pageNum = 1;
 
-pdfjsLib.getDocument(url).promise.then(pdf => {
-  pdfDoc = pdf;
-  totalPages = pdf.numPages;
-  renderAllPages();
-});
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
 
-function renderAllPages() {
-  track.innerHTML = "";
-  dotsContainer.innerHTML = "";
+  const post = data.posts.find(p => p.id == id);
 
-  const containerWidth = container.clientWidth;
-
-  for (let i = 1; i <= totalPages; i++) {
-    pdfDoc.getPage(i).then(page => {
-
-      const viewport = page.getViewport({ scale: 1 });
-      const scale = containerWidth / viewport.width;
-      const scaledViewport = page.getViewport({ scale });
-
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-
-      canvas.width = scaledViewport.width;
-      canvas.height = scaledViewport.height;
-
-      page.render({
-        canvasContext: context,
-        viewport: scaledViewport
-      });
-
-      const slide = document.createElement("div");
-      slide.className = "carousel-slide";
-      slide.appendChild(canvas);
-
-      track.appendChild(slide);
-
-      const dot = document.createElement("span");
-      dot.className = "dot w-2 h-2 bg-gray-400 rounded-full cursor-pointer transition";
-      dot.onclick = () => goToSlide(i - 1);
-      dotsContainer.appendChild(dot);
-
-      updateSlide(currentIndex);
-    });
+  if (!post) {
+    document.body.innerHTML = "<h1 class='text-white'>Post not found</h1>";
+    return;
   }
-}
 
-function updateSlide(index) {
-  track.style.transform = `translateX(-${index * 100}%)`;
+  pdfjsLib.getDocument(post.file).promise.then(pdf => {
+    pdfDoc = pdf;
+    renderPage(pageNum);
+  });
 
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((d,i)=>d.classList.toggle("active", i===index));
-}
-
-function goToSlide(index) {
-  currentIndex = index;
-  updateSlide(currentIndex);
-}
-
-document.getElementById("next").onclick = () => {
-  currentIndex = (currentIndex + 1) % totalPages;
-  updateSlide(currentIndex);
-};
-
-document.getElementById("prev").onclick = () => {
-  currentIndex = (currentIndex - 1 + totalPages) % totalPages;
-  updateSlide(currentIndex);
-};
-
-let startX = 0;
-
-track.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
 });
 
-track.addEventListener("touchend", e => {
-  let endX = e.changedTouches[0].clientX;
+function renderPage(num) {
+  pdfDoc.getPage(num).then(page => {
 
-  if (endX < startX - 50) next.click();
-  else if (endX > startX + 50) prev.click();
-});
+    const viewport = page.getViewport({ scale: 1.5 });
 
-let resizeTimeout;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
-    if (pdfDoc) renderAllPages();
-  }, 300);
-});
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    document.getElementById("viewer").innerHTML = "";
+    document.getElementById("viewer").appendChild(canvas);
+
+    page.render({
+      canvasContext: ctx,
+      viewport: viewport
+    });
+
+  });
+}
+
+function nextPage() {
+  if (pageNum >= pdfDoc.numPages) return;
+  pageNum++;
+  renderPage(pageNum);
+}
+
+function prevPage() {
+  if (pageNum <= 1) return;
+  pageNum--;
+  renderPage(pageNum);
+}
 </script>
 
 </body>
