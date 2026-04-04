@@ -2,23 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<!-- 🔥 THIS IS VERY IMPORTANT FOR MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Carousel</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body class="bg-black text-white flex flex-col items-center justify-center min-h-screen">
 
-<!-- VIEWER -->
-<div id="viewer" class="w-full max-w-md px-4 flex justify-center items-center transition-opacity duration-300">
+<!-- VIEWER FULL WIDTH -->
+<div id="viewer" class="w-full h-[80vh] flex justify-center items-center transition-opacity duration-300">
   <p id="status">Loading PDF...</p>
 </div>
 
-<!-- PAGE INDICATOR -->
+<!-- PAGE INFO -->
 <div id="pageInfo" class="mt-2 text-sm opacity-80"></div>
 
 <!-- NAV -->
-<div class="flex justify-between w-full max-w-md mt-4 px-4">
+<div class="flex justify-between w-full px-6 mt-4">
   <button onclick="prevPage()" class="bg-white text-black px-4 py-2 rounded">Prev</button>
   <button onclick="nextPage()" class="bg-white text-black px-4 py-2 rounded">Next</button>
 </div>
@@ -27,9 +32,9 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-// 🔥 GET ID (MOBILE SAFE)
-let urlParams = new URLSearchParams(window.location.search);
-let id = urlParams.get("id");
+// MOBILE SAFE ID
+let params = new URLSearchParams(window.location.search);
+let id = params.get("id");
 
 if (!id) {
   const match = window.location.href.match(/id=(\d+)/);
@@ -76,7 +81,10 @@ function renderPage(num) {
       const ctx = canvas.getContext("2d");
 
       const viewport = page.getViewport({ scale: 1 });
-      const scale = viewer.clientWidth / viewport.width;
+
+      // 🔥 USE FULL SCREEN WIDTH
+      const scale = window.innerWidth / viewport.width;
+
       const scaledViewport = page.getViewport({ scale });
 
       canvas.width = scaledViewport.width;
@@ -111,7 +119,7 @@ function prevPage() {
   renderPage(pageNum);
 }
 
-// 🔥 SWIPE SUPPORT
+// SWIPE
 let startX = 0;
 let endX = 0;
 
@@ -123,15 +131,6 @@ viewer.addEventListener("touchstart", e => {
 
 viewer.addEventListener("touchend", e => {
   endX = e.changedTouches[0].clientX;
-  handleSwipe();
-});
-
-viewer.addEventListener("mousedown", e => {
-  startX = e.clientX;
-});
-
-viewer.addEventListener("mouseup", e => {
-  endX = e.clientX;
   handleSwipe();
 });
 
