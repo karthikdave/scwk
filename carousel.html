@@ -10,53 +10,35 @@
 
   <style>
     body {
-      overflow-x: hidden;
-    }
-
-    .carousel-container {
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      display: flex;
-      gap: 1rem;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding-bottom: 0.25rem;
-      min-height: 320px;
-    }
-
-    .carousel-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .carousel-slide {
-      scroll-snap-align: center;
-      flex: 0 0 auto;
-      width: 90vw;
-      max-width: 90vw;
-      border-radius: 1rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      background: white;
-      position: relative;
       overflow: hidden;
     }
 
-    @media (min-width: 768px) {
-      .carousel-slide {
-        width: 420px;
-        max-width: 420px;
-      }
+    .viewport {
+      width: 100%;
+      max-width: 460px;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      border-radius: 1rem;
     }
 
-    .pdf-wrapper {
-      position: relative;
-      width: 100%;
-      min-height: 300px;
+    .carousel-track {
       display: flex;
-      align-items: center;
+      transition: transform 0.35s ease;
+      will-change: transform;
+    }
+
+    .slide {
+      min-width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+      display: flex;
       justify-content: center;
+      align-items: center;
       background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
 
     .pdf-canvas {
@@ -66,61 +48,59 @@
       background: white;
     }
 
-    .overlay-msg {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    .loading-msg {
-      color: #6b7280;
-      background: #ffffff;
-    }
-
-    .error-msg {
-      color: #b91c1c;
-      background: #fef2f2;
-    }
-
     .nav-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(17, 24, 39, 0.7);
+      background: rgba(17, 24, 39, 0.75);
       color: white;
       width: 46px;
       height: 46px;
       border-radius: 9999px;
+      border: none;
       cursor: pointer;
-      z-index: 10;
-      user-select: none;
-      transition: all 0.2s ease;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.6rem;
       font-weight: bold;
       backdrop-filter: blur(4px);
-      border: none;
+      transition: all 0.2s ease;
     }
 
     .nav-btn:hover {
-      background: rgba(17, 24, 39, 0.9);
+      background: rgba(17, 24, 39, 0.95);
       transform: translateY(-50%) scale(1.05);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
     }
 
     .prev-btn { left: 0.5rem; }
     .next-btn { right: 0.5rem; }
 
-    @media (min-width: 768px) {
-      .prev-btn { left: -3.5rem; }
-      .next-btn { right: -3.5rem; }
+    .status-box {
+      width: 100%;
+      max-width: 460px;
+      min-height: 320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      padding: 1rem;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    .error-box {
+      color: #b91c1c;
+      background: #fef2f2;
     }
 
     .slide-counter {
@@ -129,6 +109,28 @@
       font-size: 0.95rem;
       color: #4b5563;
       font-weight: 500;
+    }
+
+    .dots {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: #d1d5db;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dot.active {
+      background: #111827;
+      transform: scale(1.15);
     }
 
     .cta-row {
@@ -158,16 +160,20 @@
 </head>
 <body class="bg-gray-50 p-4 md:p-6">
 
-  <h1 class="text-2xl md:text-3xl font-bold mb-5">SCWK Bites</h1>
+  <h1 class="text-2xl md:text-3xl font-bold mb-5 text-center">SCWK Bites</h1>
 
-  <div class="relative w-full md:w-fit mx-auto">
-    <div class="carousel-container" id="carouselContainer"></div>
+  <div id="statusBox" class="status-box">Loading SCWK Bites PDF...</div>
 
-    <button class="nav-btn prev-btn" aria-label="Previous slide">&#10094;</button>
-    <button class="nav-btn next-btn" aria-label="Next slide">&#10095;</button>
+  <div id="carouselShell" class="hidden">
+    <div class="viewport">
+      <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous slide">&#10094;</button>
+      <div class="carousel-track" id="carouselTrack"></div>
+      <button class="nav-btn next-btn" id="nextBtn" aria-label="Next slide">&#10095;</button>
+    </div>
+
+    <div class="slide-counter" id="slideCounter">Slide 1 of 1</div>
+    <div class="dots" id="dotsContainer"></div>
   </div>
-
-  <div class="slide-counter" id="slideCounter">Loading...</div>
 
   <div class="cta-row">
     <a href="./pdf/bites.pdf" target="_blank" class="cta-btn">Open Full PDF</a>
@@ -175,103 +181,76 @@
 
   <script>
     const pdfFile = './pdf/bites.pdf';
-    const container = document.getElementById('carouselContainer');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
+
+    const statusBox = document.getElementById('statusBox');
+    const carouselShell = document.getElementById('carouselShell');
+    const carouselTrack = document.getElementById('carouselTrack');
     const slideCounter = document.getElementById('slideCounter');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
     let totalSlides = 0;
+    let currentSlide = 0;
 
-    function createMessageSlide(message, isError = false) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
+    function updateCarousel() {
+      carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+      slideCounter.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
 
-      slide.innerHTML = `
-        <div class="pdf-wrapper">
-          <div class="overlay-msg ${isError ? 'error-msg' : 'loading-msg'}">
-            <div>${message}</div>
-          </div>
-        </div>
-      `;
-      return slide;
+      const dots = dotsContainer.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
     }
 
-    function createCanvasSlide(pageNumber) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-
-      slide.innerHTML = `
-        <div class="pdf-wrapper">
-          <canvas id="pdf-canvas-${pageNumber}" class="pdf-canvas"></canvas>
-          <div class="overlay-msg loading-msg" id="loading-${pageNumber}">
-            <div>Loading slide ${pageNumber}...</div>
-          </div>
-        </div>
-      `;
-      return slide;
-    }
-
-    function getSlideWidth() {
-      const firstSlide = container.querySelector('.carousel-slide');
-      if (!firstSlide) return 0;
-      return firstSlide.offsetWidth + 16;
-    }
-
-    function updateSlideCounter() {
-      const slideWidth = getSlideWidth();
-      if (!slideWidth || !totalSlides) return;
-      const currentIndex = Math.round(container.scrollLeft / slideWidth) + 1;
-      slideCounter.textContent = `Slide ${Math.min(currentIndex, totalSlides)} of ${totalSlides}`;
+    function createDot(index) {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.addEventListener('click', () => {
+        currentSlide = index;
+        updateCarousel();
+      });
+      return dot;
     }
 
     async function renderPage(pdf, pageNumber) {
-      const slide = createCanvasSlide(pageNumber);
-      container.appendChild(slide);
+      const page = await pdf.getPage(pageNumber);
 
-      const canvas = document.getElementById(`pdf-canvas-${pageNumber}`);
-      const loadingEl = document.getElementById(`loading-${pageNumber}`);
+      const slide = document.createElement('div');
+      slide.className = 'slide';
 
-      try {
-        const page = await pdf.getPage(pageNumber);
-        const context = canvas.getContext('2d');
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdf-canvas';
 
-        const slideWidth = slide.clientWidth || window.innerWidth * 0.9;
-        const unscaledViewport = page.getViewport({ scale: 1 });
-        const scale = slideWidth / unscaledViewport.width;
-        const viewport = page.getViewport({ scale });
+      slide.appendChild(canvas);
+      carouselTrack.appendChild(slide);
 
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = Math.floor(viewport.width * dpr);
-        canvas.height = Math.floor(viewport.height * dpr);
-        canvas.style.width = `${viewport.width}px`;
-        canvas.style.height = `${viewport.height}px`;
+      const context = canvas.getContext('2d');
 
-        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const containerWidth = Math.min(window.innerWidth * 0.9, 460);
+      const unscaledViewport = page.getViewport({ scale: 1 });
+      const scale = containerWidth / unscaledViewport.width;
+      const viewport = page.getViewport({ scale });
 
-        await page.render({
-          canvasContext: context,
-          viewport: viewport
-        }).promise;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      canvas.style.width = `${viewport.width}px`;
+      canvas.style.height = `${viewport.height}px`;
 
-        loadingEl.remove();
-      } catch (error) {
-        console.error(`Failed to render page ${pageNumber}`, error);
-        slide.querySelector('.pdf-wrapper').innerHTML = `
-          <div class="overlay-msg error-msg">
-            <div>
-              <strong>Failed to render page ${pageNumber}</strong><br><br>
-              <span style="font-size:12px;">${error.message || error}</span>
-            </div>
-          </div>
-        `;
-      }
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
     }
 
     async function initCarousel() {
-      container.innerHTML = '';
-      container.appendChild(createMessageSlide('Loading SCWK Bites PDF...'));
-      slideCounter.textContent = 'Loading...';
-
       try {
         if (!window.pdfjsLib) {
           throw new Error('pdfjsLib not loaded');
@@ -284,76 +263,69 @@
         const pdf = await loadingTask.promise;
 
         totalSlides = pdf.numPages;
-        container.innerHTML = '';
 
-        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        if (!totalSlides) {
+          throw new Error('PDF has no pages');
+        }
+
+        for (let pageNum = 1; pageNum <= totalSlides; pageNum++) {
           await renderPage(pdf, pageNum);
+          dotsContainer.appendChild(createDot(pageNum - 1));
         }
 
-        if (pdf.numPages === 0) {
-          container.appendChild(createMessageSlide('PDF loaded but has no pages.', true));
-          slideCounter.textContent = 'No slides found';
-          return;
-        }
+        statusBox.classList.add('hidden');
+        carouselShell.classList.remove('hidden');
 
-        updateSlideCounter();
+        updateCarousel();
       } catch (error) {
-        console.error('PDF load failed:', error);
-        container.innerHTML = '';
-        container.appendChild(
-          createMessageSlide(
-            `<strong>Failed to load PDF</strong><br><br>${pdfFile}<br><br><span style="font-size:12px;">${error.message || error}</span>`,
-            true
-          )
-        );
-        slideCounter.textContent = 'Error loading slides';
+        console.error('PDF carousel failed:', error);
+        statusBox.classList.add('error-box');
+        statusBox.innerHTML = `
+          <div>
+            <strong>Failed to load carousel</strong><br><br>
+            ${error.message || error}
+          </div>
+        `;
       }
     }
 
-    initCarousel();
-
     prevBtn.addEventListener('click', () => {
-      const slideWidth = getSlideWidth();
-      container.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-      setTimeout(updateSlideCounter, 350);
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateCarousel();
+      }
     });
 
     nextBtn.addEventListener('click', () => {
-      const slideWidth = getSlideWidth();
-      container.scrollBy({ left: slideWidth, behavior: 'smooth' });
-      setTimeout(updateSlideCounter, 350);
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateCarousel();
+      }
     });
 
-    container.addEventListener('scroll', () => {
-      clearTimeout(container._scrollTimer);
-      container._scrollTimer = setTimeout(updateSlideCounter, 100);
+    // Swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carouselTrack.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
     });
 
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+    carouselTrack.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
 
-    container.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.pageX - container.offsetLeft;
-      scrollLeft = container.scrollLeft;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0 && currentSlide < totalSlides - 1) {
+          currentSlide++;
+        } else if (diff < 0 && currentSlide > 0) {
+          currentSlide--;
+        }
+        updateCarousel();
+      }
     });
 
-    container.addEventListener('mouseleave', () => {
-      isDown = false;
-    });
-
-    container.addEventListener('mouseup', () => {
-      isDown = false;
-    });
-
-    container.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 1.3;
-      container.scrollLeft = scrollLeft - walk;
-    });
+    initCarousel();
   </script>
 
 </body>
