@@ -30,17 +30,30 @@ const container = document.getElementById("posts");
 
 /* LOAD DATA */
 fetch("data.json")
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("data.json not found");
+    }
+    return res.json();
+  })
   .then(data => {
 
+    console.log("Loaded data:", data); // 🔥 debug
+
+    if (!data.posts || data.posts.length === 0) {
+      container.innerHTML = "<p class='text-center text-red-500'>No posts found in data.json</p>";
+      return;
+    }
+
     const doses = data.posts.filter(p => p.type === "dose");
+
+    console.log("Dose posts:", doses); // 🔥 debug
 
     if (doses.length === 0) {
       container.innerHTML = "<p class='text-center text-gray-500'>No Dose posts yet.</p>";
       return;
     }
 
-    // Latest first
     doses.reverse().forEach(post => {
 
       const card = document.createElement("div");
@@ -53,7 +66,7 @@ fetch("data.json")
         <h2 class="text-xl font-semibold">${post.title}</h2>
         <p class="text-gray-500 text-sm mt-1">SCWK Dose</p>
 
-        <div class="mt-4 flex justify-between items-center">
+        <div class="mt-4">
           <span class="text-blue-600 font-medium">View Carousel →</span>
         </div>
       `;
@@ -64,6 +77,15 @@ fetch("data.json")
 
       container.appendChild(card);
     });
+  })
+  .catch(err => {
+    console.error(err);
+    container.innerHTML = `
+      <p class="text-center text-red-500">
+        Error loading data.json ❌ <br>
+        Check file path or JSON format
+      </p>
+    `;
   });
 </script>
 
