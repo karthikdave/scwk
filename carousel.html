@@ -17,7 +17,7 @@
 <!-- PAGE INDICATOR -->
 <div id="pageInfo" class="mt-2 text-sm opacity-80"></div>
 
-<!-- NAV BUTTONS -->
+<!-- NAV -->
 <div class="flex justify-between w-full max-w-md mt-4 px-4">
   <button onclick="prevPage()" class="bg-white text-black px-4 py-2 rounded">Prev</button>
   <button onclick="nextPage()" class="bg-white text-black px-4 py-2 rounded">Next</button>
@@ -27,8 +27,14 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get("id");
+// 🔥 GET ID (MOBILE SAFE)
+let urlParams = new URLSearchParams(window.location.search);
+let id = urlParams.get("id");
+
+if (!id) {
+  const match = window.location.href.match(/id=(\d+)/);
+  if (match) id = match[1];
+}
 
 let pdfDoc = null;
 let pageNum = 1;
@@ -60,7 +66,6 @@ function renderPage(num) {
 
     const viewer = document.getElementById("viewer");
 
-    // Fade out
     viewer.style.opacity = 0;
 
     setTimeout(() => {
@@ -71,10 +76,7 @@ function renderPage(num) {
       const ctx = canvas.getContext("2d");
 
       const viewport = page.getViewport({ scale: 1 });
-
-      const containerWidth = viewer.clientWidth;
-      const scale = containerWidth / viewport.width;
-
+      const scale = viewer.clientWidth / viewport.width;
       const scaledViewport = page.getViewport({ scale });
 
       canvas.width = scaledViewport.width;
@@ -87,10 +89,8 @@ function renderPage(num) {
         viewport: scaledViewport
       });
 
-      // Fade in
       viewer.style.opacity = 1;
 
-      // Page indicator
       document.getElementById("pageInfo").innerText =
         `Page ${pageNum} / ${pdfDoc.numPages}`;
 
@@ -100,44 +100,37 @@ function renderPage(num) {
 }
 
 function nextPage() {
-  if (!pdfDoc) return;
-  if (pageNum >= pdfDoc.numPages) return;
+  if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
   pageNum++;
   renderPage(pageNum);
 }
 
 function prevPage() {
-  if (!pdfDoc) return;
-  if (pageNum <= 1) return;
+  if (!pdfDoc || pageNum <= 1) return;
   pageNum--;
   renderPage(pageNum);
 }
 
-//
 // 🔥 SWIPE SUPPORT
-//
 let startX = 0;
 let endX = 0;
 
 const viewer = document.getElementById("viewer");
 
-// Touch start
-viewer.addEventListener("touchstart", (e) => {
+viewer.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
 });
 
-// Touch end
-viewer.addEventListener("touchend", (e) => {
+viewer.addEventListener("touchend", e => {
   endX = e.changedTouches[0].clientX;
   handleSwipe();
 });
 
-// Mouse drag (desktop testing)
-viewer.addEventListener("mousedown", (e) => {
+viewer.addEventListener("mousedown", e => {
   startX = e.clientX;
 });
 
-viewer.addEventListener("mouseup", (e) => {
+viewer.addEventListener("mouseup", e => {
   endX = e.clientX;
   handleSwipe();
 });
@@ -145,13 +138,10 @@ viewer.addEventListener("mouseup", (e) => {
 function handleSwipe() {
   const diff = startX - endX;
 
-  if (Math.abs(diff) < 50) return; // ignore small swipe
+  if (Math.abs(diff) < 50) return;
 
-  if (diff > 0) {
-    nextPage(); // swipe left
-  } else {
-    prevPage(); // swipe right
-  }
+  if (diff > 0) nextPage();
+  else prevPage();
 }
 </script>
 
