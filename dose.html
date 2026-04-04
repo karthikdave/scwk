@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SCWK Dose</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+<!-- NAV -->
+<nav class="bg-white shadow-sm px-6 py-3 flex justify-between items-center sticky top-0 z-50">
+  <img src="logo.png" class="h-10">
+  <a href="index.html" class="text-blue-600 font-semibold">Home</a>
+</nav>
+
+<!-- HEADER -->
+<section class="text-center mt-10 px-4">
+  <h1 class="text-3xl font-bold">📘 SCWK Dose</h1>
+  <p class="text-gray-600 mt-2">Deep dives. Strong insights.</p>
+</section>
+
+<!-- POSTS -->
+<section class="max-w-3xl mx-auto mt-10 px-4">
+  <div id="posts" class="space-y-6"></div>
+</section>
+
+<script>
+const container = document.getElementById("posts");
+
+/* LOAD DATA */
+fetch("data.json")
+  .then(res => res.json())
+  .then(data => {
+
+    const doses = data.posts.filter(p => p.type === "dose");
+
+    if (doses.length === 0) {
+      container.innerHTML = "<p class='text-center text-gray-500'>No Dose posts yet.</p>";
+      return;
+    }
+
+    // Latest first
+    doses.reverse().forEach(post => {
+
+      const card = document.createElement("div");
+      card.className = `
+        bg-white rounded-2xl shadow-sm p-5 
+        hover:shadow-md transition cursor-pointer
+      `;
+
+      card.innerHTML = `
+        <h2 class="text-xl font-semibold">${post.title}</h2>
+        <p class="text-gray-500 text-sm mt-1">SCWK Dose</p>
+
+        <div class="mt-4 flex justify-between items-center">
+          <span class="text-blue-600 font-medium">View Carousel →</span>
+        </div>
+      `;
+
+      card.onclick = () => {
+        window.location.href = `carousel.html?id=${post.id}`;
+      };
+
+      container.appendChild(card);
+    });
+  });
+</script>
+
+</body>
+</html>
