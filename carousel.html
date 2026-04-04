@@ -1,148 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <title>SCWK Bites Carousel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.147/pdf.min.js"></script>
+  <style>
+    .carousel-container {
+      overflow-x: hidden;
+      scroll-snap-type: x mandatory;
+      display: flex;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
 
-<!-- 🔥 THIS IS VERY IMPORTANT FOR MOBILE -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    .carousel-slide {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+      width: 90vw; /* mobile-first */
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      background: white;
+      position: relative;
+    }
 
-<title>Carousel</title>
+    @media(min-width: 768px) {
+      .carousel-slide {
+        width: 400px; /* slim desktop */
+      }
+    }
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    /* Buttons */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .nav-btn:hover { background: rgba(0,0,0,0.8); }
+    .prev-btn { left: 0.5rem; }
+    .next-btn { right: 0.5rem; }
+  </style>
 </head>
+<body class="bg-gray-50 p-4">
 
-<body class="bg-black text-white flex flex-col items-center justify-center min-h-screen">
+  <h1 class="text-2xl font-bold mb-4">SCWK Bites</h1>
 
-<!-- VIEWER FULL WIDTH -->
-<div id="viewer" class="w-full h-[80vh] flex justify-center items-center transition-opacity duration-300">
-  <p id="status">Loading PDF...</p>
-</div>
+  <div class="relative">
+    <div class="carousel-container flex">
+      <!-- Slides injected via JS -->
+    </div>
 
-<!-- PAGE INFO -->
-<div id="pageInfo" class="mt-2 text-sm opacity-80"></div>
+    <!-- Navigation buttons -->
+    <div class="nav-btn prev-btn">&#10094;</div>
+    <div class="nav-btn next-btn">&#10095;</div>
+  </div>
 
-<!-- NAV -->
-<div class="flex justify-between w-full px-6 mt-4">
-  <button onclick="prevPage()" class="bg-white text-black px-4 py-2 rounded">Prev</button>
-  <button onclick="nextPage()" class="bg-white text-black px-4 py-2 rounded">Next</button>
-</div>
+  <script>
+    const pdfFiles = [
+      '/pdf/bites1.pdf',
+      '/pdf/bites2.pdf',
+      '/pdf/bites3.pdf',
+    ];
 
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const container = document.querySelector('.carousel-container');
 
-// MOBILE SAFE ID
-let params = new URLSearchParams(window.location.search);
-let id = params.get("id");
+    pdfFiles.forEach((file, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      slide.innerHTML = `<canvas id="pdf-canvas-${index}" class="w-full rounded"></canvas>`;
+      container.appendChild(slide);
 
-if (!id) {
-  const match = window.location.href.match(/id=(\d+)/);
-  if (match) id = match[1];
-}
+      // Load PDF page
+      pdfjsLib.getDocument(file).promise.then(pdf => {
+        pdf.getPage(1).then(page => {
+          const canvas = document.getElementById(`pdf-canvas-${index}`);
+          const context = canvas.getContext('2d');
 
-let pdfDoc = null;
-let pageNum = 1;
+          // Scale PDF to fit container width
+          const scale = 1.2;
+          const viewport = page.getViewport({ scale });
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
 
-fetch("data.json")
-.then(res => res.json())
-.then(data => {
-
-  const post = data.posts.find(p => p.id == id);
-
-  if (!post) {
-    document.getElementById("status").innerText = "❌ Post not found";
-    return;
-  }
-
-  pdfjsLib.getDocument(post.file).promise
-  .then(pdf => {
-    pdfDoc = pdf;
-    renderPage(pageNum);
-  })
-  .catch(() => {
-    document.getElementById("status").innerText = "❌ PDF not loading";
-  });
-
-});
-
-function renderPage(num) {
-  pdfDoc.getPage(num).then(page => {
-
-    const viewer = document.getElementById("viewer");
-
-    viewer.style.opacity = 0;
-
-    setTimeout(() => {
-
-      viewer.innerHTML = "";
-
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      const viewport = page.getViewport({ scale: 1 });
-
-      // 🔥 USE FULL SCREEN WIDTH
-      const scale = window.innerWidth / viewport.width;
-
-      const scaledViewport = page.getViewport({ scale });
-
-      canvas.width = scaledViewport.width;
-      canvas.height = scaledViewport.height;
-
-      viewer.appendChild(canvas);
-
-      page.render({
-        canvasContext: ctx,
-        viewport: scaledViewport
+          page.render({ canvasContext: context, viewport });
+        });
       });
+    });
 
-      viewer.style.opacity = 1;
+    // Navigation buttons
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
 
-      document.getElementById("pageInfo").innerText =
-        `Page ${pageNum} / ${pdfDoc.numPages}`;
+    prevBtn.addEventListener('click', () => {
+      const slideWidth = container.querySelector('.carousel-slide').offsetWidth + 16;
+      container.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+    });
 
-    }, 150);
+    nextBtn.addEventListener('click', () => {
+      const slideWidth = container.querySelector('.carousel-slide').offsetWidth + 16;
+      container.scrollBy({ left: slideWidth, behavior: 'smooth' });
+    });
 
-  });
-}
+    // Optional: drag/swipe support
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-function nextPage() {
-  if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
-  pageNum++;
-  renderPage(pageNum);
-}
+    container.addEventListener('mousedown', e => {
+      isDown = true;
+      container.classList.add('cursor-grabbing');
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
 
-function prevPage() {
-  if (!pdfDoc || pageNum <= 1) return;
-  pageNum--;
-  renderPage(pageNum);
-}
+    container.addEventListener('mouseleave', () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    });
 
-// SWIPE
-let startX = 0;
-let endX = 0;
+    container.addEventListener('mouseup', () => {
+      isDown = false;
+      container.classList.remove('cursor-grabbing');
+    });
 
-const viewer = document.getElementById("viewer");
+    container.addEventListener('mousemove', e => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2; // scroll-fast
+      container.scrollLeft = scrollLeft - walk;
+    });
 
-viewer.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
+    // Touch support for mobile swipe
+    let startTouchX = 0;
+    container.addEventListener('touchstart', e => {
+      startTouchX = e.touches[0].clientX;
+    });
 
-viewer.addEventListener("touchend", e => {
-  endX = e.changedTouches[0].clientX;
-  handleSwipe();
-});
-
-function handleSwipe() {
-  const diff = startX - endX;
-
-  if (Math.abs(diff) < 50) return;
-
-  if (diff > 0) nextPage();
-  else prevPage();
-}
-</script>
-
+    container.addEventListener('touchmove', e => {
+      const touchX = e.touches[0].clientX;
+      const walk = startTouchX - touchX;
+      container.scrollLeft += walk;
+      startTouchX = touchX;
+    });
+  </script>
 </body>
 </html>
