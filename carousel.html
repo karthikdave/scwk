@@ -7,8 +7,8 @@
   <meta name="description" content="SCWK carousel viewer for Bites and Lites PDFs." />
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- CDN PDF.js (single file only, no worker file needed) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.147/pdf.min.js"></script>
+  <!-- LOCAL PDF.js ONLY -->
+  <script src="./lib/pdfjs/pdf.min.js"></script>
 
   <style>
     html, body {
@@ -78,7 +78,7 @@
           </button>
 
           <!-- Slides -->
-          <div id="carouselTrack" class="hide-scrollbar flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-1 sm:px-2 py-2">
+          <div id="carouselTrack" class="hide-scrollbar flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-1 sm:px-2 py-2 cursor-grab">
             <!-- Slides injected here -->
           </div>
 
@@ -92,15 +92,17 @@
   </div>
 
   <script>
-    // IMPORTANT: Disable worker to avoid worker path issues on GitHub Pages
-    if (window.pdfjsLib) {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+    // Ensure PDF.js loaded
+    if (!window.pdfjsLib) {
+      document.getElementById('statusMessage').textContent = 'PDF viewer failed to load. Check ./lib/pdfjs/pdf.min.js';
+      document.getElementById('statusMessage').className =
+        'rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-sm';
+      throw new Error('pdfjsLib not found');
     }
 
     const params = new URLSearchParams(window.location.search);
     const contentId = (params.get('id') || 'bites').toLowerCase();
 
-    // FINAL SCWK brand mapping
     const contentMap = {
       bites: {
         title: 'SCWK Bites',
@@ -159,11 +161,6 @@
     }
 
     async function renderPdf() {
-      if (!window.pdfjsLib) {
-        setStatus('PDF.js failed to load from CDN.', true);
-        return;
-      }
-
       try {
         setStatus(`Loading ${selected.title} PDF...`);
 
@@ -211,7 +208,7 @@
         enableDragScroll();
       } catch (error) {
         console.error('PDF render error:', error);
-        setStatus(`Could not load ${selected.pdf}. Check file name/path in /pdf folder.`, true);
+        setStatus(`Could not load ${selected.pdf}. Check /pdf folder and file names.`, true);
       }
     }
 
