@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>SCWK Carousel</title>
 
-  <!-- 🔥 THIS WAS MISSING -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -49,17 +48,36 @@
       }
     }
 
+    /* 🔥 NEW: Soft arrows */
     .carousel-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.2);   /* lighter */
       color: white;
-      font-size: 22px;
-      padding: 6px 12px;
+      font-size: 18px;
+      padding: 4px 10px;
       border-radius: 6px;
       cursor: pointer;
       z-index: 10;
+
+      opacity: 0.3;                 /* faded by default */
+      transition: all 0.3s ease;
+    }
+
+    /* 💻 Desktop hover effect */
+    .carousel-container:hover .carousel-btn {
+      opacity: 0.8;
+      background: rgba(0,0,0,0.5);
+    }
+
+    /* 📱 Mobile: keep very subtle */
+    @media (max-width: 768px) {
+      .carousel-btn {
+        opacity: 0.2;
+        font-size: 16px;
+        padding: 3px 8px;
+      }
     }
 
     .dot.active {
