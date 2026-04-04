@@ -1,33 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
   <title>SCWK Bites Carousel</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.147/pdf.min.js"></script>
+
   <style>
-    .carousel-container {
+    body {
       overflow-x: hidden;
+    }
+
+    .carousel-container {
+      overflow-x: auto;
+      overflow-y: hidden;
       scroll-snap-type: x mandatory;
       display: flex;
       gap: 1rem;
       scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.25rem;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+      display: none;
     }
 
     .carousel-slide {
       scroll-snap-align: start;
       flex: 0 0 auto;
       width: 90vw; /* mobile-first */
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      max-width: 90vw;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       background: white;
       position: relative;
+      overflow: hidden;
     }
 
-    @media(min-width: 768px) {
+    @media (min-width: 768px) {
       .carousel-slide {
         width: 400px; /* slim desktop */
+        max-width: 400px;
       }
+    }
+
+    .pdf-wrapper {
+      position: relative;
+      width: 100%;
+      background: white;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pdf-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 0.75rem;
+    }
+
+    .loading-text,
+    .error-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .loading-text {
+      color: #6b7280;
+      background: #ffffff;
+    }
+
+    .error-text {
+      color: #b91c1c;
+      background: #fef2f2;
+      display: none;
+      line-height: 1.5;
     }
 
     /* Buttons */
@@ -35,86 +97,184 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.55);
       color: white;
-      padding: 0.5rem 0.75rem;
+      width: 42px;
+      height: 42px;
       border-radius: 9999px;
       cursor: pointer;
       z-index: 10;
       user-select: none;
-      transition: background 0.2s;
+      transition: background 0.2s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .nav-btn:hover { background: rgba(0,0,0,0.8); }
-    .prev-btn { left: 0.5rem; }
-    .next-btn { right: 0.5rem; }
+
+    .nav-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    .prev-btn {
+      left: 0.5rem;
+    }
+
+    .next-btn {
+      right: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .prev-btn {
+        left: -3.25rem;
+      }
+
+      .next-btn {
+        right: -3.25rem;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-50 p-4">
 
   <h1 class="text-2xl font-bold mb-4">SCWK Bites</h1>
 
-  <div class="relative">
-    <div class="carousel-container flex">
+  <div class="relative w-full md:w-fit">
+    <div class="carousel-container">
       <!-- Slides injected via JS -->
     </div>
 
     <!-- Navigation buttons -->
-    <div class="nav-btn prev-btn">&#10094;</div>
-    <div class="nav-btn next-btn">&#10095;</div>
+    <div class="nav-btn prev-btn" aria-label="Previous slide">&#10094;</div>
+    <div class="nav-btn next-btn" aria-label="Next slide">&#10095;</div>
   </div>
 
   <script>
-    const pdfFiles = [
-      '/pdf/bites1.pdf',
-      '/pdf/bites2.pdf',
-      '/pdf/bites3.pdf',
-    ];
+    // IMPORTANT: One PDF file with multiple pages
+    // GitHub Pages under /scwk => use RELATIVE path
+    const pdfFile = './pdf/bites.pdf';
+
+    // Set PDF.js worker explicitly
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.147/pdf.worker.min.js';
 
     const container = document.querySelector('.carousel-container');
 
-    pdfFiles.forEach((file, index) => {
+    async function renderPdfPage(pdf, pageNumber) {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
-      slide.innerHTML = `<canvas id="pdf-canvas-${index}" class="w-full rounded"></canvas>`;
+
+      slide.innerHTML = `
+        <div class="pdf-wrapper">
+          <canvas id="pdf-canvas-${pageNumber}" class="pdf-canvas"></canvas>
+          <div class="loading-text" id="loading-${pageNumber}">Loading slide...</div>
+          <div class="error-text" id="error-${pageNumber}"></div>
+        </div>
+      `;
+
       container.appendChild(slide);
 
-      // Load PDF page
-      pdfjsLib.getDocument(file).promise.then(pdf => {
-        pdf.getPage(1).then(page => {
-          const canvas = document.getElementById(`pdf-canvas-${index}`);
-          const context = canvas.getContext('2d');
+      const canvas = document.getElementById(`pdf-canvas-${pageNumber}`);
+      const loadingEl = document.getElementById(`loading-${pageNumber}`);
+      const errorEl = document.getElementById(`error-${pageNumber}`);
 
-          // Scale PDF to fit container width
-          const scale = 1.2;
-          const viewport = page.getViewport({ scale });
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+      try {
+        const page = await pdf.getPage(pageNumber);
+        const context = canvas.getContext('2d');
 
-          page.render({ canvasContext: context, viewport });
-        });
-      });
-    });
+        // Fit PDF page to slide width
+        const slideWidth = slide.clientWidth || window.innerWidth * 0.9;
+        const unscaledViewport = page.getViewport({ scale: 1 });
+        const scale = slideWidth / unscaledViewport.width;
+        const viewport = page.getViewport({ scale });
+
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        await page.render({
+          canvasContext: context,
+          viewport
+        }).promise;
+
+        loadingEl.style.display = 'none';
+      } catch (error) {
+        console.error(`Failed to render page ${pageNumber}`, error);
+        loadingEl.style.display = 'none';
+        errorEl.style.display = 'flex';
+        errorEl.innerHTML = `
+          <div>
+            <strong>Failed to render page ${pageNumber}</strong><br><br>
+            <span style="font-size:12px;">${error.message || error}</span>
+          </div>
+        `;
+      }
+    }
+
+    async function initCarousel() {
+      container.innerHTML = '';
+
+      try {
+        const pdf = await pdfjsLib.getDocument(pdfFile).promise;
+
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          await renderPdfPage(pdf, pageNum);
+        }
+      } catch (error) {
+        console.error(`Failed to load PDF: ${pdfFile}`, error);
+
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        slide.innerHTML = `
+          <div class="pdf-wrapper">
+            <div class="error-text" style="display:flex;">
+              <div>
+                <strong>Failed to load PDF</strong><br><br>
+                ${pdfFile}<br><br>
+                <span style="font-size:12px;">${error.message || error}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(slide);
+      }
+    }
+
+    initCarousel();
 
     // Navigation buttons
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
 
+    function getSlideWidth() {
+      const firstSlide = container.querySelector('.carousel-slide');
+      if (!firstSlide) return 0;
+      return firstSlide.offsetWidth + 16; // 16px gap = 1rem
+    }
+
     prevBtn.addEventListener('click', () => {
-      const slideWidth = container.querySelector('.carousel-slide').offsetWidth + 16;
+      const slideWidth = getSlideWidth();
       container.scrollBy({ left: -slideWidth, behavior: 'smooth' });
     });
 
     nextBtn.addEventListener('click', () => {
-      const slideWidth = container.querySelector('.carousel-slide').offsetWidth + 16;
+      const slideWidth = getSlideWidth();
       container.scrollBy({ left: slideWidth, behavior: 'smooth' });
     });
 
-    // Optional: drag/swipe support
+    // Desktop drag support
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    container.addEventListener('mousedown', e => {
+    container.addEventListener('mousedown', (e) => {
       isDown = true;
       container.classList.add('cursor-grabbing');
       startX = e.pageX - container.offsetLeft;
@@ -131,21 +291,22 @@
       container.classList.remove('cursor-grabbing');
     });
 
-    container.addEventListener('mousemove', e => {
-      if(!isDown) return;
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2; // scroll-fast
+      const walk = (x - startX) * 1.5;
       container.scrollLeft = scrollLeft - walk;
     });
 
-    // Touch support for mobile swipe
+    // Mobile touch swipe support
     let startTouchX = 0;
-    container.addEventListener('touchstart', e => {
+
+    container.addEventListener('touchstart', (e) => {
       startTouchX = e.touches[0].clientX;
     });
 
-    container.addEventListener('touchmove', e => {
+    container.addEventListener('touchmove', (e) => {
       const touchX = e.touches[0].clientX;
       const walk = startTouchX - touchX;
       container.scrollLeft += walk;
