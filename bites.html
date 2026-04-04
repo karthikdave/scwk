@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bites</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<meta charset="UTF-8">
+<title>Bites</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body class="bg-gray-100 font-sans">
 
-<nav class="bg-white shadow px-6 py-3 flex justify-between">
+<nav class="bg-white shadow px-6 py-3 flex justify-between items-center">
   <img src="logo.png" class="h-10">
   <a href="index.html" class="text-blue-600">Home</a>
 </nav>
 
-<section class="text-center mt-10">
+<section class="text-center mt-8">
   <h1 class="text-3xl font-bold">⚡ Bites</h1>
 </section>
 
-<div id="posts" class="max-w-3xl mx-auto mt-10 space-y-6 px-4"></div>
+<div id="posts" class="max-w-xl mx-auto mt-8 space-y-6 px-4"></div>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -36,19 +36,20 @@ fetch("data.json")
     .forEach(post => {
 
       const card = document.createElement("div");
-      card.className = "bg-white rounded-xl shadow overflow-hidden cursor-pointer hover:shadow-lg";
+      card.className = "bg-white rounded-xl shadow overflow-hidden cursor-pointer hover:shadow-lg transition";
 
       const preview = document.createElement("div");
-      preview.className = "h-64 flex justify-center items-center bg-gray-200";
+      preview.className = "w-full h-64 bg-gray-200 flex items-center justify-center overflow-hidden";
 
       const canvas = document.createElement("canvas");
+      canvas.className = "max-w-full max-h-full object-contain";
       preview.appendChild(canvas);
 
       const content = document.createElement("div");
       content.className = "p-4";
       content.innerHTML = `
         <h2 class="font-semibold text-lg">${post.title}</h2>
-        <div class="text-blue-600 mt-2">View Carousel →</div>
+        <div class="text-blue-600 mt-2 text-sm">View Carousel →</div>
       `;
 
       card.appendChild(preview);
@@ -63,15 +64,20 @@ fetch("data.json")
       pdfjsLib.getDocument(post.file).promise
       .then(pdf => pdf.getPage(1))
       .then(page => {
+
         const viewport = page.getViewport({ scale: 1 });
-        const scale = 300 / viewport.width;
-        const vp = page.getViewport({ scale });
+        const scale = preview.clientWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale });
 
         const ctx = canvas.getContext("2d");
-        canvas.width = vp.width;
-        canvas.height = vp.height;
+        canvas.width = scaledViewport.width;
+        canvas.height = scaledViewport.height;
 
-        page.render({ canvasContext: ctx, viewport: vp });
+        page.render({
+          canvasContext: ctx,
+          viewport: scaledViewport
+        });
+
       });
 
     });
