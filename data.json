@@ -1,16 +1,16 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "SCWK Dose #1",
-      "file": "dose.pdf",
-      "type": "dose"
+      "id": "1",
+      "type": "bites",
+      "title": "SCWK Bite #1 - Agile Basics",
+      "file": "pdf/bites.pdf"
     },
     {
-      "id": 2,
-      "title": "SCWK Bites #1",
-      "file": "bites.pdf",
-      "type": "bites"
+      "id": "2",
+      "type": "dose",
+      "title": "SCWK Dose #1 - Scrum Deep Dive",
+      "file": "pdf/dose.pdf"
     }
   ]
 }
