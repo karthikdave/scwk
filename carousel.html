@@ -6,6 +6,10 @@
   <title>SCWK Carousel</title>
   <meta name="description" content="SCWK carousel viewer for Bites and Lites PDFs." />
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- CDN PDF.js (single file only, no worker file needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.147/pdf.min.js"></script>
+
   <style>
     html, body {
       margin: 0;
@@ -87,11 +91,8 @@
     </main>
   </div>
 
-  <!-- Local PDF.js -->
-  <script src="./lib/pdfjs/pdf.min.js"></script>
-
   <script>
-    // IMPORTANT: Use local worker-less mode for GitHub Pages stability
+    // IMPORTANT: Disable worker to avoid worker path issues on GitHub Pages
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = '';
     }
@@ -159,7 +160,7 @@
 
     async function renderPdf() {
       if (!window.pdfjsLib) {
-        setStatus('PDF viewer failed to load. Check ./lib/pdfjs/pdf.min.js', true);
+        setStatus('PDF.js failed to load from CDN.', true);
         return;
       }
 
@@ -183,7 +184,6 @@
           const canvas = document.getElementById(`canvas-${pageNum}`);
           const context = canvas.getContext('2d');
 
-          // Better mobile + desktop fit
           const baseViewport = page.getViewport({ scale: 1 });
 
           let targetWidth;
@@ -263,7 +263,6 @@
         carouselTrack.scrollLeft = scrollLeft - walk;
       });
 
-      // Optional: prevent accidental click after drag
       carouselTrack.addEventListener('click', (e) => {
         if (moved) {
           e.preventDefault();
