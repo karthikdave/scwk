@@ -1,522 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK Carousel | Scrum & Coffee with Karthik</title>
-
-  <style>
-    :root {
-      --bg: #0b1120;
-      --bg-soft: #111827;
-      --card: rgba(15, 23, 42, 0.88);
-      --card-border: rgba(148, 163, 184, 0.16);
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --primary: #2563eb;
-      --primary-2: #1d4ed8;
-      --white: #ffffff;
-      --shadow: 0 20px 50px rgba(2, 8, 23, 0.45);
-      --radius-xl: 22px;
-      --radius-lg: 16px;
-      --max-width: 1240px;
-      --nav-height: 84px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(29, 78, 216, 0.12), transparent 28%),
-        linear-gradient(180deg, #0b1120 0%, #0f172a 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
-      border: none;
-      background: none;
-      cursor: pointer;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
-
-    .container {
-      width: min(var(--max-width), calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    /* NAVBAR */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(16px);
-      background: rgba(11, 17, 32, 0.8);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-    }
-
-    .nav-shell {
-      height: var(--nav-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .brand-logo {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 8px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      flex-shrink: 0;
-    }
-
-    .brand-copy {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1.1;
-      letter-spacing: 0.01em;
-    }
-
-    .brand-subtitle {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-link {
-      padding: 10px 16px;
-      border-radius: 999px;
-      color: #cbd5e1;
-      font-weight: 600;
-      transition: 0.25s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--white);
-      background: rgba(37, 99, 235, 0.16);
-    }
-
-    .mobile-toggle {
-      display: none;
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--white);
-      font-size: 1.35rem;
-    }
-
-    .mobile-menu {
-      display: none;
-      padding: 0 0 16px;
-    }
-
-    .mobile-menu-inner {
-      display: grid;
-      gap: 10px;
-      padding-top: 10px;
-    }
-
-    .mobile-link {
-      display: block;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.04);
-      color: #dbeafe;
-      font-weight: 600;
-    }
-
-    /* PAGE */
-    .page {
-      flex: 1;
-      padding: 36px 0 56px;
-    }
-
-    .hero {
-      margin-bottom: 28px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.12);
-      border: 1px solid rgba(37, 99, 235, 0.2);
-      color: #bfdbfe;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 16px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 4vw, 3.3rem);
-      line-height: 1.08;
-      font-weight: 800;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-
-    .viewer-shell {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .viewer-topbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 18px 20px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .viewer-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .viewer-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-    }
-
-    .viewer-subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .viewer-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.12);
-      color: #dbeafe;
-      font-weight: 600;
-      transition: 0.25s ease;
-    }
-
-    .viewer-link:hover {
-      background: rgba(37, 99, 235, 0.18);
-    }
-
-    .viewer-stage {
-      padding: 24px;
-    }
-
-    .canvas-wrap {
-      min-height: 560px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius-lg);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
-      border: 1px solid rgba(148, 163, 184, 0.1);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .pdf-canvas {
-      display: none;
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-      border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 10px 35px rgba(2, 8, 23, 0.28);
-    }
-
-    .status {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .status.hidden {
-      display: none;
-    }
-
-    .viewer-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 18px 20px 22px;
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .control-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: 0.25s ease;
-      border: 1px solid transparent;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: var(--white);
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.28);
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.04);
-      color: #dbeafe;
-      border-color: rgba(148, 163, 184, 0.14);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none;
-    }
-
-    .page-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      color: #dbeafe;
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      font-weight: 700;
-      min-width: 120px;
-    }
-
-    .footer {
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
-      background: rgba(2, 6, 23, 0.45);
-      margin-top: auto;
-    }
-
-    .footer-inner {
-      padding: 22px 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .footer-brand {
-      color: #cbd5e1;
-      font-weight: 600;
-    }
-
-    @media (max-width: 900px) {
-      .desktop-nav {
-        display: none;
-      }
-
-      .mobile-toggle {
-        display: inline-flex;
-      }
-
-      .mobile-menu.show {
-        display: block;
-      }
-
-      .brand-logo {
-        width: 56px;
-        height: 56px;
-      }
-
-      .viewer-stage {
-        padding: 16px;
-      }
-
-      .canvas-wrap {
-        min-height: 360px;
-      }
-
-      .viewer-controls {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .control-group {
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .container {
-        width: min(100%, calc(100% - 20px));
-      }
-
-      .nav-shell {
-        height: 78px;
-      }
-
-      .brand-title {
-        font-size: 0.95rem;
-      }
-
-      .brand-subtitle {
-        font-size: 0.72rem;
-      }
-
-      .hero h1 {
-        font-size: 1.7rem;
-      }
-
-      .hero p {
-        font-size: 0.95rem;
-      }
-
-      .canvas-wrap {
-        min-height: 260px;
-      }
-
-      .viewer-topbar,
-      .viewer-controls {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>SCWK Carousel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#f5f7fb;
+text-align:center;
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 40px;
+background:white;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.brand{
+font-weight:bold;
+font-size:20px;
+color:#0b3d91;
+}
+
+.navlinks a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+font-weight:500;
+}
+
+.viewer{
+max-width:900px;
+margin:40px auto;
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+canvas{
+width:100%;
+height:auto;
+}
+
+.controls{
+margin-top:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+background:#0b3d91;
+color:white;
+border-radius:4px;
+cursor:pointer;
+}
+
+button:disabled{
+background:#999;
+cursor:not-allowed;
+}
+
+</style>
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="container">
-      <div class="nav-shell">
-        <a class="brand" href="index.html" aria-label="SCWK Home">
-          <img src="logo.png" alt="SCWK Logo" class="brand-logo" />
-          <div class="brand-copy">
-            <span class="brand-title">Scrum & Coffee with Karthik</span>
-            <span class="brand-subtitle">Insights, stories & career-ready learning</span>
-          </div>
-        </a>
 
-        <nav class="desktop-nav" aria-label="Primary Navigation">
-          <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="about.html">About</a>
-        </nav>
+<div class="navbar">
+<div class="brand">SCWK</div>
+<div class="navlinks">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+</div>
+</div>
 
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
-          ☰
-        </button>
-      </div>
+<div class="viewer">
 
-      <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-inner">
-          <a class="mobile-link" href="index.html">Home</a>
-          <a class="mobile-link" href="about.html">About</a>
-        </div>
-      </div>
-    </div>
-  </header>
+<h2 id="title">Loading...</h2>
 
-  <main class="page">
-    <div class="container">
-      <section class="hero">
-        <div class="eyebrow" id="eyebrow">SCWK Carousel</div>
-        <h1 id="heroTitle">Loading carousel...</h1>
-        <p id="heroText">
-          A focused, page-by-page reading experience built for SC
+<canvas id="pdfCanvas"></canvas>
+
+<div class="controls">
+<button id="prev">Prev</button>
+<span id="pageInfo">Page 1</span>
+<button id="next">Next</button>
+</div>
+
+</div>
+
+
+<script src="lib/pdfjs/pdf.min.js"></script>
+
+<script>
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "lib/pdfjs/pdf.worker.min.js";
+
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+let pdfPath="";
+let title="";
+
+if(id==="bites"){
+pdfPath="pdf/bites.pdf";
+title="SCWK Bites";
+}
+
+if(id==="lites"){
+pdfPath="pdf/lites.pdf";
+title="SCWK Lites";
+}
+
+document.getElementById("title").innerText = title;
+
+let pdfDoc=null;
+let pageNum=1;
+let totalPages=0;
+
+const canvas=document.getElementById("pdfCanvas");
+const ctx=canvas.getContext("2d");
+
+function renderPage(num){
+
+pdfDoc.getPage(num).then(function(page){
+
+const viewport=page.getViewport({scale:1.5});
+canvas.height=viewport.height;
+canvas.width=viewport.width;
+
+const renderContext={
+canvasContext:ctx,
+viewport:viewport
+};
+
+page.render(renderContext);
+
+document.getElementById("pageInfo").innerText =
+"Page "+num+" / "+totalPages;
+
+document.getElementById("prev").disabled = (num<=1);
+document.getElementById("next").disabled = (num>=totalPages);
+
+});
+
+}
+
+pdfjsLib.getDocument(pdfPath).promise.then(function(pdf){
+
+pdfDoc=pdf;
+totalPages=pdf.numPages;
+
+renderPage(pageNum);
+
+});
+
+document.getElementById("prev").addEventListener("click",function(){
+
+if(pageNum<=1) return;
+
+pageNum--;
+renderPage(pageNum);
+
+});
+
+document.getElementById("next").addEventListener("click",function(){
+
+if(pageNum>=totalPages) return;
+
+pageNum++;
+renderPage(pageNum);
+
+});
+
+</script>
+
+</body>
+</html>
