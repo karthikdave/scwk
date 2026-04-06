@@ -3,51 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK Viewer</title>
-  <meta
-    name="description"
-    content="SCWK PDF viewer for SCWK Bites and SCWK Lites."
-  />
+  <title>SCWK Carousel | Scrum & Coffee with Karthik</title>
+  <meta name="description" content="SCWK Bites and SCWK Lites PDF viewer." />
   <style>
     :root {
-      --bg: #07111f;
-      --bg-soft: #0d1b2a;
-      --surface: rgba(255, 255, 255, 0.08);
-      --surface-strong: rgba(255, 255, 255, 0.12);
-      --line: rgba(255, 255, 255, 0.12);
-      --text: #e8f1ff;
-      --text-soft: #b7c8e6;
-      --primary: #4ea1ff;
-      --primary-strong: #2f7fe0;
-      --accent: #7cc5ff;
-      --danger: #ff9b9b;
-      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
-      --radius: 18px;
-      --max-width: 1180px;
-      --nav-height: 84px;
-      --font-stack: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #0b1220;
+      --bg-soft: #111a2e;
+      --card: rgba(17, 26, 46, 0.82);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #e5ecf6;
+      --muted: #9fb0ca;
+      --brand: #3b82f6;
+      --brand-2: #60a5fa;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --maxw: 1200px;
+      --nav-h: 86px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0;
-      font-family: var(--font-stack);
+      font-family: var(--font);
       background:
-        radial-gradient(circle at top right, rgba(78, 161, 255, 0.16), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(124, 197, 255, 0.08), transparent 28%),
-        linear-gradient(180deg, #06101d 0%, #0a1728 100%);
+        radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 28%),
+        radial-gradient(circle at 15% 15%, rgba(96, 165, 250, 0.12), transparent 24%),
+        linear-gradient(180deg, #08101d 0%, #0b1220 45%, #0f172a 100%);
       color: var(--text);
-      line-height: 1.6;
       min-height: 100vh;
+      line-height: 1.6;
     }
 
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
     .container {
-      width: min(var(--max-width), calc(100% - 32px));
+      width: min(var(--maxw), calc(100% - 32px));
       margin: 0 auto;
     }
 
@@ -57,16 +66,16 @@
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(14px);
-      background: rgba(7, 17, 31, 0.86);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 16, 29, 0.82);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .nav {
-      min-height: var(--nav-height);
+      min-height: var(--nav-h);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 16px;
       padding: 14px 0;
     }
 
@@ -75,45 +84,46 @@
       align-items: center;
       gap: 14px;
       min-width: 0;
-      flex-shrink: 0;
     }
 
     .brand-logo-wrap {
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
       overflow: hidden;
       flex-shrink: 0;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
     }
 
-    .brand-logo-wrap img {
-      width: 100%;
-      height: 100%;
+    .brand-logo {
+      width: 78%;
+      height: 78%;
       object-fit: contain;
-      object-position: center;
     }
 
-    .brand-text { min-width: 0; }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-kicker {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brand-2);
+    }
 
     .brand-title {
-      margin: 0;
       font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      line-height: 1.1;
-    }
-
-    .brand-subtitle {
-      margin: 4px 0 0;
-      font-size: 0.82rem;
-      color: var(--text-soft);
+      font-weight: 700;
+      color: var(--white);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -123,404 +133,246 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
-    .nav-link {
+    .nav-links a {
       padding: 10px 14px;
-      border-radius: 12px;
-      color: var(--text-soft);
+      border-radius: 999px;
+      color: var(--muted);
       font-size: 0.95rem;
       font-weight: 600;
-      transition: 0.25s ease;
+      transition: all 0.25s ease;
     }
 
-    .nav-link:hover,
-    .nav-link.active {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: rgba(59, 130, 246, 0.14);
     }
 
-    .mobile-toggle {
+    .nav-toggle {
       display: none;
-      width: 48px;
-      height: 48px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+      width: 46px;
+      height: 46px;
       border-radius: 14px;
-      color: #fff;
       cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      flex-shrink: 0;
+      font-size: 1.3rem;
+      line-height: 1;
     }
-
-    .mobile-toggle span,
-    .mobile-toggle::before,
-    .mobile-toggle::after {
-      content: "";
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: #fff;
-      border-radius: 999px;
-      transition: 0.25s ease;
-      position: relative;
-    }
-
-    .mobile-toggle::before { transform: translateY(-6px); }
-    .mobile-toggle::after { transform: translateY(6px); }
-
-    .mobile-toggle.is-open span { background: transparent; }
-    .mobile-toggle.is-open::before { transform: rotate(45deg); }
-    .mobile-toggle.is-open::after { transform: rotate(-45deg); }
 
     .mobile-menu {
       display: none;
-      padding: 0 0 16px;
+      padding-bottom: 16px;
     }
 
-    .mobile-menu-panel {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 18px;
-      padding: 10px;
+    .mobile-menu.open {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .mobile-menu a {
-      display: block;
       padding: 12px 14px;
-      border-radius: 12px;
-      color: var(--text-soft);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
       font-weight: 600;
-      font-size: 0.95rem;
     }
 
-    .mobile-menu a:hover,
     .mobile-menu a.active {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+      color: var(--white);
+      background: rgba(59, 130, 246, 0.14);
     }
 
-    .mobile-menu.open { display: block; }
-
-    /* PAGE */
-    .page {
-      padding: 40px 0 56px;
+    /* MAIN */
+    main {
+      padding: 42px 0 34px;
     }
 
-    .viewer-shell {
-      display: grid;
-      gap: 22px;
-    }
-
-    .hero-card,
-    .viewer-card,
-    .controls-card,
-    .status-card {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-card {
-      padding: 28px;
+    .hero {
+      margin-bottom: 22px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.16);
+      color: var(--brand-2);
+      font-size: 0.76rem;
       font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
     }
 
-    .hero-card h1 {
-      margin: 0;
-      font-size: clamp(1.9rem, 4vw, 3.2rem);
+    .hero h1 {
+      font-size: clamp(2rem, 3.5vw, 3.3rem);
       line-height: 1.1;
-      letter-spacing: -0.03em;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 10px;
     }
 
-    .hero-card p {
-      margin: 14px 0 0;
-      color: var(--text-soft);
-      max-width: 70ch;
+    .hero p {
+      color: var(--muted);
       font-size: 1rem;
+      max-width: 760px;
     }
 
-    .viewer-card {
-      padding: 18px;
+    .pdf-shell {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .canvas-stage {
-      width: 100%;
-      min-height: 540px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: auto;
-      padding: 14px;
-    }
-
-    .canvas-wrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    #pdfCanvas {
-      display: none;
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      border-radius: 14px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
-      background: #ffffff;
-    }
-
-    .placeholder {
-      text-align: center;
-      color: var(--text-soft);
-      padding: 28px;
-      max-width: 620px;
-    }
-
-    .placeholder strong {
-      display: block;
-      color: #fff;
-      font-size: 1rem;
-      margin-bottom: 6px;
-    }
-
-    .status-card {
-      padding: 18px 20px;
-    }
-
-    .status-text {
-      margin: 0;
-      color: var(--text-soft);
-      font-size: 0.96rem;
-    }
-
-    .status-text.error {
-      color: var(--danger);
-      font-weight: 600;
-    }
-
-    .controls-card {
-      padding: 18px 20px;
+    .pdf-toolbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .controls-left,
-    .controls-right {
-      display: flex;
-      align-items: center;
       gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
       flex-wrap: wrap;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 50px;
-      padding: 0 18px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: 0.25s ease;
-      cursor: pointer;
-      background: transparent;
-      color: #fff;
+    .pdf-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      box-shadow: 0 12px 24px rgba(47, 127, 224, 0.28);
+    .pdf-meta strong {
+      color: var(--white);
+      font-size: 1rem;
     }
 
-    .btn-secondary {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.12);
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .page-indicator {
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
+    .pdf-meta span {
+      color: var(--muted);
+      font-size: 0.92rem;
     }
 
     .open-link {
-      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: var(--white);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
     .open-link:hover {
-      color: #fff;
+      transform: translateY(-1px);
+      opacity: 0.95;
     }
 
-    /* FOOTER */
-    .site-footer {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      margin-top: 18px;
-      padding: 24px 0 40px;
+    .pdf-frame-wrap {
+      width: 100%;
+      background: #ffffff;
+      min-height: 78vh;
     }
 
-    .footer-row {
+    .pdf-frame {
+      width: 100%;
+      height: 78vh;
+      border: 0;
+      display: block;
+      background: #ffffff;
+    }
+
+    .error-box {
+      display: none;
+      padding: 20px;
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.28);
+      border-top: 1px solid rgba(248, 113, 113, 0.2);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      padding: 28px 0 44px;
+    }
+
+    .footer-inner {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 18px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-copy {
-      color: var(--text-soft);
-      font-size: 0.94rem;
-    }
-
-    .footer-links {
-      display: flex;
       gap: 12px;
       flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
-    .footer-links a {
-      color: var(--text-soft);
-      font-size: 0.92rem;
-      font-weight: 600;
-    }
-
-    .footer-links a:hover { color: #fff; }
-
-    @media (max-width: 980px) {
-      .nav-links { display: none; }
-      .mobile-toggle { display: inline-flex; }
-
-      .brand-logo-wrap {
-        width: 58px;
-        height: 58px;
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
       }
 
-      .brand-subtitle {
-        max-width: 180px;
+      .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .canvas-stage {
-        min-height: 420px;
+      .brand-title {
+        max-width: 170px;
+      }
+
+      .pdf-frame-wrap,
+      .pdf-frame {
+        min-height: 72vh;
+        height: 72vh;
       }
     }
 
     @media (max-width: 640px) {
-      :root { --nav-height: 76px; }
-
       .container {
-        width: min(var(--max-width), calc(100% - 22px));
+        width: min(var(--maxw), calc(100% - 22px));
       }
 
-      .nav {
-        gap: 12px;
-      }
-
-      .brand {
-        gap: 10px;
+      main {
+        padding-top: 28px;
       }
 
       .brand-logo-wrap {
         width: 52px;
         height: 52px;
-        border-radius: 14px;
       }
 
       .brand-title {
-        font-size: 0.95rem;
-      }
-
-      .brand-subtitle {
-        font-size: 0.76rem;
         max-width: 140px;
       }
 
-      .page {
-        padding-top: 28px;
+      .hero h1 {
+        font-size: 1.8rem;
       }
 
-      .hero-card,
-      .viewer-card,
-      .controls-card,
-      .status-card {
-        border-radius: 20px;
+      .pdf-toolbar {
+        align-items: flex-start;
       }
 
-      .hero-card,
-      .status-card,
-      .controls-card {
-        padding: 18px;
+      .pdf-frame-wrap,
+      .pdf-frame {
+        min-height: 68vh;
+        height: 68vh;
       }
 
-      .viewer-card {
-        padding: 12px;
-      }
-
-      .canvas-stage {
-        min-height: 320px;
-        border-radius: 16px;
-        padding: 10px;
-      }
-
-      .controls-card {
+      .footer-inner {
         flex-direction: column;
-        align-items: stretch;
-      }
-
-      .controls-left,
-      .controls-right {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .btn {
-        flex: 1 1 auto;
-      }
-
-      .page-indicator {
-        width: 100%;
-        text-align: center;
       }
     }
   </style>
@@ -528,308 +380,131 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <nav class="nav" aria-label="Primary navigation">
-        <a class="brand" href="index.html" aria-label="SCWK Home">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="index.html">
           <div class="brand-logo-wrap">
-            <img src="logo.png" alt="SCWK logo" />
+            <img src="logo.png" alt="SCWK logo" class="brand-logo" />
           </div>
           <div class="brand-text">
-            <p class="brand-title">SCWK</p>
-            <p class="brand-subtitle">Scrum &amp; Coffee with Karthik</p>
+            <span class="brand-kicker">SCWK</span>
+            <span class="brand-title">Scrum & Coffee with Karthik</span>
           </div>
         </a>
 
         <div class="nav-links">
-          <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="about.html">About</a>
-          <a class="nav-link" id="navBites" href="carousel.html?id=bites">SCWK Bites</a>
-          <a class="nav-link" id="navLites" href="carousel.html?id=lites">SCWK Lites</a>
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="carousel.html?id=bites" id="navBites">Bites</a>
+          <a href="carousel.html?id=lites" id="navLites">Lites</a>
         </div>
 
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
-          <span></span>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+          ☰
         </button>
       </nav>
 
       <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-panel">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a id="mobileBites" href="carousel.html?id=bites">SCWK Bites</a>
-          <a id="mobileLites" href="carousel.html?id=lites">SCWK Lites</a>
-        </div>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="carousel.html?id=bites" id="mobBites">Bites</a>
+        <a href="carousel.html?id=lites" id="mobLites">Lites</a>
       </div>
     </div>
   </header>
 
-  <main class="page">
+  <main>
     <div class="container">
-      <div class="viewer-shell">
-        <section class="hero-card">
-          <div class="eyebrow" id="viewerEyebrow">SCWK Viewer</div>
-          <h1 id="viewerTitle">Loading document...</h1>
-          <p id="viewerSubtitle">Preparing your SCWK PDF experience.</p>
-        </section>
+      <section class="hero">
+        <div class="eyebrow">SCWK Library</div>
+        <h1 id="pageTitle">SCWK PDF Viewer</h1>
+        <p id="pageSubtitle">Loading the selected SCWK carousel PDF...</p>
+      </section>
 
-        <section class="status-card">
-          <p class="status-text" id="statusText">Loading PDF viewer…</p>
-        </section>
-
-        <section class="viewer-card">
-          <div class="canvas-stage" id="canvasStage">
-            <div class="placeholder" id="placeholder">
-              <strong>Preparing your document…</strong>
-              <span>Please wait while the PDF loads.</span>
-            </div>
-            <div class="canvas-wrap">
-              <canvas id="pdfCanvas"></canvas>
-            </div>
+      <section class="pdf-shell">
+        <div class="pdf-toolbar">
+          <div class="pdf-meta">
+            <strong id="docName">Preparing document...</strong>
+            <span id="docHint">If the embedded preview is blocked on your browser, open it in a new tab.</span>
           </div>
-        </section>
+          <a class="open-link" id="openPdfLink" href="#" target="_blank" rel="noopener noreferrer">Open PDF</a>
+        </div>
 
-        <section class="controls-card">
-          <div class="controls-left">
-            <button class="btn btn-secondary" id="prevBtn" disabled>← Previous</button>
-            <button class="btn btn-secondary" id="nextBtn" disabled>Next →</button>
-          </div>
+        <div class="pdf-frame-wrap">
+          <iframe id="pdfFrame" class="pdf-frame" title="SCWK PDF Viewer"></iframe>
+        </div>
 
-          <div class="controls-right">
-            <div class="page-indicator" id="pageIndicator">Page 0 / 0</div>
-            <a class="open-link" id="openPdfLink" href="#" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a>
-          </div>
-        </section>
-      </div>
+        <div class="error-box" id="errorBox">
+          The PDF could not be previewed here. Please use the “Open PDF” button above.
+        </div>
+      </section>
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer>
     <div class="container">
-      <div class="footer-row">
-        <div class="footer-copy">
-          © <span id="year"></span> SCWK — Scrum &amp; Coffee with Karthik
-        </div>
-        <div class="footer-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="carousel.html?id=bites">SCWK Bites</a>
-          <a href="carousel.html?id=lites">SCWK Lites</a>
-        </div>
+      <div class="footer-inner">
+        <span>© 2026 SCWK · Scrum & Coffee with Karthik</span>
+        <span>Clean. Modern. Premium. Built for consistency.</span>
       </div>
     </div>
   </footer>
 
-  <script src="lib/pdfjs/pdf.min.js"></script>
   <script>
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
+    const navToggle = document.getElementById('navToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    mobileToggle.addEventListener('click', () => {
+    navToggle.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.toggle('open');
-      mobileToggle.classList.toggle('is-open', isOpen);
-      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const params = new URLSearchParams(window.location.search);
+    const id = (params.get('id') || 'bites').toLowerCase();
 
-    // PDF viewer config
-    const DOCS = {
+    const config = {
       bites: {
         title: 'SCWK Bites',
-        eyebrow: 'SCWK Bites',
-        subtitle: 'Quick, sharp, professional takeaways — delivered one page at a time.',
+        subtitle: 'Short, sharp, high-value insights in carousel-ready PDF format.',
         pdf: 'pdf/bites.pdf'
       },
       lites: {
         title: 'SCWK Lites',
-        eyebrow: 'SCWK Lites',
-        subtitle: 'Light reads with clarity, polish, and thoughtful perspective.',
+        subtitle: 'Light, practical, quick-consumption content for modern professionals.',
         pdf: 'pdf/lites.pdf'
       }
     };
 
-    const params = new URLSearchParams(window.location.search);
-    const id = (params.get('id') || 'bites').toLowerCase();
-    const docConfig = DOCS[id] || DOCS.bites;
+    const selected = config[id] || config.bites;
 
-    // Active nav state
+    const pageTitle = document.getElementById('pageTitle');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+    const docName = document.getElementById('docName');
+    const openPdfLink = document.getElementById('openPdfLink');
+    const pdfFrame = document.getElementById('pdfFrame');
+    const errorBox = document.getElementById('errorBox');
+
+    pageTitle.textContent = selected.title;
+    pageSubtitle.textContent = selected.subtitle;
+    docName.textContent = selected.title;
+    openPdfLink.href = selected.pdf;
+
     if (id === 'bites') {
       document.getElementById('navBites').classList.add('active');
-      document.getElementById('mobileBites').classList.add('active');
-    } else {
+      document.getElementById('mobBites').classList.add('active');
+    } else if (id === 'lites') {
       document.getElementById('navLites').classList.add('active');
-      document.getElementById('mobileLites').classList.add('active');
+      document.getElementById('mobLites').classList.add('active');
     }
 
-    // UI refs
-    const viewerEyebrow = document.getElementById('viewerEyebrow');
-    const viewerTitle = document.getElementById('viewerTitle');
-    const viewerSubtitle = document.getElementById('viewerSubtitle');
-    const statusText = document.getElementById('statusText');
-    const placeholder = document.getElementById('placeholder');
-    const canvas = document.getElementById('pdfCanvas');
-    const canvasStage = document.getElementById('canvasStage');
-    const ctx = canvas.getContext('2d');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const pageIndicator = document.getElementById('pageIndicator');
-    const openPdfLink = document.getElementById('openPdfLink');
+    let fallbackTimer = setTimeout(() => {
+      errorBox.style.display = 'block';
+    }, 4000);
 
-    viewerEyebrow.textContent = docConfig.eyebrow;
-    viewerTitle.textContent = docConfig.title;
-    viewerSubtitle.textContent = docConfig.subtitle;
-    openPdfLink.href = docConfig.pdf;
-    document.title = docConfig.title + ' | SCWK';
+    pdfFrame.onload = () => {
+      clearTimeout(fallbackTimer);
+    };
 
-    // pdf.js worker
-    if (window.pdfjsLib) {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdfjs/pdf.worker.min.js';
-    }
-
-    let pdfDoc = null;
-    let currentPage = 1;
-    let totalPages = 0;
-    let isRendering = false;
-    let pendingPage = null;
-
-    function setStatus(message, isError = false) {
-      statusText.textContent = message;
-      statusText.classList.toggle('error', isError);
-    }
-
-    function updateControls() {
-      const hasDoc = !!pdfDoc;
-      prevBtn.disabled = !hasDoc || currentPage <= 1 || isRendering;
-      nextBtn.disabled = !hasDoc || currentPage >= totalPages || isRendering;
-      pageIndicator.textContent = hasDoc ? `Page ${currentPage} / ${totalPages}` : 'Page 0 / 0';
-    }
-
-    function showCanvas() {
-      placeholder.style.display = 'none';
-      canvas.style.display = 'block';
-    }
-
-    function showPlaceholder(title, message, isError = false) {
-      canvas.style.display = 'none';
-      placeholder.style.display = 'block';
-      placeholder.innerHTML = `
-        <strong>${title}</strong>
-        <span>${message}</span>
-      `;
-      setStatus(message, isError);
-    }
-
-    async function renderPage(pageNumber) {
-      if (!pdfDoc) return;
-
-      isRendering = true;
-      updateControls();
-      setStatus(`Rendering page ${pageNumber} of ${totalPages}…`);
-
-      try {
-        const page = await pdfDoc.getPage(pageNumber);
-
-        const availableWidth = Math.max(320, canvasStage.clientWidth - 40);
-        const unscaledViewport = page.getViewport({ scale: 1 });
-        const scale = availableWidth / unscaledViewport.width;
-        const viewport = page.getViewport({ scale });
-
-        const outputScale = window.devicePixelRatio || 1;
-
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = `${viewport.width}px`;
-        canvas.style.height = `${viewport.height}px`;
-
-        const renderContext = {
-          canvasContext: ctx,
-          viewport,
-          transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null
-        };
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        await page.render(renderContext).promise;
-
-        currentPage = pageNumber;
-        showCanvas();
-        setStatus(`Showing page ${currentPage} of ${totalPages}.`);
-      } catch (error) {
-        console.error('Error rendering page:', error);
-        showPlaceholder('Unable to render page', 'The PDF loaded, but this page could not be displayed.', true);
-      } finally {
-        isRendering = false;
-
-        if (pendingPage !== null) {
-          const nextPending = pendingPage;
-          pendingPage = null;
-          renderPage(nextPending);
-        } else {
-          updateControls();
-        }
-      }
-    }
-
-    function queueRender(pageNumber) {
-      if (isRendering) {
-        pendingPage = pageNumber;
-      } else {
-        renderPage(pageNumber);
-      }
-    }
-
-    prevBtn.addEventListener('click', () => {
-      if (currentPage <= 1) return;
-      queueRender(currentPage - 1);
-    });
-
-    nextBtn.addEventListener('click', () => {
-      if (currentPage >= totalPages) return;
-      queueRender(currentPage + 1);
-    });
-
-    window.addEventListener('resize', () => {
-      if (pdfDoc && !isRendering) {
-        queueRender(currentPage);
-      }
-    });
-
-    async function loadPdf() {
-      try {
-        if (!window.pdfjsLib) {
-          throw new Error('pdf.js library did not load.');
-        }
-
-        setStatus('Loading PDF document…');
-        showPlaceholder('Loading document…', 'Please wait while the PDF is fetched.');
-
-        const loadingTask = pdfjsLib.getDocument(docConfig.pdf);
-        pdfDoc = await loadingTask.promise;
-
-        totalPages = pdfDoc.numPages;
-        currentPage = 1;
-        updateControls();
-
-        if (!totalPages || totalPages < 1) {
-          throw new Error('PDF contains no pages.');
-        }
-
-        await renderPage(1);
-      } catch (error) {
-        console.error('PDF load error:', error);
-        pdfDoc = null;
-        totalPages = 0;
-        currentPage = 0;
-        updateControls();
-
-        showPlaceholder(
-          'PDF could not be loaded',
-          `Please verify the file exists at "${docConfig.pdf}" and pdf.js files are in "lib/pdfjs/".`,
-          true
-        );
-      }
-    }
-
-    loadPdf();
+    pdfFrame.src = selected.pdf + '#view=FitH';
   </script>
 </body>
 </html>
