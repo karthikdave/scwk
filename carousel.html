@@ -1,189 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SCWK Carousel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCWK Carousel</title>
 
-<style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f5f7fb;
-text-align:center;
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
 
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 40px;
-background:white;
-box-shadow:0 2px 6px rgba(0,0,0,0.08);
-}
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-.brand{
-font-weight:bold;
-font-size:20px;
-color:#0b3d91;
-}
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0b3d91;
+      letter-spacing: 0.4px;
+    }
 
-.navlinks a{
-margin-left:20px;
-text-decoration:none;
-color:#333;
-font-weight:500;
-}
+    .navlinks {
+      display: flex;
+      gap: 20px;
+    }
 
-.viewer{
-max-width:900px;
-margin:40px auto;
-background:white;
-padding:20px;
-border-radius:8px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
+    .navlinks a {
+      text-decoration: none;
+      color: #334155;
+      font-weight: 600;
+      font-size: 15px;
+    }
 
-canvas{
-width:100%;
-height:auto;
-}
+    .page-wrap {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
 
-.controls{
-margin-top:20px;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:20px;
-}
+    .viewer-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+    }
 
-button{
-padding:10px 20px;
-border:none;
-background:#0b3d91;
-color:white;
-border-radius:4px;
-cursor:pointer;
-}
+    .viewer-header {
+      margin-bottom: 18px;
+      text-align: center;
+    }
 
-button:disabled{
-background:#999;
-cursor:not-allowed;
-}
+    .viewer-header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: #0b3d91;
+    }
 
-</style>
+    .viewer-header p {
+      margin: 0;
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .status {
+      text-align: center;
+      margin: 16px 0;
+      font-size: 15px;
+      color: #475569;
+      min-height: 22px;
+    }
+
+    .canvas-shell {
+      width: 100%;
+      background: #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 500px;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .controls {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      border: none;
+      background: #0b3d91;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 100px;
+    }
+
+    .controls button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .page-indicator {
+      font-weight: 700;
+      color: #0f172a;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .error {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 14px 18px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .navlinks {
+        gap: 14px;
+      }
+
+      .navlinks a {
+        font-size: 14px;
+      }
+
+      .page-wrap {
+        margin: 24px auto;
+        padding: 0 14px;
+      }
+
+      .viewer-card {
+        padding: 18px;
+      }
+
+      .viewer-header h1 {
+        font-size: 22px;
+      }
+
+      .canvas-shell {
+        min-height: 320px;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="navbar">
+    <div class="brand">SCWK</div>
+    <nav class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
 
-<div class="navbar">
-<div class="brand">SCWK</div>
-<div class="navlinks">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-</div>
-</div>
+  <main class="page-wrap">
+    <section class="viewer-card">
+      <div class="viewer-header">
+        <h1 id="viewerTitle">SCWK Carousel</h1>
+        <p id="viewerSubtitle">Loading PDF...</p>
+      </div>
 
-<div class="viewer">
+      <div id="status" class="status">Loading PDF...</div>
 
-<h2 id="title">Loading...</h2>
+      <div class="canvas-shell">
+        <canvas id="pdfCanvas"></canvas>
+      </div>
 
-<canvas id="pdfCanvas"></canvas>
+      <div class="controls">
+        <button id="prevBtn" disabled>Prev</button>
+        <div id="pageIndicator" class="page-indicator">Page 0 / 0</div>
+        <button id="nextBtn" disabled>Next</button>
+      </div>
+    </section>
+  </main>
 
-<div class="controls">
-<button id="prev">Prev</button>
-<span id="pageInfo">Page 1</span>
-<button id="next">Next</button>
-</div>
+  <!-- Known-good PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-</div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
+    const config = {
+      bites: {
+        title: "SCWK Bites",
+        subtitle: "Swipe through the SCWK Bites carousel, one page at a time.",
+        path: "pdf/bites.pdf"
+      },
+      lites: {
+        title: "SCWK Lites",
+        subtitle: "Swipe through the SCWK Lites carousel, one page at a time.",
+        path: "pdf/lites.pdf"
+      }
+    };
 
-<script src="lib/pdfjs/pdf.min.js"></script>
+    const viewerTitle = document.getElementById("viewerTitle");
+    const viewerSubtitle = document.getElementById("viewerSubtitle");
+    const statusEl = document.getElementById("status");
+    const pageIndicator = document.getElementById("pageIndicator");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
 
-<script>
+    let pdfDoc = null;
+    let currentPage = 1;
+    let totalPages = 0;
+    let isRendering = false;
+    let pendingPage = null;
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = "lib/pdfjs/pdf.worker.min.js";
+    function showError(message) {
+      statusEl.innerHTML = '<span class="error">' + message + '</span>';
+      viewerSubtitle.textContent = "Unable to load the PDF carousel.";
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      pageIndicator.textContent = "Page 0 / 0";
+    }
 
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get("id");
+    function updateControls() {
+      prevBtn.disabled = currentPage <= 1 || !pdfDoc || isRendering;
+      nextBtn.disabled = currentPage >= totalPages || !pdfDoc || isRendering;
+      pageIndicator.textContent = `Page ${currentPage} / ${totalPages}`;
+    }
 
-let pdfPath="";
-let title="";
+    function fitScale(viewport) {
+      const shell = document.querySelector(".canvas-shell");
+      const shellWidth = Math.max(shell.clientWidth - 28, 320);
+      return shellWidth / viewport.width;
+    }
 
-if(id==="bites"){
-pdfPath="pdf/bites.pdf";
-title="SCWK Bites";
-}
+    function renderPage(pageNumber) {
+      isRendering = true;
+      updateControls();
+      statusEl.textContent = `Rendering page ${pageNumber}...`;
 
-if(id==="lites"){
-pdfPath="pdf/lites.pdf";
-title="SCWK Lites";
-}
+      pdfDoc.getPage(pageNumber).then((page) => {
+        const baseViewport = page.getViewport({ scale: 1 });
+        const scale = fitScale(baseViewport);
+        const viewport = page.getViewport({ scale });
 
-document.getElementById("title").innerText = title;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
-let pdfDoc=null;
-let pageNum=1;
-let totalPages=0;
+        const renderTask = page.render({
+          canvasContext: ctx,
+          viewport: viewport
+        });
 
-const canvas=document.getElementById("pdfCanvas");
-const ctx=canvas.getContext("2d");
+        return renderTask.promise;
+      }).then(() => {
+        isRendering = false;
+        statusEl.textContent = "PDF loaded successfully.";
+        updateControls();
 
-function renderPage(num){
+        if (pendingPage !== null) {
+          const nextPending = pendingPage;
+          pendingPage = null;
+          renderPage(nextPending);
+        }
+      }).catch((error) => {
+        console.error("Render error:", error);
+        showError("PDF page render failed. Check console (F12).");
+      });
+    }
 
-pdfDoc.getPage(num).then(function(page){
+    function queueRenderPage(pageNumber) {
+      if (isRendering) {
+        pendingPage = pageNumber;
+      } else {
+        renderPage(pageNumber);
+      }
+    }
 
-const viewport=page.getViewport({scale:1.5});
-canvas.height=viewport.height;
-canvas.width=viewport.width;
+    function goPrev() {
+      if (currentPage <= 1) return;
+      currentPage--;
+      queueRenderPage(currentPage);
+    }
 
-const renderContext={
-canvasContext:ctx,
-viewport:viewport
-};
+    function goNext() {
+      if (currentPage >= totalPages) return;
+      currentPage++;
+      queueRenderPage(currentPage);
+    }
 
-page.render(renderContext);
+    prevBtn.addEventListener("click", goPrev);
+    nextBtn.addEventListener("click", goNext);
 
-document.getElementById("pageInfo").innerText =
-"Page "+num+" / "+totalPages;
+    window.addEventListener("resize", () => {
+      if (pdfDoc) {
+        queueRenderPage(currentPage);
+      }
+    });
 
-document.getElementById("prev").disabled = (num<=1);
-document.getElementById("next").disabled = (num>=totalPages);
+    async function initViewer() {
+      if (!config[id]) {
+        showError("Invalid carousel ID. Use ?id=bites or ?id=lites");
+        return;
+      }
 
-});
+      const selected = config[id];
+      viewerTitle.textContent = selected.title;
+      viewerSubtitle.textContent = selected.subtitle;
 
-}
+      try {
+        if (!window.pdfjsLib) {
+          throw new Error("pdfjsLib not available from CDN.");
+        }
 
-pdfjsLib.getDocument(pdfPath).promise.then(function(pdf){
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-pdfDoc=pdf;
-totalPages=pdf.numPages;
+        statusEl.textContent = "Loading PDF document...";
 
-renderPage(pageNum);
+        const loadingTask = pdfjsLib.getDocument(selected.path);
+        pdfDoc = await loadingTask.promise;
 
-});
+        totalPages = pdfDoc.numPages;
+        currentPage = 1;
+        updateControls();
+        renderPage(currentPage);
+      } catch (error) {
+        console.error("PDF load error:", error);
+        showError("PDF failed to load. Press F12 and send the red console error.");
+      }
+    }
 
-document.getElementById("prev").addEventListener("click",function(){
-
-if(pageNum<=1) return;
-
-pageNum--;
-renderPage(pageNum);
-
-});
-
-document.getElementById("next").addEventListener("click",function(){
-
-if(pageNum>=totalPages) return;
-
-pageNum++;
-renderPage(pageNum);
-
-});
-
-</script>
-
+    initViewer();
+  </script>
 </body>
 </html>
