@@ -4,264 +4,1158 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SCWK | Scrum & Coffee with Karthik</title>
-  <meta name="description" content="SCWK (Scrum & Coffee with Karthik) — bite-sized Agile thoughts and light-hearted learning content for modern professionals." />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+  <meta
+    name="description"
+    content="SCWK (Scrum & Coffee with Karthik) — Agile, Scrum, Product Thinking, leadership reflections, and practical insights for professionals."
+  />
+  <meta name="theme-color" content="#0f172a" />
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <a href="./index.html" class="flex items-center gap-3">
-          <img src="./logo.png" alt="SCWK Logo" class="h-10 w-auto" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0b1424;
+      --card: rgba(15, 23, 42, 0.78);
+      --card-2: rgba(17, 24, 39, 0.72);
+      --text: #e5eefc;
+      --muted: #9fb4d8;
+      --line: rgba(148, 163, 184, 0.16);
+      --line-strong: rgba(148, 163, 184, 0.26);
+      --brand: #2563eb;
+      --brand-2: #3b82f6;
+      --brand-3: #60a5fa;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --shadow: 0 20px 60px rgba(2, 8, 23, 0.45);
+      --radius: 20px;
+      --radius-lg: 28px;
+      --container: 1180px;
+      --nav-h: 78px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(37, 99, 235, 0.18), transparent 32%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.12), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.08), transparent 30%),
+        linear-gradient(180deg, #08111f 0%, #0a1322 35%, #08111f 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* ===== NAVBAR ===== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(8, 17, 31, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .brand-text span {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border-radius: 12px;
+      color: #dbeafe;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(37, 99, 235, 0.14);
+      color: #ffffff;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.28);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 34px rgba(37, 99, 235, 0.36);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.7);
+      color: #ffffff;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      border-radius: 99px;
+      background: #e5eefc;
+      transition: 0.25s ease;
+    }
+
+    .menu-toggle span {
+      transform: translateY(0);
+    }
+
+    .menu-toggle::before {
+      transform: translateY(-6px);
+    }
+
+    .menu-toggle::after {
+      transform: translateY(6px);
+    }
+
+    .menu-toggle.active span {
+      opacity: 0;
+    }
+
+    .menu-toggle.active::before {
+      transform: rotate(45deg);
+    }
+
+    .menu-toggle.active::after {
+      transform: rotate(-45deg);
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0 0 16px;
+    }
+
+    .mobile-menu-inner {
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-link {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: #dbeafe;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .mobile-link:hover,
+    .mobile-link.active {
+      background: rgba(37, 99, 235, 0.14);
+      color: #ffffff;
+    }
+
+    .mobile-cta {
+      margin-top: 8px;
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.24);
+    }
+
+    /* ===== COMMON ===== */
+    .section {
+      padding: 88px 0;
+    }
+
+    .section-sm {
+      padding: 72px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.16);
+      color: #bfdbfe;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--brand-3));
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      margin-top: 16px;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+    }
+
+    .section-head p {
+      margin-top: 16px;
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 14px 34px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(37, 99, 235, 0.34);
+    }
+
+    .btn-secondary {
+      color: #e5eefc;
+      background: rgba(15, 23, 42, 0.65);
+      border-color: rgba(148, 163, 184, 0.18);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.24);
+      background: rgba(15, 23, 42, 0.82);
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.86), rgba(15, 23, 42, 0.72));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 54px 0 92px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin-top: 18px;
+      font-size: clamp(2.7rem, 6vw, 5.25rem);
+      line-height: 0.98;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: #ffffff;
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 40%, #7dd3fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      margin-top: 18px;
+      max-width: 640px;
+      font-size: 1.08rem;
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-metrics {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 700px;
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.62);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.86rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .hero-panel {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.12), transparent 28%),
+        radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.14), transparent 28%);
+      pointer-events: none;
+    }
+
+    .hero-stack {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .mini-card .tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #bfdbfe;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.14);
+    }
+
+    .mini-card h3 {
+      margin-top: 12px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .mini-card p {
+      margin-top: 8px;
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+
+    /* ===== FEATURE CARDS ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .feature-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(56, 189, 248, 0.12));
+      border: 1px solid rgba(96, 165, 250, 0.16);
+    }
+
+    .feature-card h3 {
+      margin-top: 18px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .feature-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .feature-card .feature-link {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #bfdbfe;
+    }
+
+    /* ===== ABOUT PREVIEW ===== */
+    .about-preview {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 28px;
+    }
+
+    .about-photo {
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: rgba(15, 23, 42, 0.7);
+      min-height: 380px;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-content {
+      padding: 28px;
+    }
+
+    .about-content h3 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      line-height: 1.15;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .about-content p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .pill-row {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #dbeafe;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.14);
+    }
+
+    .about-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ===== CONTENT SHOWCASE ===== */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .showcase-card {
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-card .label {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #bfdbfe;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.14);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .showcase-card h3 {
+      margin-top: 14px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .showcase-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .showcase-card .card-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== CTA ===== */
+    .cta-box {
+      padding: 34px;
+      border-radius: 28px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.16), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.12), transparent 24%);
+      pointer-events: none;
+    }
+
+    .cta-box h3 {
+      position: relative;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.1;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .cta-box p {
+      position: relative;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 620px;
+    }
+
+    .cta-actions {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 42px;
+      background: rgba(8, 17, 31, 0.55);
+    }
+
+    .footer-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      padding: 8px 12px;
+      border-radius: 12px;
+      color: #dbeafe;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .footer-link:hover {
+      background: rgba(37, 99, 235, 0.12);
+      color: #ffffff;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .about-preview,
+      .cta-box {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .mobile-menu.open {
+        display: block;
+      }
+
+      .hero {
+        padding: 34px 0 76px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .section,
+      .section-sm {
+        padding: 68px 0;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-text strong {
+        font-size: 0.88rem;
+      }
+
+      .brand-text span {
+        font-size: 0.7rem;
+      }
+
+      .about-content,
+      .showcase-card,
+      .feature-card,
+      .hero-panel,
+      .cta-box {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="index.html" class="brand" aria-label="SCWK Home">
+          <div class="brand-logo">
+            <img src="logo.png" alt="SCWK Logo" />
+          </div>
+          <div class="brand-text">
+            <strong>Scrum & Coffee with Karthik</strong>
+            <span>SCWK</span>
+          </div>
         </a>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="./index.html" class="text-blue-600 font-semibold">Home</a>
-          <a href="./about.html" class="text-slate-600 hover:text-slate-900 transition">About</a>
-          <a href="./carousel.html?id=bites" class="text-slate-600 hover:text-slate-900 transition">SCWK Bites</a>
-          <a href="./carousel.html?id=lites" class="text-slate-600 hover:text-slate-900 transition">SCWK Lites</a>
-        </nav>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="carousel.html?id=bites" class="nav-link">SCWK Bites</a>
+          <a href="carousel.html?id=lites" class="nav-link">SCWK Lites</a>
+        </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 shadow-sm hover:bg-slate-50 transition" aria-label="Open menu">
-          <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+        <a href="about.html" class="nav-cta">Meet Karthik</a>
+
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <span></span>
         </button>
-      </div>
+      </nav>
 
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden pb-4">
-        <div class="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-          <a href="./index.html" class="rounded-xl px-3 py-2 text-sm font-semibold text-blue-600 bg-blue-50">Home</a>
-          <a href="./about.html" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">About</a>
-          <a href="./carousel.html?id=bites" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">SCWK Bites</a>
-          <a href="./carousel.html?id=lites" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">SCWK Lites</a>
+      <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-inner">
+          <a href="index.html" class="mobile-link active">Home</a>
+          <a href="about.html" class="mobile-link">About</a>
+          <a href="carousel.html?id=bites" class="mobile-link">SCWK Bites</a>
+          <a href="carousel.html?id=lites" class="mobile-link">SCWK Lites</a>
+          <a href="about.html" class="mobile-cta">Meet Karthik</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-slate-200"></div>
-    <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <div class="grid gap-10 md:grid-cols-2 md:items-center">
-        <div>
-          <p class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wider text-slate-600 shadow-sm">
-            Personal Brand • Agile Learning
-          </p>
-
-          <h1 class="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-            Scrum & Coffee with Karthik
-          </h1>
-
-          <p class="mt-5 text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl">
-            Practical Agile thinking, made simple. SCWK is a personal content initiative where bite-sized insights
-            and light-hearted learning make Scrum and Agile easier to understand and revisit.
-          </p>
-
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="./carousel.html?id=bites" class="inline-flex items-center rounded-full bg-slate-900 px-5 py-3 text-sm md:text-base font-semibold text-white shadow hover:bg-slate-800 transition">
-              Explore SCWK Bites
-            </a>
-            <a href="./carousel.html?id=lites" class="inline-flex items-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm md:text-base font-semibold text-slate-800 hover:border-slate-400 transition">
-              Explore SCWK Lites
-            </a>
-          </div>
-
-          <div class="mt-8 flex flex-wrap gap-3 text-sm text-slate-500">
-            <span class="rounded-full bg-white px-3 py-1 border border-slate-200">Agile</span>
-            <span class="rounded-full bg-white px-3 py-1 border border-slate-200">Scrum</span>
-            <span class="rounded-full bg-white px-3 py-1 border border-slate-200">Delivery</span>
-            <span class="rounded-full bg-white px-3 py-1 border border-slate-200">Mindset</span>
-            <span class="rounded-full bg-white px-3 py-1 border border-slate-200">Learning</span>
-          </div>
-        </div>
-
-        <div>
-          <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-xl">
-            <div class="rounded-2xl bg-slate-900 p-6 text-white">
-              <p class="text-sm font-medium text-slate-300">SCWK Focus</p>
-              <h2 class="mt-2 text-2xl md:text-3xl font-bold leading-tight">
-                Agile ideas that are easy to consume, easy to remember, and easy to apply.
-              </h2>
-              <p class="mt-4 text-slate-300 leading-relaxed">
-                Short-form, practical, and human-friendly content designed for professionals who prefer clarity over complexity.
-              </p>
-            </div>
-
-            <div class="mt-6 grid gap-4 sm:grid-cols-2">
-              <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Format 1</p>
-                <h3 class="mt-2 font-bold text-lg">SCWK Bites</h3>
-                <p class="mt-2 text-sm text-slate-600">
-                  Bite-sized Agile thoughts and quick practical insights.
-                </p>
-              </div>
-
-              <div class="rounded-2xl border border-slate-200 p-4">
-                <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold">Format 2</p>
-                <h3 class="mt-2 font-bold text-lg">SCWK Lites</h3>
-                <p class="mt-2 text-sm text-slate-600">
-                  Light-hearted bites with a softer, simpler learning vibe.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="py-16 md:py-24 bg-white border-y border-slate-200">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-10 md:grid-cols-2 md:items-start">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-wider text-slate-500">About Karthik & SCWK</p>
-          <h2 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight leading-tight">
-            Built from real-world delivery. Designed for practical Agile learning.
-          </h2>
-          <p class="mt-5 text-slate-600 leading-relaxed">
-            SCWK is more than a content label — it is a practical, personal learning space shaped by real project experience,
-            delivery challenges, and a belief that Agile should feel simpler, clearer, and genuinely useful.
-          </p>
-
-          <div class="mt-6 flex flex-wrap gap-3">
-            <span class="rounded-full bg-slate-100 px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 border border-slate-200">15+ Years in IT</span>
-            <span class="rounded-full bg-slate-100 px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 border border-slate-200">7+ Years in BA & Scrum</span>
-            <span class="rounded-full bg-slate-100 px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 border border-slate-200">Agile • Delivery • Mindset</span>
-          </div>
-        </div>
-
-        <div class="space-y-5 text-slate-600 leading-relaxed">
-          <p>
-            I’m <span class="font-semibold text-slate-900">Karthik Dave</span> — a delivery-focused professional with experience across
-            Business Analysis, Scrum, and modern Agile ways of working.
-          </p>
-          <p>
-            <span class="font-semibold text-slate-900">SCWK (Scrum & Coffee with Karthik)</span> was created to make Agile learning feel
-            lighter, more relatable, and easier to revisit — especially for professionals who want clarity without heavy theory.
-          </p>
-          <p>
-            Instead of long frameworks and complicated explanations, SCWK focuses on simple, visual, and practical content that helps
-            professionals learn faster, remember better, and apply ideas with confidence.
-          </p>
-          <p>
-            Through <span class="font-semibold text-slate-900">SCWK Bites</span> and <span class="font-semibold text-slate-900">SCWK Lites</span>,
-            I share quick Agile thoughts, practical delivery insights, and light-hearted learning moments designed for modern teams and busy professionals.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Content Hub -->
-  <section class="pb-16 md:pb-24 pt-16 md:pt-24">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-end justify-between gap-4 mb-8">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-wider text-slate-500">Content Hub</p>
-          <h2 class="mt-2 text-3xl md:text-4xl font-bold tracking-tight">Explore the SCWK formats</h2>
-        </div>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2">
-        <a href="./carousel.html?id=bites" class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition block">
-          <div class="flex items-center justify-between">
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              Quick Insight
-            </span>
-            <span class="text-slate-400 group-hover:text-slate-700 transition">→</span>
-          </div>
-          <h3 class="mt-5 text-2xl font-bold tracking-tight">SCWK Bites</h3>
-          <p class="mt-3 text-slate-600 leading-relaxed">
-            Bite-sized Agile thoughts and quick practical insights designed for fast learning and immediate value.
-          </p>
-          <div class="mt-6 text-sm font-semibold text-slate-900">Open Bites</div>
-        </a>
-
-        <a href="./carousel.html?id=lites" class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition block">
-          <div class="flex items-center justify-between">
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              Light-hearted Learn
-            </span>
-            <span class="text-slate-400 group-hover:text-slate-700 transition">→</span>
-          </div>
-          <h3 class="mt-5 text-2xl font-bold tracking-tight">SCWK Lites</h3>
-          <p class="mt-3 text-slate-600 leading-relaxed">
-            Light-hearted bites that keep learning simple, approachable, and a little more playful.
-          </p>
-          <div class="mt-6 text-sm font-semibold text-slate-900">Open Lites</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="pb-16 md:pb-24">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="rounded-3xl bg-slate-900 px-6 py-10 md:px-10 md:py-12 text-white shadow-2xl">
-        <div class="grid gap-6 md:grid-cols-[1.3fr_0.7fr] md:items-center">
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
           <div>
-            <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Start exploring</p>
-            <h2 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
-              Learn Agile in a way that feels practical, visual, and refreshingly simple.
-            </h2>
-            <p class="mt-4 text-slate-300 leading-relaxed max-w-2xl">
-              Start with Bites for quick insights, or open Lites for a lighter, more relaxed learning experience.
+            <div class="eyebrow">Personal Brand Platform</div>
+            <h1>
+              Practical Agile insights,
+              <span class="grad">brewed with clarity.</span>
+            </h1>
+            <p>
+              Welcome to <strong>SCWK — Scrum & Coffee with Karthik</strong>. A clean,
+              practical space for Agile thinking, Scrum perspectives, leadership reflections,
+              and bite-sized learning for professionals who value clarity over noise.
+            </p>
+
+            <div class="hero-actions">
+              <a href="carousel.html?id=bites" class="btn btn-primary">Explore SCWK Bites</a>
+              <a href="carousel.html?id=lites" class="btn btn-secondary">View SCWK Lites</a>
+            </div>
+
+            <div class="hero-metrics">
+              <div class="metric">
+                <strong>SCWK Bites</strong>
+                <span>Short, practical, scroll-friendly insights</span>
+              </div>
+              <div class="metric">
+                <strong>SCWK Lites</strong>
+                <span>Quick reflections with high clarity</span>
+              </div>
+              <div class="metric">
+                <strong>About Karthik</strong>
+                <span>Professional identity, voice, and purpose</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card hero-panel">
+            <div class="hero-stack">
+              <div class="mini-card">
+                <span class="tag">SCWK Bites</span>
+                <h3>Actionable ideas, not just theory</h3>
+                <p>
+                  Quick, digestible insights on Scrum, Agile mindset, team dynamics,
+                  delivery discipline, and practical leadership.
+                </p>
+              </div>
+
+              <div class="mini-card">
+                <span class="tag">SCWK Lites</span>
+                <h3>Short-form reflections with a premium feel</h3>
+                <p>
+                  Crisp content designed for professionals who want clarity, perspective,
+                  and thoughtful takeaways in minimal time.
+                </p>
+              </div>
+
+              <div class="mini-card">
+                <span class="tag">About</span>
+                <h3>The person behind the brand</h3>
+                <p>
+                  Learn more about Karthik, the thinking behind SCWK, and the intent
+                  behind the content ecosystem.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRAND PILLARS -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">What SCWK Stands For</div>
+          <h2>Built for professionals who value substance, not fluff.</h2>
+          <p>
+            SCWK is positioned to feel premium, modern, and practical — the kind of personal
+            brand presence that reflects calm confidence, sharp thinking, and consistency.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="card feature-card">
+            <div class="icon">☕</div>
+            <h3>Clarity over complexity</h3>
+            <p>
+              Straightforward insights that simplify Agile and Scrum without watering
+              them down.
             </p>
           </div>
 
-          <div class="flex flex-wrap gap-3 md:justify-end">
-            <a href="./carousel.html?id=bites" class="inline-flex items-center rounded-full bg-white text-slate-900 px-5 py-3 text-sm md:text-base font-semibold hover:bg-slate-100 transition">
-              Open Bites
-            </a>
-            <a href="./carousel.html?id=lites" class="inline-flex items-center rounded-full border border-slate-600 text-white px-5 py-3 text-sm md:text-base font-semibold hover:border-slate-400 transition">
-              Open Lites
-            </a>
+          <div class="card feature-card">
+            <div class="icon">⚡</div>
+            <h3>Practical over performative</h3>
+            <p>
+              Useful takeaways that professionals can actually apply in teams, projects,
+              and leadership conversations.
+            </p>
+          </div>
+
+          <div class="card feature-card">
+            <div class="icon">🎯</div>
+            <h3>Consistent brand experience</h3>
+            <p>
+              A cohesive digital presence across pages, visuals, content formats,
+              and navigation.
+            </p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-      <div>
-        <p class="font-semibold">SCWK • Scrum & Coffee with Karthik</p>
-        <p class="text-sm text-slate-500">Bite-sized Agile thoughts. Light-hearted learning.</p>
+    <!-- ABOUT PREVIEW -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">About the Brand</div>
+          <h2>Meet the voice behind SCWK.</h2>
+          <p>
+            SCWK is not just a content label — it’s a professional identity designed
+            around thoughtful communication, modern presentation, and real-world relevance.
+          </p>
+        </div>
+
+        <div class="about-preview">
+          <div class="about-photo">
+            <img src="Me_Cas_Coat.png" alt="Karthik portrait" />
+          </div>
+
+          <div class="card about-content">
+            <h3>Scrum & Coffee with Karthik</h3>
+            <p>
+              A personal brand built around Agile thinking, leadership maturity, and
+              practical content for professionals who want insights that feel refined,
+              relevant, and usable.
+            </p>
+            <p>
+              The goal is simple: make learning feel approachable, premium, and grounded
+              in real workplace context.
+            </p>
+
+            <div class="pill-row">
+              <span class="pill">Agile</span>
+              <span class="pill">Scrum</span>
+              <span class="pill">Leadership</span>
+              <span class="pill">Professional Branding</span>
+              <span class="pill">Thoughtful Content</span>
+            </div>
+
+            <div class="about-actions">
+              <a href="about.html" class="btn btn-primary">Go to About Page</a>
+              <a href="carousel.html?id=bites" class="btn btn-secondary">See SCWK Bites</a>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="./index.html" class="text-slate-500 hover:text-slate-900">Home</a>
-        <a href="./about.html" class="text-slate-500 hover:text-slate-900">About</a>
-        <a href="./carousel.html?id=bites" class="text-slate-500 hover:text-slate-900">SCWK Bites</a>
-        <a href="./carousel.html?id=lites" class="text-slate-500 hover:text-slate-900">SCWK Lites</a>
+    <!-- CONTENT SHOWCASE -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Content Formats</div>
+          <h2>Two content lanes. One consistent SCWK experience.</h2>
+          <p>
+            Keep the architecture simple and future-proof: a dedicated About page and
+            one reusable carousel page for your PDF-driven content formats.
+          </p>
+        </div>
+
+        <div class="showcase-grid">
+          <div class="card showcase-card">
+            <span class="label">SCWK Bites</span>
+            <h3>Short, punchy, practical.</h3>
+            <p>
+              Designed for concise professional insights — ideal for digestible learning,
+              carousel-style storytelling, and quick value delivery.
+            </p>
+            <div class="card-actions">
+              <a href="carousel.html?id=bites" class="btn btn-primary">Open SCWK Bites</a>
+            </div>
+          </div>
+
+          <div class="card showcase-card">
+            <span class="label">SCWK Lites</span>
+            <h3>Light, sharp, and elegant.</h3>
+            <p>
+              Built for crisp reflections and clean presentation — maintaining the same
+              SCWK premium visual language across formats.
+            </p>
+            <div class="card-actions">
+              <a href="carousel.html?id=lites" class="btn btn-primary">Open SCWK Lites</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="card cta-box">
+          <div>
+            <h3>Keep the architecture lean. Keep the brand premium.</h3>
+            <p>
+              This Phase 2 structure keeps SCWK focused: one strong homepage, one dedicated
+              About page, and one reusable content viewer for Bites and Lites.
+            </p>
+          </div>
+
+          <div class="cta-actions">
+            <a href="about.html" class="btn btn-secondary">About</a>
+            <a href="carousel.html?id=bites" class="btn btn-primary">SCWK Bites</a>
+            <a href="carousel.html?id=lites" class="btn btn-secondary">SCWK Lites</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-wrap">
+        <div class="footer-left">
+          <div class="brand-logo" style="width: 36px; height: 36px; border-radius: 12px;">
+            <img src="logo.png" alt="SCWK Logo" />
+          </div>
+          <span>© <span id="year"></span> SCWK • Scrum & Coffee with Karthik</span>
+        </div>
+
+        <div class="footer-right">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="about.html" class="footer-link">About</a>
+          <a href="carousel.html?id=bites" class="footer-link">SCWK Bites</a>
+          <a href="carousel.html?id=lites" class="footer-link">SCWK Lites</a>
+        </div>
       </div>
     </div>
   </footer>
 
   <script>
-    const menuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuOpenIcon = document.getElementById('menu-open-icon');
-    const menuCloseIcon = document.getElementById('menu-close-icon');
+    (function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileLinks = mobileMenu.querySelectorAll("a");
 
-    menuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      menuOpenIcon.classList.toggle('hidden');
-      menuCloseIcon.classList.toggle('hidden');
-    });
+      function closeMenu() {
+        mobileMenu.classList.remove("open");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleMenu() {
+        const isOpen = mobileMenu.classList.toggle("open");
+        menuToggle.classList.toggle("active", isOpen);
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      menuToggle.addEventListener("click", toggleMenu);
+
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+          closeMenu();
+        }
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
   </script>
-
 </body>
 </html>
