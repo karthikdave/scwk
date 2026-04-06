@@ -3,98 +3,254 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK Carousel</title>
-
+  <title>SCWK Carousel Viewer</title>
+  <meta
+    name="description"
+    content="SCWK dedicated PDF carousel viewer for Bites and Lites."
+  />
   <style>
+    :root {
+      --bg: #f5f8ff;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --primary: #0b3d91;
+      --primary-dark: #072b67;
+      --primary-soft: #dfeeff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbe7ff;
+      --shadow: 0 18px 50px rgba(11, 61, 145, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.08);
+      --max-width: 1180px;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+      color: var(--text);
     }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 32px;
-      background: #ffffff;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .site-header {
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid rgba(219, 231, 255, 0.9);
     }
 
-    .brand {
-      font-size: 22px;
-      font-weight: 700;
-      color: #0b3d91;
-      letter-spacing: 0.4px;
-    }
-
-    .navlinks {
+    .nav {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 86px;
       gap: 20px;
     }
 
-    .navlinks a {
-      text-decoration: none;
-      color: #334155;
-      font-weight: 600;
-      font-size: 15px;
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--text);
+      min-width: 0;
     }
 
-    .page-wrap {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .viewer-card {
-      background: #ffffff;
+    .brand-logo {
+      width: 64px;
+      height: 64px;
       border-radius: 18px;
-      padding: 28px;
-      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+      background: #ffffff;
+      border: 1px solid #d9e8ff;
+      box-shadow: 0 10px 24px rgba(11, 61, 145, 0.1);
+      padding: 8px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
-    .viewer-header {
-      margin-bottom: 18px;
-      text-align: center;
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
 
-    .viewer-header h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      color: #0b3d91;
+    .brand-kicker {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
     }
 
-    .viewer-header p {
-      margin: 0;
-      color: #64748b;
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      color: #1e293b;
       font-size: 15px;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 999px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d9e8ff;
+      background: #ffffff;
+      border-radius: 14px;
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: 0 8px 18px rgba(11, 61, 145, 0.08);
+    }
+
+    .mobile-toggle span {
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--primary);
+      display: block;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0 0 18px;
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    .mobile-menu-inner {
+      display: grid;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mobile-menu a {
+      color: #1e293b;
+      font-weight: 700;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #f8fbff;
+      border: 1px solid #e8f0ff;
+    }
+
+    .viewer-page {
+      padding: 34px 0 54px;
+    }
+
+    .viewer-shell {
+      background: linear-gradient(135deg, #ffffff 0%, #f6faff 100%);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .viewer-head {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .viewer-head .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #d9e8ff;
+      margin-bottom: 14px;
+    }
+
+    .viewer-head h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 48px);
+      color: var(--text);
+    }
+
+    .viewer-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
     }
 
     .status {
       text-align: center;
-      margin: 16px 0;
-      font-size: 15px;
-      color: #475569;
-      min-height: 22px;
+      min-height: 24px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
     }
 
-    .canvas-shell {
+    .status.error {
+      color: #b91c1c;
+    }
+
+    .canvas-frame {
       width: 100%;
-      background: #e2e8f0;
-      border-radius: 16px;
-      padding: 14px;
+      background: #e9f1ff;
+      border: 1px solid #d9e8ff;
+      border-radius: 24px;
+      padding: 16px;
+      min-height: 520px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 500px;
+      justify-content: center;
       overflow: hidden;
     }
 
@@ -103,116 +259,259 @@
       max-width: 100%;
       height: auto;
       background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
     }
 
     .controls {
       margin-top: 22px;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #1d5fd1 100%);
+      color: #ffffff;
+      box-shadow: 0 14px 28px rgba(11, 61, 145, 0.2);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1px solid #d9e8ff;
+      box-shadow: 0 10px 20px rgba(11, 61, 145, 0.08);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .page-indicator {
+      min-width: 120px;
+      text-align: center;
+      font-weight: 800;
+      color: var(--text);
+      padding: 0 8px;
+    }
+
+    .site-footer {
+      border-top: 1px solid rgba(219, 231, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 22px 0;
+      margin-top: 18px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
     }
 
-    .controls button {
-      border: none;
-      background: #0b3d91;
-      color: #ffffff;
-      padding: 12px 20px;
-      border-radius: 10px;
+    .footer-brand {
+      color: var(--text);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .footer-copy {
+      color: var(--muted);
       font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      min-width: 100px;
     }
 
-    .controls button:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
+    @media (max-width: 820px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-toggle {
+        display: inline-flex;
+      }
+
+      .nav {
+        min-height: 78px;
+      }
+
+      .brand-logo {
+        width: 56px;
+        height: 56px;
+      }
+
+      .brand-title {
+        font-size: 17px;
+        white-space: normal;
+      }
+
+      .viewer-page {
+        padding-top: 24px;
+      }
+
+      .viewer-shell {
+        padding: 20px;
+      }
+
+      .canvas-frame {
+        min-height: 320px;
+        padding: 10px;
+      }
     }
 
-    .page-indicator {
-      font-weight: 700;
-      color: #0f172a;
-      min-width: 100px;
-      text-align: center;
-    }
-
-    .error {
-      color: #b91c1c;
-      font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-      .navbar {
-        padding: 14px 18px;
+    @media (max-width: 560px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 20px));
       }
 
       .brand {
-        font-size: 18px;
+        gap: 10px;
       }
 
-      .navlinks {
-        gap: 14px;
+      .brand-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        padding: 7px;
       }
 
-      .navlinks a {
-        font-size: 14px;
+      .brand-kicker {
+        font-size: 11px;
       }
 
-      .page-wrap {
-        margin: 24px auto;
-        padding: 0 14px;
+      .brand-title {
+        font-size: 15px;
       }
 
-      .viewer-card {
-        padding: 18px;
+      .viewer-shell {
+        border-radius: 22px;
       }
 
-      .viewer-header h1 {
-        font-size: 22px;
+      .controls {
+        flex-direction: column;
       }
 
-      .canvas-shell {
-        min-height: 320px;
-        padding: 10px;
+      .controls .btn {
+        width: 100%;
+      }
+
+      .page-indicator {
+        order: -1;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <div class="brand">SCWK</div>
-    <nav class="navlinks">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-    </nav>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="index.html" aria-label="SCWK Home">
+          <img src="logo.png" alt="SCWK Logo" class="brand-logo" />
+          <span class="brand-text">
+            <span class="brand-kicker">SCWK</span>
+            <span class="brand-title">Scrum &amp; Coffee with Karthik</span>
+          </span>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-inner">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main class="page-wrap">
-    <section class="viewer-card">
-      <div class="viewer-header">
-        <h1 id="viewerTitle">SCWK Carousel</h1>
-        <p id="viewerSubtitle">Loading PDF...</p>
-      </div>
+  <main class="viewer-page">
+    <div class="container">
+      <section class="viewer-shell">
+        <div class="viewer-head">
+          <div class="eyebrow">SCWK Carousel Viewer</div>
+          <h1 id="viewerTitle">Loading...</h1>
+          <p id="viewerSubtitle">Preparing your page-by-page carousel experience.</p>
+        </div>
 
-      <div id="status" class="status">Loading PDF...</div>
+        <div id="status" class="status">Loading PDF document...</div>
 
-      <div class="canvas-shell">
-        <canvas id="pdfCanvas"></canvas>
-      </div>
+        <div class="canvas-frame">
+          <canvas id="pdfCanvas"></canvas>
+        </div>
 
-      <div class="controls">
-        <button id="prevBtn" disabled>Prev</button>
-        <div id="pageIndicator" class="page-indicator">Page 0 / 0</div>
-        <button id="nextBtn" disabled>Next</button>
-      </div>
-    </section>
+        <div class="controls">
+          <button id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+          <div id="pageIndicator" class="page-indicator">Page 0 / 0</div>
+          <button id="nextBtn" class="btn btn-primary" disabled>Next</button>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <!-- Known-good PDF.js CDN -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">SCWK • Scrum &amp; Coffee with Karthik</div>
+        <div class="footer-copy">Built for a clean, modern, premium carousel experience.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    mobileToggle.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("open");
+      mobileToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.querySelectorAll("#mobileMenu a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+        mobileToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
+  <!-- PDF.js CDN (stable and matched worker version) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <script>
@@ -222,12 +521,12 @@
     const config = {
       bites: {
         title: "SCWK Bites",
-        subtitle: "Swipe through the SCWK Bites carousel, one page at a time.",
+        subtitle: "A focused, page-by-page carousel experience for quick and practical insights.",
         path: "pdf/bites.pdf"
       },
       lites: {
         title: "SCWK Lites",
-        subtitle: "Swipe through the SCWK Lites carousel, one page at a time.",
+        subtitle: "A clean, premium carousel flow with a lighter reading rhythm.",
         path: "pdf/lites.pdf"
       }
     };
@@ -240,6 +539,7 @@
     const nextBtn = document.getElementById("nextBtn");
     const canvas = document.getElementById("pdfCanvas");
     const ctx = canvas.getContext("2d");
+    const canvasFrame = document.querySelector(".canvas-frame");
 
     let pdfDoc = null;
     let currentPage = 1;
@@ -247,34 +547,30 @@
     let isRendering = false;
     let pendingPage = null;
 
-    function showError(message) {
-      statusEl.innerHTML = '<span class="error">' + message + '</span>';
-      viewerSubtitle.textContent = "Unable to load the PDF carousel.";
-      prevBtn.disabled = true;
-      nextBtn.disabled = true;
-      pageIndicator.textContent = "Page 0 / 0";
+    function setStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.classList.toggle("error", isError);
     }
 
     function updateControls() {
-      prevBtn.disabled = currentPage <= 1 || !pdfDoc || isRendering;
-      nextBtn.disabled = currentPage >= totalPages || !pdfDoc || isRendering;
+      prevBtn.disabled = !pdfDoc || currentPage <= 1 || isRendering;
+      nextBtn.disabled = !pdfDoc || currentPage >= totalPages || isRendering;
       pageIndicator.textContent = `Page ${currentPage} / ${totalPages}`;
     }
 
-    function fitScale(viewport) {
-      const shell = document.querySelector(".canvas-shell");
-      const shellWidth = Math.max(shell.clientWidth - 28, 320);
-      return shellWidth / viewport.width;
+    function getScale(baseViewport) {
+      const availableWidth = Math.max(canvasFrame.clientWidth - 32, 320);
+      return availableWidth / baseViewport.width;
     }
 
     function renderPage(pageNumber) {
       isRendering = true;
       updateControls();
-      statusEl.textContent = `Rendering page ${pageNumber}...`;
+      setStatus(`Rendering page ${pageNumber}...`);
 
       pdfDoc.getPage(pageNumber).then((page) => {
         const baseViewport = page.getViewport({ scale: 1 });
-        const scale = fitScale(baseViewport);
+        const scale = getScale(baseViewport);
         const viewport = page.getViewport({ scale });
 
         canvas.width = viewport.width;
@@ -288,21 +584,21 @@
         return renderTask.promise;
       }).then(() => {
         isRendering = false;
-        statusEl.textContent = "PDF loaded successfully.";
+        setStatus("PDF loaded successfully.");
         updateControls();
 
         if (pendingPage !== null) {
-          const nextPending = pendingPage;
+          const nextPage = pendingPage;
           pendingPage = null;
-          renderPage(nextPending);
+          renderPage(nextPage);
         }
       }).catch((error) => {
         console.error("Render error:", error);
-        showError("PDF page render failed. Check console (F12).");
+        setStatus("PDF page render failed. Press F12 and share the red console error.", true);
       });
     }
 
-    function queueRenderPage(pageNumber) {
+    function queueRender(pageNumber) {
       if (isRendering) {
         pendingPage = pageNumber;
       } else {
@@ -311,15 +607,15 @@
     }
 
     function goPrev() {
-      if (currentPage <= 1) return;
+      if (!pdfDoc || currentPage <= 1) return;
       currentPage--;
-      queueRenderPage(currentPage);
+      queueRender(currentPage);
     }
 
     function goNext() {
-      if (currentPage >= totalPages) return;
+      if (!pdfDoc || currentPage >= totalPages) return;
       currentPage++;
-      queueRenderPage(currentPage);
+      queueRender(currentPage);
     }
 
     prevBtn.addEventListener("click", goPrev);
@@ -327,13 +623,16 @@
 
     window.addEventListener("resize", () => {
       if (pdfDoc) {
-        queueRenderPage(currentPage);
+        queueRender(currentPage);
       }
     });
 
     async function initViewer() {
       if (!config[id]) {
-        showError("Invalid carousel ID. Use ?id=bites or ?id=lites");
+        viewerTitle.textContent = "Invalid Carousel";
+        viewerSubtitle.textContent = "Use ?id=bites or ?id=lites in the URL.";
+        setStatus("Invalid carousel ID.", true);
+        updateControls();
         return;
       }
 
@@ -343,14 +642,13 @@
 
       try {
         if (!window.pdfjsLib) {
-          throw new Error("pdfjsLib not available from CDN.");
+          throw new Error("pdfjsLib failed to load from CDN.");
         }
 
         pdfjsLib.GlobalWorkerOptions.workerSrc =
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-        statusEl.textContent = "Loading PDF document...";
-
+        setStatus("Loading PDF document...");
         const loadingTask = pdfjsLib.getDocument(selected.path);
         pdfDoc = await loadingTask.promise;
 
@@ -360,7 +658,7 @@
         renderPage(currentPage);
       } catch (error) {
         console.error("PDF load error:", error);
-        showError("PDF failed to load. Press F12 and send the red console error.");
+        setStatus("PDF failed to load. Press F12 and share the red console error.", true);
       }
     }
 
