@@ -4,20 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About | SCWK</title>
+  <meta name="description" content="About SCWK — Scrum & Coffee with Karthik. Learn more about Karthik Dave, the story behind SCWK, and the mission to make Agile simple, practical, and human." />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
 
   <!-- NAVBAR -->
-  <nav class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
         <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
       </a>
 
       <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-gray-700">
+      <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-slate-700">
         <a href="index.html" class="hover:text-blue-600 transition">Home</a>
         <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
         <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
@@ -25,7 +26,7 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition" aria-label="Toggle menu">
+      <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 transition shadow-sm" aria-label="Toggle menu">
         <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -36,8 +37,8 @@
     </div>
 
     <!-- Mobile Nav Menu -->
-    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-white">
-      <div class="px-4 py-3 flex flex-col gap-3 text-sm font-medium text-gray-700">
+    <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white">
+      <div class="px-4 py-3 flex flex-col gap-3 text-sm font-medium text-slate-700">
         <a href="index.html" class="hover:text-blue-600 transition">Home</a>
         <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
         <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
@@ -46,65 +47,134 @@
     </div>
   </nav>
 
-  <!-- ABOUT -->
+  <!-- HERO / PAGE INTRO -->
   <main class="flex-grow">
-    <section class="max-w-6xl mx-auto mt-12 sm:mt-16 px-4 sm:px-6 pb-16">
-      <div class="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 sm:p-10">
-        <div class="grid md:grid-cols-2 gap-10 items-center">
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-slate-100"></div>
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8">
+        <div class="max-w-3xl">
+          <p class="inline-flex items-center rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-700 shadow-sm">
+            About SCWK
+          </p>
+          <h1 class="mt-5 text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            Scrum & Coffee with Karthik
+          </h1>
+          <p class="mt-5 text-lg sm:text-xl text-slate-600 leading-relaxed">
+            A personal brand built to make Agile, Scrum, and evolving ways of working feel practical, relatable, and easier to apply.
+          </p>
+        </div>
+      </div>
+    </section>
 
+    <!-- ABOUT CARD -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200 p-6 sm:p-8 lg:p-10">
+        <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-12 items-center">
+
+          <!-- PHOTO -->
           <div class="flex justify-center">
-            <img src="Me_Cas_Coat.png" alt="Karthik"
-              class="rounded-2xl shadow-md w-72 md:w-96 object-cover">
+            <div class="w-full max-w-sm rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-lg">
+              <div class="overflow-hidden rounded-2xl">
+                <img src="Me_Cas_Coat.png" alt="Karthik Dave"
+                  class="rounded-2xl shadow-md w-full h-auto object-cover">
+              </div>
+
+              <div class="mt-4 rounded-2xl bg-white border border-slate-200 p-4">
+                <p class="text-lg font-bold text-slate-900">Karthik Dave</p>
+                <p class="mt-1 text-sm text-slate-600">Business Analysis • Scrum • Agile Delivery • Continuous Learning</p>
+              </div>
+            </div>
           </div>
 
+          <!-- CONTENT -->
           <div>
             <p class="text-sm font-semibold uppercase tracking-wider text-blue-600 mb-4">
-              About SCWK
+              The Story Behind SCWK
             </p>
 
-            <h1 class="text-3xl sm:text-4xl font-bold mb-5 text-gray-900">Scrum & Coffee with Karthik</h1>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-slate-900 leading-tight">
+              Real-world experience. Practical thinking. Simple learning.
+            </h2>
 
-            <p class="text-gray-600 mb-4 leading-relaxed">
-              SCWK stands for <span class="font-semibold text-gray-800">Scrum & Coffee with Karthik</span>.
-            </p>
+            <div class="space-y-4 text-slate-600 leading-relaxed">
+              <p>
+                SCWK stands for <span class="font-semibold text-slate-900">Scrum & Coffee with Karthik</span>.
+              </p>
 
-            <p class="text-gray-600 mb-4 leading-relaxed">
-              It’s a space where I share practical insights on Agile, Scrum, and how AI is
-              reshaping the way we work — not from theory, but from real-world experience.
-            </p>
+              <p>
+                It’s a space where I share practical insights on <span class="font-semibold text-slate-900">Agile, Scrum, delivery thinking, and how AI is reshaping the way we work</span> — not from theory, but from real-world experience.
+              </p>
 
-            <p class="text-gray-600 mb-4 leading-relaxed">
-              My journey hasn’t been a straight line. From working as an IT Consultant in Qatar
-              to facing a life-changing accident, and rebuilding my career — every step has
-              shaped how I think about resilience, adaptability, and growth.
-            </p>
+              <p>
+                My journey hasn’t been a straight line. From working as an IT Consultant in Qatar to facing a life-changing accident and rebuilding my career — every phase has shaped how I think about <span class="font-semibold text-slate-900">resilience, adaptability, and growth</span>.
+              </p>
 
-            <p class="text-gray-600 mb-4 leading-relaxed">
-              Today, I continue my journey in the IT space, bringing together structured Agile
-              thinking and emerging AI capabilities.
-            </p>
+              <p>
+                Today, I continue my journey in the IT space, bringing together <span class="font-semibold text-slate-900">structured Agile thinking, business analysis, delivery mindset, and emerging AI capabilities</span>.
+              </p>
 
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              SCWK is my way of sharing that journey — one insight at a time.
-            </p>
+              <p>
+                SCWK is my way of sharing that journey — one insight at a time — through simple, useful, and visually digestible content that helps professionals learn faster and apply better.
+              </p>
+            </div>
 
-            <p class="font-semibold text-gray-800 text-lg">
-              Think better. Build smarter.
+            <!-- HIGHLIGHT TAGS -->
+            <div class="mt-6 flex flex-wrap gap-3">
+              <span class="rounded-full bg-blue-50 px-3 py-2 text-xs sm:text-sm font-semibold text-blue-700 border border-blue-100">Agile & Scrum</span>
+              <span class="rounded-full bg-blue-50 px-3 py-2 text-xs sm:text-sm font-semibold text-blue-700 border border-blue-100">Delivery Mindset</span>
+              <span class="rounded-full bg-blue-50 px-3 py-2 text-xs sm:text-sm font-semibold text-blue-700 border border-blue-100">AI at Work</span>
+              <span class="rounded-full bg-blue-50 px-3 py-2 text-xs sm:text-sm font-semibold text-blue-700 border border-blue-100">Resilience & Growth</span>
+            </div>
+
+            <!-- SIGNATURE LINE -->
+            <div class="mt-8 rounded-2xl bg-slate-900 text-white p-5 shadow-lg">
+              <p class="text-lg sm:text-xl font-semibold tracking-tight">
+                Think better. Build smarter.
+              </p>
+              <p class="mt-2 text-sm sm:text-base text-slate-300">
+                That’s the spirit behind every SCWK insight.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+      <div class="rounded-3xl bg-slate-900 text-white p-6 sm:p-8 lg:p-10 shadow-2xl">
+        <div class="grid md:grid-cols-[1.2fr_0.8fr] gap-6 items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Explore SCWK</p>
+            <h3 class="mt-3 text-2xl sm:text-3xl font-bold tracking-tight">
+              Continue with insights that are short, practical, and easy to revisit.
+            </h3>
+            <p class="mt-4 text-slate-300 leading-relaxed">
+              Whether you prefer quick Agile takeaways or lighter learning formats, SCWK is built to keep learning simple and useful.
             </p>
           </div>
 
+          <div class="flex flex-wrap gap-3 md:justify-end">
+            <a href="scwk-bites.html" class="inline-flex items-center rounded-full bg-white text-slate-900 px-5 py-3 text-sm sm:text-base font-semibold hover:bg-slate-100 transition">
+              Open SCWK Bites
+            </a>
+            <a href="scwk-dose.html" class="inline-flex items-center rounded-full border border-slate-500 text-white px-5 py-3 text-sm sm:text-base font-semibold hover:border-slate-300 transition">
+              Open SCWK Dose
+            </a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white border-t mt-auto">
+  <footer class="bg-white border-t border-slate-200 mt-auto">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 text-center">
-      <p class="text-gray-600 text-sm">
+      <p class="text-slate-600 text-sm">
         © 2026 SCWK — Scrum & Coffee with Karthik
       </p>
-      <p class="text-gray-500 text-xs mt-2">
+      <p class="text-slate-500 text-xs mt-2">
         Built with clarity. Powered by consistency.
       </p>
     </div>
