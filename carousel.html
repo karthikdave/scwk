@@ -3,126 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SCWK Carousel Viewer</title>
+  <title>SCWK Viewer</title>
   <meta
     name="description"
-    content="Reusable SCWK PDF carousel viewer for SCWK Bites and SCWK Lites."
+    content="SCWK PDF viewer for SCWK Bites and SCWK Lites."
   />
   <style>
     :root {
       --bg: #07111f;
-      --bg-soft: #0d1b2f;
-      --surface: rgba(255, 255, 255, 0.06);
-      --surface-2: rgba(255, 255, 255, 0.1);
+      --bg-soft: #0d1b2a;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
       --line: rgba(255, 255, 255, 0.12);
-      --text: #eef4ff;
-      --muted: #b8c7e0;
-      --brand: #3b82f6;
-      --brand-2: #60a5fa;
-      --brand-dark: #1d4ed8;
-      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-      --radius: 20px;
-      --radius-sm: 14px;
-      --max: 1180px;
-      --nav-h: 78px;
+      --text: #e8f1ff;
+      --text-soft: #b7c8e6;
+      --primary: #4ea1ff;
+      --primary-strong: #2f7fe0;
+      --accent: #7cc5ff;
+      --danger: #ff9b9b;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --radius: 18px;
+      --max-width: 1180px;
+      --nav-height: 84px;
+      --font-stack: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      font-family: var(--font-stack);
       background:
-        radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 35%),
-        radial-gradient(circle at bottom left, rgba(96, 165, 250, 0.12), transparent 30%),
-        linear-gradient(180deg, #06101d 0%, #081424 55%, #0b1930 100%);
+        radial-gradient(circle at top right, rgba(78, 161, 255, 0.16), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(124, 197, 255, 0.08), transparent 28%),
+        linear-gradient(180deg, #06101d 0%, #0a1728 100%);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img,
-    canvas {
-      display: block;
-      max-width: 100%;
-    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     .container {
-      width: min(100% - 32px, var(--max));
+      width: min(var(--max-width), calc(100% - 32px));
       margin: 0 auto;
     }
 
+    /* NAVBAR */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(14px);
-      background: rgba(7, 17, 31, 0.82);
+      background: rgba(7, 17, 31, 0.86);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .nav {
-      height: var(--nav-h);
+      min-height: var(--nav-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 24px;
+      padding: 14px 0;
     }
 
     .brand {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
+      flex-shrink: 0;
     }
 
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+    .brand-logo-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: grid;
-      place-items: center;
-      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
       overflow: hidden;
       flex-shrink: 0;
     }
 
-    .brand-logo img {
+    .brand-logo-wrap img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       object-position: center;
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.15;
-    }
+    .brand-text { min-width: 0; }
 
-    .brand-text strong {
-      font-size: 0.95rem;
+    .brand-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
       letter-spacing: 0.02em;
-      color: #ffffff;
+      line-height: 1.1;
     }
 
-    .brand-text span {
-      font-size: 0.76rem;
-      color: var(--muted);
+    .brand-subtitle {
+      margin: 4px 0 0;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav-links {
@@ -132,67 +126,88 @@
       flex-wrap: wrap;
     }
 
-    .nav-links a {
+    .nav-link {
       padding: 10px 14px;
-      border-radius: 999px;
-      color: var(--muted);
+      border-radius: 12px;
+      color: var(--text-soft);
       font-size: 0.95rem;
       font-weight: 600;
       transition: 0.25s ease;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #fff;
-      background: rgba(59, 130, 246, 0.14);
+    .nav-link:hover,
+    .nav-link.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .menu-btn {
+    .mobile-toggle {
       display: none;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
       color: #fff;
       cursor: pointer;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      padding: 0;
+      flex-shrink: 0;
     }
+
+    .mobile-toggle span,
+    .mobile-toggle::before,
+    .mobile-toggle::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transition: 0.25s ease;
+      position: relative;
+    }
+
+    .mobile-toggle::before { transform: translateY(-6px); }
+    .mobile-toggle::after { transform: translateY(6px); }
+
+    .mobile-toggle.is-open span { background: transparent; }
+    .mobile-toggle.is-open::before { transform: rotate(45deg); }
+    .mobile-toggle.is-open::after { transform: rotate(-45deg); }
 
     .mobile-menu {
       display: none;
-      padding: 0 0 18px;
-    }
-
-    .mobile-menu.open {
-      display: block;
+      padding: 0 0 16px;
     }
 
     .mobile-menu-panel {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 18px;
       padding: 10px;
     }
 
     .mobile-menu a {
       display: block;
-      padding: 14px 14px;
+      padding: 12px 14px;
       border-radius: 12px;
-      color: var(--muted);
+      color: var(--text-soft);
       font-weight: 600;
+      font-size: 0.95rem;
     }
 
     .mobile-menu a:hover,
     .mobile-menu a.active {
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      background: rgba(59, 130, 246, 0.14);
     }
 
-    main {
-      padding: 44px 0 72px;
+    .mobile-menu.open { display: block; }
+
+    /* PAGE */
+    .page {
+      padding: 40px 0 56px;
     }
 
     .viewer-shell {
@@ -200,16 +215,17 @@
       gap: 22px;
     }
 
-    .hero-panel,
-    .viewer-panel,
-    .thumbs-panel {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 28px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    .hero-card,
+    .viewer-card,
+    .controls-card,
+    .status-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 26px;
+      box-shadow: var(--shadow);
     }
 
-    .hero-panel {
+    .hero-card {
       padding: 28px;
     }
 
@@ -218,196 +234,93 @@
       align-items: center;
       gap: 8px;
       font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #cfe1ff;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      margin-bottom: 14px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: 700;
     }
 
-    .hero-panel h1 {
-      font-size: clamp(1.8rem, 3.6vw, 3rem);
+    .hero-card h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
       line-height: 1.1;
-      margin-bottom: 10px;
       letter-spacing: -0.03em;
     }
 
-    .hero-panel p {
-      color: var(--muted);
-      max-width: 72ch;
+    .hero-card p {
+      margin: 14px 0 0;
+      color: var(--text-soft);
+      max-width: 70ch;
+      font-size: 1rem;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: 0.25s ease;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-      color: #fff;
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 34px rgba(37, 99, 235, 0.34);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.12);
-      color: #fff;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.08);
-    }
-
-    .viewer-panel {
-      padding: 22px;
-    }
-
-    .viewer-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .viewer-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .meta-pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #d8e7ff;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .viewer-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .viewer-frame {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
+    .viewer-card {
       padding: 18px;
-      min-height: 460px;
+    }
+
+    .canvas-stage {
+      width: 100%;
+      min-height: 540px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: auto;
+      padding: 14px;
     }
 
     .canvas-wrap {
       width: 100%;
       display: flex;
       justify-content: center;
-      overflow: auto;
+      align-items: flex-start;
     }
 
     #pdfCanvas {
+      display: none;
       width: 100%;
-      max-width: 900px;
+      max-width: 100%;
       height: auto;
-      border-radius: 18px;
+      border-radius: 14px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
       background: #ffffff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
     }
 
-    .status {
+    .placeholder {
       text-align: center;
-      color: var(--muted);
-      padding: 18px;
+      color: var(--text-soft);
+      padding: 28px;
+      max-width: 620px;
     }
 
-    .thumbs-panel {
-      padding: 22px;
-    }
-
-    .thumbs-panel h2 {
-      font-size: 1.15rem;
-      margin-bottom: 14px;
-    }
-
-    .thumbs {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 14px;
-    }
-
-    .thumb-btn {
-      width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 12px;
+    .placeholder strong {
+      display: block;
       color: #fff;
-      cursor: pointer;
-      transition: 0.25s ease;
-      text-align: left;
+      font-size: 1rem;
+      margin-bottom: 6px;
     }
 
-    .thumb-btn:hover,
-    .thumb-btn.active {
-      border-color: rgba(96, 165, 250, 0.4);
-      background: rgba(59, 130, 246, 0.12);
-      transform: translateY(-1px);
+    .status-card {
+      padding: 18px 20px;
     }
 
-    .thumb-btn strong {
-      display: block;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
+    .status-text {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.96rem;
     }
 
-    .thumb-btn span {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--muted);
+    .status-text.error {
+      color: var(--danger);
+      font-weight: 600;
     }
 
-    .site-footer {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 24px 0 36px;
-      background: rgba(5, 12, 22, 0.35);
-      backdrop-filter: blur(10px);
-    }
-
-    .footer-inner {
+    .controls-card {
+      padding: 18px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -415,79 +328,199 @@
       flex-wrap: wrap;
     }
 
-    .footer-left {
-      color: var(--muted);
+    .controls-left,
+    .controls-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
       font-size: 0.95rem;
+      transition: 0.25s ease;
+      cursor: pointer;
+      background: transparent;
+      color: #fff;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      box-shadow: 0 12px 24px rgba(47, 127, 224, 0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .page-indicator {
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .open-link {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .open-link:hover {
+      color: #fff;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 18px;
+      padding: 24px 0 40px;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      color: var(--text-soft);
+      font-size: 0.94rem;
     }
 
     .footer-links {
       display: flex;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 10px;
     }
 
     .footer-links a {
-      color: var(--muted);
-      font-weight: 600;
+      color: var(--text-soft);
       font-size: 0.92rem;
+      font-weight: 600;
     }
 
-    .footer-links a:hover {
-      color: #fff;
-    }
+    .footer-links a:hover { color: #fff; }
 
-    @media (max-width: 860px) {
-      .nav-links {
-        display: none;
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .mobile-toggle { display: inline-flex; }
+
+      .brand-logo-wrap {
+        width: 58px;
+        height: 58px;
       }
 
-      .menu-btn {
-        display: inline-flex;
+      .brand-subtitle {
+        max-width: 180px;
       }
 
-      .hero-panel,
-      .viewer-panel,
-      .thumbs-panel {
-        padding: 20px;
-      }
-
-      .viewer-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
+      .canvas-stage {
+        min-height: 420px;
       }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
+      :root { --nav-height: 76px; }
+
       .container {
-        width: min(100% - 20px, var(--max));
+        width: min(var(--max-width), calc(100% - 22px));
       }
 
-      .brand-text strong {
-        font-size: 0.88rem;
+      .nav {
+        gap: 12px;
       }
 
-      .brand-text span {
-        font-size: 0.72rem;
+      .brand {
+        gap: 10px;
       }
 
-      .hero-actions,
-      .viewer-controls {
-        width: 100%;
+      .brand-logo-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
       }
 
-      .hero-actions .btn,
-      .viewer-controls .btn {
-        flex: 1 1 100%;
+      .brand-title {
+        font-size: 0.95rem;
       }
 
-      .viewer-frame {
+      .brand-subtitle {
+        font-size: 0.76rem;
+        max-width: 140px;
+      }
+
+      .page {
+        padding-top: 28px;
+      }
+
+      .hero-card,
+      .viewer-card,
+      .controls-card,
+      .status-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .status-card,
+      .controls-card {
+        padding: 18px;
+      }
+
+      .viewer-card {
         padding: 12px;
-        min-height: 320px;
       }
 
-      .footer-inner {
+      .canvas-stage {
+        min-height: 320px;
+        border-radius: 16px;
+        padding: 10px;
+      }
+
+      .controls-card {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+      }
+
+      .controls-left,
+      .controls-right {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn {
+        flex: 1 1 auto;
+      }
+
+      .page-indicator {
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
@@ -497,24 +530,24 @@
     <div class="container">
       <nav class="nav" aria-label="Primary navigation">
         <a class="brand" href="index.html" aria-label="SCWK Home">
-          <div class="brand-logo">
+          <div class="brand-logo-wrap">
             <img src="logo.png" alt="SCWK logo" />
           </div>
           <div class="brand-text">
-            <strong>SCWK</strong>
-            <span>Scrum &amp; Coffee with Karthik</span>
+            <p class="brand-title">SCWK</p>
+            <p class="brand-subtitle">Scrum &amp; Coffee with Karthik</p>
           </div>
         </a>
 
         <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="carousel.html?id=bites" id="navBites">SCWK Bites</a>
-          <a href="carousel.html?id=lites" id="navLites">SCWK Lites</a>
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" id="navBites" href="carousel.html?id=bites">SCWK Bites</a>
+          <a class="nav-link" id="navLites" href="carousel.html?id=lites">SCWK Lites</a>
         </div>
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          ☰
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
         </button>
       </nav>
 
@@ -522,68 +555,64 @@
         <div class="mobile-menu-panel">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a href="carousel.html?id=bites" id="mobileBites">SCWK Bites</a>
-          <a href="carousel.html?id=lites" id="mobileLites">SCWK Lites</a>
+          <a id="mobileBites" href="carousel.html?id=bites">SCWK Bites</a>
+          <a id="mobileLites" href="carousel.html?id=lites">SCWK Lites</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main>
+  <main class="page">
     <div class="container">
-      <section class="viewer-shell">
-        <div class="hero-panel">
+      <div class="viewer-shell">
+        <section class="hero-card">
           <div class="eyebrow" id="viewerEyebrow">SCWK Viewer</div>
-          <h1 id="viewerTitle">Loading...</h1>
-          <p id="viewerDescription">
-            Preparing the carousel viewer.
-          </p>
+          <h1 id="viewerTitle">Loading document...</h1>
+          <p id="viewerSubtitle">Preparing your SCWK PDF experience.</p>
+        </section>
 
-          <div class="hero-actions">
-            <a class="btn btn-secondary" href="index.html">Home</a>
-            <a class="btn btn-secondary" href="about.html">About</a>
-            <a class="btn btn-primary" id="downloadBtn" href="#" target="_blank" rel="noopener">Open PDF</a>
-          </div>
-        </div>
+        <section class="status-card">
+          <p class="status-text" id="statusText">Loading PDF viewer…</p>
+        </section>
 
-        <div class="viewer-panel">
-          <div class="viewer-toolbar">
-            <div class="viewer-meta">
-              <div class="meta-pill" id="pageIndicator">Page 0 / 0</div>
-              <div class="meta-pill" id="docLabel">Document</div>
+        <section class="viewer-card">
+          <div class="canvas-stage" id="canvasStage">
+            <div class="placeholder" id="placeholder">
+              <strong>Preparing your document…</strong>
+              <span>Please wait while the PDF loads.</span>
             </div>
-
-            <div class="viewer-controls">
-              <button class="btn btn-secondary" id="prevBtn" type="button">Previous</button>
-              <button class="btn btn-secondary" id="nextBtn" type="button">Next</button>
-            </div>
-          </div>
-
-          <div class="viewer-frame">
-            <div class="canvas-wrap" id="canvasWrap">
+            <div class="canvas-wrap">
               <canvas id="pdfCanvas"></canvas>
             </div>
-            <div class="status" id="statusText">Loading PDF...</div>
           </div>
-        </div>
+        </section>
 
-        <div class="thumbs-panel">
-          <h2>Quick Navigation</h2>
-          <div class="thumbs" id="thumbs"></div>
-        </div>
-      </section>
+        <section class="controls-card">
+          <div class="controls-left">
+            <button class="btn btn-secondary" id="prevBtn" disabled>← Previous</button>
+            <button class="btn btn-secondary" id="nextBtn" disabled>Next →</button>
+          </div>
+
+          <div class="controls-right">
+            <div class="page-indicator" id="pageIndicator">Page 0 / 0</div>
+            <a class="open-link" id="openPdfLink" href="#" target="_blank" rel="noopener noreferrer">Open PDF in new tab</a>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-left">© 2026 SCWK · Scrum &amp; Coffee with Karthik</div>
+      <div class="footer-row">
+        <div class="footer-copy">
+          © <span id="year"></span> SCWK — Scrum &amp; Coffee with Karthik
+        </div>
         <div class="footer-links">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a href="carousel.html?id=bites">Bites</a>
-          <a href="carousel.html?id=lites">Lites</a>
+          <a href="carousel.html?id=bites">SCWK Bites</a>
+          <a href="carousel.html?id=lites">SCWK Lites</a>
         </div>
       </div>
     </div>
@@ -591,216 +620,216 @@
 
   <script src="lib/pdfjs/pdf.min.js"></script>
   <script>
-    const menuBtn = document.getElementById('menuBtn');
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    menuBtn.addEventListener('click', () => {
+    mobileToggle.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      menuBtn.textContent = isOpen ? '✕' : '☰';
+      mobileToggle.classList.toggle('is-open', isOpen);
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.textContent = '☰';
-      });
-    });
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    const CONFIG = {
+    // PDF viewer config
+    const DOCS = {
       bites: {
         title: 'SCWK Bites',
         eyebrow: 'SCWK Bites',
-        description: 'Quick, sharp, and actionable carousel learning designed for fast professional value.',
+        subtitle: 'Quick, sharp, professional takeaways — delivered one page at a time.',
         pdf: 'pdf/bites.pdf'
       },
       lites: {
         title: 'SCWK Lites',
         eyebrow: 'SCWK Lites',
-        description: 'Lightweight but meaningful carousel learning built for clarity, reflection, and depth.',
+        subtitle: 'Light reads with clarity, polish, and thoughtful perspective.',
         pdf: 'pdf/lites.pdf'
       }
     };
 
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const docConfig = CONFIG[id] || CONFIG.bites;
+    const id = (params.get('id') || 'bites').toLowerCase();
+    const docConfig = DOCS[id] || DOCS.bites;
 
+    // Active nav state
+    if (id === 'bites') {
+      document.getElementById('navBites').classList.add('active');
+      document.getElementById('mobileBites').classList.add('active');
+    } else {
+      document.getElementById('navLites').classList.add('active');
+      document.getElementById('mobileLites').classList.add('active');
+    }
+
+    // UI refs
     const viewerEyebrow = document.getElementById('viewerEyebrow');
     const viewerTitle = document.getElementById('viewerTitle');
-    const viewerDescription = document.getElementById('viewerDescription');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const docLabel = document.getElementById('docLabel');
-    const pageIndicator = document.getElementById('pageIndicator');
+    const viewerSubtitle = document.getElementById('viewerSubtitle');
     const statusText = document.getElementById('statusText');
-    const pdfCanvas = document.getElementById('pdfCanvas');
-    const thumbs = document.getElementById('thumbs');
+    const placeholder = document.getElementById('placeholder');
+    const canvas = document.getElementById('pdfCanvas');
+    const canvasStage = document.getElementById('canvasStage');
+    const ctx = canvas.getContext('2d');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const navBites = document.getElementById('navBites');
-    const navLites = document.getElementById('navLites');
-    const mobileBites = document.getElementById('mobileBites');
-    const mobileLites = document.getElementById('mobileLites');
+    const pageIndicator = document.getElementById('pageIndicator');
+    const openPdfLink = document.getElementById('openPdfLink');
 
     viewerEyebrow.textContent = docConfig.eyebrow;
     viewerTitle.textContent = docConfig.title;
-    viewerDescription.textContent = docConfig.description;
-    downloadBtn.href = docConfig.pdf;
-    docLabel.textContent = docConfig.title;
+    viewerSubtitle.textContent = docConfig.subtitle;
+    openPdfLink.href = docConfig.pdf;
     document.title = docConfig.title + ' | SCWK';
 
-    if (id === 'lites') {
-      navLites.classList.add('active');
-      mobileLites.classList.add('active');
-    } else {
-      navBites.classList.add('active');
-      mobileBites.classList.add('active');
+    // pdf.js worker
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdfjs/pdf.worker.min.js';
     }
-
-    if (!window.pdfjsLib) {
-      statusText.textContent = 'PDF viewer failed to initialize. Check lib/pdfjs/pdf.min.js path.';
-      prevBtn.disabled = true;
-      nextBtn.disabled = true;
-      throw new Error('pdfjsLib not found. Check lib/pdfjs/pdf.min.js path.');
-    }
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdfjs/pdf.worker.min.js';
 
     let pdfDoc = null;
     let currentPage = 1;
+    let totalPages = 0;
     let isRendering = false;
     let pendingPage = null;
 
-    const ctx = pdfCanvas.getContext('2d');
-
-    function setStatus(message, show = true) {
+    function setStatus(message, isError = false) {
       statusText.textContent = message;
-      statusText.style.display = show ? 'block' : 'none';
+      statusText.classList.toggle('error', isError);
     }
 
-    function updatePageIndicator() {
-      const total = pdfDoc ? pdfDoc.numPages : 0;
-      pageIndicator.textContent = `Page ${currentPage} / ${total}`;
-      updateThumbStates();
+    function updateControls() {
+      const hasDoc = !!pdfDoc;
+      prevBtn.disabled = !hasDoc || currentPage <= 1 || isRendering;
+      nextBtn.disabled = !hasDoc || currentPage >= totalPages || isRendering;
+      pageIndicator.textContent = hasDoc ? `Page ${currentPage} / ${totalPages}` : 'Page 0 / 0';
     }
 
-    function updateButtons() {
-      const total = pdfDoc ? pdfDoc.numPages : 0;
-      prevBtn.disabled = currentPage <= 1;
-      nextBtn.disabled = currentPage >= total;
-      prevBtn.style.opacity = prevBtn.disabled ? '0.55' : '1';
-      nextBtn.style.opacity = nextBtn.disabled ? '0.55' : '1';
-      prevBtn.style.pointerEvents = prevBtn.disabled ? 'none' : 'auto';
-      nextBtn.style.pointerEvents = nextBtn.disabled ? 'none' : 'auto';
+    function showCanvas() {
+      placeholder.style.display = 'none';
+      canvas.style.display = 'block';
     }
 
-    function updateThumbStates() {
-      document.querySelectorAll('.thumb-btn').forEach(btn => {
-        const page = Number(btn.dataset.page);
-        btn.classList.toggle('active', page === currentPage);
-      });
+    function showPlaceholder(title, message, isError = false) {
+      canvas.style.display = 'none';
+      placeholder.style.display = 'block';
+      placeholder.innerHTML = `
+        <strong>${title}</strong>
+        <span>${message}</span>
+      `;
+      setStatus(message, isError);
     }
 
-    function renderPage(pageNum) {
+    async function renderPage(pageNumber) {
+      if (!pdfDoc) return;
+
       isRendering = true;
-      setStatus(`Rendering page ${pageNum}...`, true);
+      updateControls();
+      setStatus(`Rendering page ${pageNumber} of ${totalPages}…`);
 
-      pdfDoc.getPage(pageNum).then(page => {
-        const containerWidth = Math.min(window.innerWidth - 90, 900);
+      try {
+        const page = await pdfDoc.getPage(pageNumber);
+
+        const availableWidth = Math.max(320, canvasStage.clientWidth - 40);
         const unscaledViewport = page.getViewport({ scale: 1 });
-        const scale = containerWidth / unscaledViewport.width;
+        const scale = availableWidth / unscaledViewport.width;
         const viewport = page.getViewport({ scale });
 
-        pdfCanvas.width = viewport.width;
-        pdfCanvas.height = viewport.height;
+        const outputScale = window.devicePixelRatio || 1;
+
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
 
         const renderContext = {
           canvasContext: ctx,
-          viewport: viewport
+          viewport,
+          transform: outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null
         };
 
-        return page.render(renderContext).promise;
-      }).then(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        await page.render(renderContext).promise;
+
+        currentPage = pageNumber;
+        showCanvas();
+        setStatus(`Showing page ${currentPage} of ${totalPages}.`);
+      } catch (error) {
+        console.error('Error rendering page:', error);
+        showPlaceholder('Unable to render page', 'The PDF loaded, but this page could not be displayed.', true);
+      } finally {
         isRendering = false;
-        currentPage = pageNum;
-        updatePageIndicator();
-        updateButtons();
-        setStatus('', false);
 
         if (pendingPage !== null) {
           const nextPending = pendingPage;
           pendingPage = null;
           renderPage(nextPending);
+        } else {
+          updateControls();
         }
-      }).catch(error => {
-        console.error('Render error:', error);
-        isRendering = false;
-        setStatus('Failed to render PDF page.', true);
-      });
+      }
     }
 
-    function queueRenderPage(pageNum) {
-      if (!pdfDoc) return;
-      if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
-
+    function queueRender(pageNumber) {
       if (isRendering) {
-        pendingPage = pageNum;
+        pendingPage = pageNumber;
       } else {
-        renderPage(pageNum);
+        renderPage(pageNumber);
       }
-    }
-
-    function buildThumbs(totalPages) {
-      thumbs.innerHTML = '';
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'thumb-btn';
-        btn.dataset.page = i;
-        btn.innerHTML = `
-          <strong>Page ${i}</strong>
-          <span>${docConfig.title}</span>
-        `;
-        btn.addEventListener('click', () => queueRenderPage(i));
-        thumbs.appendChild(btn);
-      }
-      updateThumbStates();
     }
 
     prevBtn.addEventListener('click', () => {
-      if (currentPage > 1) queueRenderPage(currentPage - 1);
+      if (currentPage <= 1) return;
+      queueRender(currentPage - 1);
     });
 
     nextBtn.addEventListener('click', () => {
-      if (pdfDoc && currentPage < pdfDoc.numPages) queueRenderPage(currentPage + 1);
+      if (currentPage >= totalPages) return;
+      queueRender(currentPage + 1);
     });
 
     window.addEventListener('resize', () => {
-      if (pdfDoc) {
-        queueRenderPage(currentPage);
+      if (pdfDoc && !isRendering) {
+        queueRender(currentPage);
       }
     });
 
-    pdfjsLib.getDocument(docConfig.pdf).promise
-      .then(doc => {
-        pdfDoc = doc;
-        buildThumbs(pdfDoc.numPages);
-        updateButtons();
-        updatePageIndicator();
-        renderPage(currentPage);
-      })
-      .catch(error => {
+    async function loadPdf() {
+      try {
+        if (!window.pdfjsLib) {
+          throw new Error('pdf.js library did not load.');
+        }
+
+        setStatus('Loading PDF document…');
+        showPlaceholder('Loading document…', 'Please wait while the PDF is fetched.');
+
+        const loadingTask = pdfjsLib.getDocument(docConfig.pdf);
+        pdfDoc = await loadingTask.promise;
+
+        totalPages = pdfDoc.numPages;
+        currentPage = 1;
+        updateControls();
+
+        if (!totalPages || totalPages < 1) {
+          throw new Error('PDF contains no pages.');
+        }
+
+        await renderPage(1);
+      } catch (error) {
         console.error('PDF load error:', error);
-        setStatus(
-          'Unable to load PDF. Verify these files exist exactly: ' +
-          docConfig.pdf +
-          ' and lib/pdfjs/pdf.worker.min.js',
+        pdfDoc = null;
+        totalPages = 0;
+        currentPage = 0;
+        updateControls();
+
+        showPlaceholder(
+          'PDF could not be loaded',
+          `Please verify the file exists at "${docConfig.pdf}" and pdf.js files are in "lib/pdfjs/".`,
           true
         );
-        prevBtn.disabled = true;
-        nextBtn.disabled = true;
-      });
+      }
+    }
+
+    loadPdf();
   </script>
 </body>
 </html>
