@@ -13,16 +13,16 @@
   <!-- NAVBAR -->
   <nav class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="SCWK Logo" class="h-10 w-auto">
+      <a href="./index.html" class="flex items-center gap-3">
+        <img src="./logo.png" alt="SCWK Logo" class="h-10 w-auto">
       </a>
 
       <!-- Desktop Nav -->
       <div class="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-slate-700">
-        <a href="index.html" class="hover:text-blue-600 transition">Home</a>
-        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
-        <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
-        <a href="about.html" class="text-blue-600 font-semibold">About</a>
+        <a href="./index.html" class="hover:text-blue-600 transition">Home</a>
+        <a href="./carousel.html?id=bites" class="hover:text-blue-600 transition">SCWK Bites</a>
+        <a href="./carousel.html?id=lites" class="hover:text-blue-600 transition">SCWK Lites</a>
+        <a href="./about.html" class="text-blue-600 font-semibold">About</a>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -39,10 +39,10 @@
     <!-- Mobile Nav Menu -->
     <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 bg-white">
       <div class="px-4 py-3 flex flex-col gap-3 text-sm font-medium text-slate-700">
-        <a href="index.html" class="hover:text-blue-600 transition">Home</a>
-        <a href="scwk-bites.html" class="hover:text-blue-600 transition">SCWK Bites</a>
-        <a href="scwk-dose.html" class="hover:text-blue-600 transition">SCWK Dose</a>
-        <a href="about.html" class="text-blue-600 font-semibold">About</a>
+        <a href="./index.html" class="hover:text-blue-600 transition">Home</a>
+        <a href="./carousel.html?id=bites" class="hover:text-blue-600 transition">SCWK Bites</a>
+        <a href="./carousel.html?id=lites" class="hover:text-blue-600 transition">SCWK Lites</a>
+        <a href="./about.html" class="text-blue-600 font-semibold">About</a>
       </div>
     </div>
   </nav>
@@ -75,8 +75,12 @@
           <div class="flex justify-center">
             <div class="w-full max-w-sm rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-lg">
               <div class="overflow-hidden rounded-2xl">
-                <img src="Me_Cas_Coat.png" alt="Karthik Dave"
-                  class="rounded-2xl shadow-md w-full h-auto object-cover">
+                <img
+                  src="./Me_Cas_Coat.png"
+                  alt="Karthik Dave"
+                  class="rounded-2xl shadow-md w-full h-auto object-cover"
+                  loading="lazy"
+                />
               </div>
 
               <div class="mt-4 rounded-2xl bg-white border border-slate-200 p-4">
@@ -156,11 +160,11 @@
           </div>
 
           <div class="flex flex-wrap gap-3 md:justify-end">
-            <a href="scwk-bites.html" class="inline-flex items-center rounded-full bg-white text-slate-900 px-5 py-3 text-sm sm:text-base font-semibold hover:bg-slate-100 transition">
+            <a href="./carousel.html?id=bites" class="inline-flex items-center rounded-full bg-white text-slate-900 px-5 py-3 text-sm sm:text-base font-semibold hover:bg-slate-100 transition">
               Open SCWK Bites
             </a>
-            <a href="scwk-dose.html" class="inline-flex items-center rounded-full border border-slate-500 text-white px-5 py-3 text-sm sm:text-base font-semibold hover:border-slate-300 transition">
-              Open SCWK Dose
+            <a href="./carousel.html?id=lites" class="inline-flex items-center rounded-full border border-slate-500 text-white px-5 py-3 text-sm sm:text-base font-semibold hover:border-slate-300 transition">
+              Open SCWK Lites
             </a>
           </div>
         </div>
@@ -186,11 +190,22 @@
     const menuOpenIcon = document.getElementById("menu-open-icon");
     const menuCloseIcon = document.getElementById("menu-close-icon");
 
-    mobileMenuBtn.addEventListener("click", function () {
-      mobileMenu.classList.toggle("hidden");
-      menuOpenIcon.classList.toggle("hidden");
-      menuCloseIcon.classList.toggle("hidden");
-    });
+    if (mobileMenuBtn && mobileMenu && menuOpenIcon && menuCloseIcon) {
+      mobileMenuBtn.addEventListener("click", function () {
+        mobileMenu.classList.toggle("hidden");
+        menuOpenIcon.classList.toggle("hidden");
+        menuCloseIcon.classList.toggle("hidden");
+      });
+
+      const mobileLinks = mobileMenu.querySelectorAll("a");
+      mobileLinks.forEach(link => {
+        link.addEventListener("click", function () {
+          mobileMenu.classList.add("hidden");
+          menuOpenIcon.classList.remove("hidden");
+          menuCloseIcon.classList.add("hidden");
+        });
+      });
+    }
   </script>
 
 </body>
