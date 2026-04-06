@@ -6,122 +6,116 @@
   <title>About | SCWK</title>
   <meta
     name="description"
-    content="About Karthik – the story behind SCWK, Scrum & Coffee with Karthik."
+    content="Meet Karthik — the person behind Scrum & Coffee with Karthik (SCWK)."
   />
   <style>
     :root {
       --bg: #07111f;
-      --bg-soft: #0d1b2f;
-      --surface: rgba(255, 255, 255, 0.06);
-      --surface-2: rgba(255, 255, 255, 0.1);
+      --bg-soft: #0d1b2a;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
       --line: rgba(255, 255, 255, 0.12);
-      --text: #eef4ff;
-      --muted: #b8c7e0;
-      --brand: #3b82f6;
-      --brand-2: #60a5fa;
-      --brand-dark: #1d4ed8;
-      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-      --radius: 20px;
-      --radius-sm: 14px;
-      --max: 1180px;
-      --nav-h: 78px;
+      --text: #e8f1ff;
+      --text-soft: #b7c8e6;
+      --primary: #4ea1ff;
+      --primary-strong: #2f7fe0;
+      --accent: #7cc5ff;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --radius: 18px;
+      --max-width: 1180px;
+      --nav-height: 84px;
+      --font-stack: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      font-family: var(--font-stack);
       background:
-        radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 35%),
-        radial-gradient(circle at bottom left, rgba(96, 165, 250, 0.12), transparent 30%),
-        linear-gradient(180deg, #06101d 0%, #081424 55%, #0b1930 100%);
+        radial-gradient(circle at top right, rgba(78, 161, 255, 0.16), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(124, 197, 255, 0.08), transparent 28%),
+        linear-gradient(180deg, #06101d 0%, #0a1728 100%);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     .container {
-      width: min(100% - 32px, var(--max));
+      width: min(var(--max-width), calc(100% - 32px));
       margin: 0 auto;
     }
 
+    /* NAVBAR */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(14px);
-      background: rgba(7, 17, 31, 0.82);
+      background: rgba(7, 17, 31, 0.86);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .nav {
-      height: var(--nav-h);
+      min-height: var(--nav-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 24px;
+      padding: 14px 0;
     }
 
     .brand {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
+      flex-shrink: 0;
     }
 
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+    .brand-logo-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: grid;
-      place-items: center;
-      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
       overflow: hidden;
       flex-shrink: 0;
     }
 
-    .brand-logo img {
+    .brand-logo-wrap img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       object-position: center;
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.15;
-    }
+    .brand-text { min-width: 0; }
 
-    .brand-text strong {
-      font-size: 0.95rem;
+    .brand-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
       letter-spacing: 0.02em;
-      color: #ffffff;
+      line-height: 1.1;
     }
 
-    .brand-text span {
-      font-size: 0.76rem;
-      color: var(--muted);
+    .brand-subtitle {
+      margin: 4px 0 0;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav-links {
@@ -131,109 +125,97 @@
       flex-wrap: wrap;
     }
 
-    .nav-links a {
+    .nav-link {
       padding: 10px 14px;
-      border-radius: 999px;
-      color: var(--muted);
+      border-radius: 12px;
+      color: var(--text-soft);
       font-size: 0.95rem;
       font-weight: 600;
       transition: 0.25s ease;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #fff;
-      background: rgba(59, 130, 246, 0.14);
+    .nav-link:hover,
+    .nav-link.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .menu-btn {
+    .mobile-toggle {
       display: none;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
       color: #fff;
       cursor: pointer;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      padding: 0;
+      flex-shrink: 0;
     }
+
+    .mobile-toggle span,
+    .mobile-toggle::before,
+    .mobile-toggle::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transition: 0.25s ease;
+      position: relative;
+    }
+
+    .mobile-toggle::before { transform: translateY(-6px); }
+    .mobile-toggle::after { transform: translateY(6px); }
+
+    .mobile-toggle.is-open span { background: transparent; }
+    .mobile-toggle.is-open::before { transform: rotate(45deg); }
+    .mobile-toggle.is-open::after { transform: rotate(-45deg); }
 
     .mobile-menu {
       display: none;
-      padding: 0 0 18px;
-    }
-
-    .mobile-menu.open {
-      display: block;
+      padding: 0 0 16px;
     }
 
     .mobile-menu-panel {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 18px;
       padding: 10px;
     }
 
     .mobile-menu a {
       display: block;
-      padding: 14px 14px;
+      padding: 12px 14px;
       border-radius: 12px;
-      color: var(--muted);
+      color: var(--text-soft);
       font-weight: 600;
+      font-size: 0.95rem;
     }
 
     .mobile-menu a:hover,
     .mobile-menu a.active {
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      background: rgba(59, 130, 246, 0.14);
     }
 
-    main {
-      padding: 62px 0 72px;
+    .mobile-menu.open { display: block; }
+
+    /* PAGE */
+    .page {
+      padding: 42px 0 54px;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 28px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-    }
-
-    .photo-panel {
-      padding: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .photo-wrap {
-      width: 100%;
-      max-width: 460px;
-      aspect-ratio: 4 / 5;
-      border-radius: 24px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .photo-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-    }
-
-    .content-panel {
-      padding: 34px;
+    .hero-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 26px;
     }
 
     .eyebrow {
@@ -241,79 +223,108 @@
       align-items: center;
       gap: 8px;
       font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #cfe1ff;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      margin-bottom: 18px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 14px;
+      font-weight: 700;
     }
 
-    h1 {
-      font-size: clamp(2rem, 4vw, 3.6rem);
+    .hero-card h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.5rem);
       line-height: 1.08;
       letter-spacing: -0.03em;
-      margin-bottom: 16px;
     }
 
-    .lead {
-      color: var(--muted);
-      font-size: 1.05rem;
-      margin-bottom: 22px;
+    .hero-card p {
+      margin: 16px 0 0;
+      color: var(--text-soft);
+      max-width: 70ch;
+      font-size: 1.02rem;
     }
 
-    .copy {
+    .about-grid {
       display: grid;
-      gap: 16px;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 26px;
+      align-items: stretch;
     }
 
-    .copy p {
-      color: #dbe7fb;
+    .photo-card,
+    .content-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .section {
-      margin-top: 28px;
+    .photo-card {
+      padding: 18px;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
+    .photo-frame {
+      border-radius: 22px;
+      overflow: hidden;
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      min-height: 100%;
     }
 
-    .card h3 {
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .content-card {
+      padding: 28px;
+    }
+
+    .content-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.8rem;
+      line-height: 1.2;
+    }
+
+    .content-card p {
+      margin: 0 0 16px;
+      color: var(--text-soft);
       font-size: 1rem;
-      margin-bottom: 8px;
     }
 
-    .card p {
-      color: var(--muted);
-      font-size: 0.94rem;
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 22px;
     }
 
-    .cta-strip {
-      margin-top: 28px;
+    .pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #d9e8ff;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .action-row {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
+      margin-top: 8px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      min-height: 50px;
+      gap: 10px;
+      min-height: 52px;
       padding: 0 20px;
       border-radius: 14px;
       border: 1px solid transparent;
@@ -324,34 +335,53 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
       color: #fff;
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 12px 24px rgba(47, 127, 224, 0.28);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 18px 34px rgba(37, 99, 235, 0.34);
+      box-shadow: 0 16px 28px rgba(47, 127, 224, 0.34);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.06);
       border-color: rgba(255,255,255,0.12);
       color: #fff;
     }
 
     .btn-secondary:hover {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.1);
     }
 
+    .section-card {
+      margin-top: 26px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    .section-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+    }
+
+    .section-card p {
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    /* FOOTER */
     .site-footer {
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 24px 0 36px;
-      background: rgba(5, 12, 22, 0.35);
-      backdrop-filter: blur(10px);
+      margin-top: 18px;
+      padding: 24px 0 40px;
     }
 
-    .footer-inner {
+    .footer-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -359,86 +389,104 @@
       flex-wrap: wrap;
     }
 
-    .footer-left {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .footer-copy {
+      color: var(--text-soft);
+      font-size: 0.94rem;
     }
 
     .footer-links {
       display: flex;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 10px;
     }
 
     .footer-links a {
-      color: var(--muted);
-      font-weight: 600;
+      color: var(--text-soft);
       font-size: 0.92rem;
+      font-weight: 600;
     }
 
-    .footer-links a:hover {
-      color: #fff;
-    }
+    .footer-links a:hover { color: #fff; }
 
     @media (max-width: 980px) {
-      .hero {
+      .nav-links { display: none; }
+      .mobile-toggle { display: inline-flex; }
+
+      .about-grid {
         grid-template-columns: 1fr;
       }
 
-      .cards {
-        grid-template-columns: 1fr;
+      .brand-logo-wrap {
+        width: 58px;
+        height: 58px;
+      }
+
+      .brand-subtitle {
+        max-width: 180px;
       }
     }
 
-    @media (max-width: 860px) {
-      .nav-links {
-        display: none;
-      }
+    @media (max-width: 640px) {
+      :root { --nav-height: 76px; }
 
-      .menu-btn {
-        display: inline-flex;
-      }
-
-      main {
-        padding-top: 42px;
-      }
-
-      .content-panel,
-      .photo-panel {
-        padding: 22px;
-      }
-    }
-
-    @media (max-width: 560px) {
       .container {
-        width: min(100% - 20px, var(--max));
+        width: min(var(--max-width), calc(100% - 22px));
       }
 
-      .brand-text strong {
-        font-size: 0.88rem;
+      .nav {
+        gap: 12px;
       }
 
-      .brand-text span {
-        font-size: 0.72rem;
+      .brand {
+        gap: 10px;
       }
 
-      .lead,
-      .copy p,
-      .card p {
+      .brand-logo-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+      }
+
+      .brand-title {
         font-size: 0.95rem;
       }
 
-      .cta-strip {
+      .brand-subtitle {
+        font-size: 0.76rem;
+        max-width: 140px;
+      }
+
+      .page {
+        padding-top: 28px;
+      }
+
+      .hero-card,
+      .photo-card,
+      .content-card,
+      .section-card {
+        border-radius: 20px;
+      }
+
+      .hero-card,
+      .content-card,
+      .section-card {
+        padding: 20px;
+      }
+
+      .photo-card {
+        padding: 14px;
+      }
+
+      .photo-frame {
+        border-radius: 16px;
+      }
+
+      .action-row {
         flex-direction: column;
       }
 
-      .cta-strip .btn {
+      .action-row .btn {
         width: 100%;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
       }
     }
   </style>
@@ -448,31 +496,31 @@
     <div class="container">
       <nav class="nav" aria-label="Primary navigation">
         <a class="brand" href="index.html" aria-label="SCWK Home">
-          <div class="brand-logo">
+          <div class="brand-logo-wrap">
             <img src="logo.png" alt="SCWK logo" />
           </div>
           <div class="brand-text">
-            <strong>SCWK</strong>
-            <span>Scrum &amp; Coffee with Karthik</span>
+            <p class="brand-title">SCWK</p>
+            <p class="brand-subtitle">Scrum &amp; Coffee with Karthik</p>
           </div>
         </a>
 
         <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="about.html" class="active">About</a>
-          <a href="carousel.html?id=bites">SCWK Bites</a>
-          <a href="carousel.html?id=lites">SCWK Lites</a>
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link active" href="about.html">About</a>
+          <a class="nav-link" href="carousel.html?id=bites">SCWK Bites</a>
+          <a class="nav-link" href="carousel.html?id=lites">SCWK Lites</a>
         </div>
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          ☰
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
         </button>
       </nav>
 
       <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-panel">
           <a href="index.html">Home</a>
-          <a href="about.html" class="active">About</a>
+          <a class="active" href="about.html">About</a>
           <a href="carousel.html?id=bites">SCWK Bites</a>
           <a href="carousel.html?id=lites">SCWK Lites</a>
         </div>
@@ -480,25 +528,86 @@
     </div>
   </header>
 
-  <main>
+  <main class="page">
     <div class="container">
-      <section class="hero">
-        <div class="panel photo-panel">
-          <div class="photo-wrap">
-            <img src="Me_Cas_Coat.png" alt="Karthik - SCWK" />
+      <section class="hero-card">
+        <div class="eyebrow">About SCWK</div>
+        <h1>Meet Karthik</h1>
+        <p>
+          Welcome to <strong>Scrum &amp; Coffee with Karthik</strong> — a personal brand built around clarity,
+          consistency, and professional storytelling. SCWK is designed to make insights feel simple, useful, and memorable.
+        </p>
+      </section>
+
+      <section class="about-grid">
+        <div class="photo-card">
+          <div class="photo-frame">
+            <img src="Me_Cas_Coat.png" alt="Karthik portrait" />
           </div>
         </div>
 
-        <div class="panel content-panel">
-          <div class="eyebrow">About SCWK</div>
-          <h1>Meet Karthik</h1>
-          <p class="lead">
-            SCWK – Scrum &amp; Coffee with Karthik – is a personal brand built around clarity, practical Agile thinking, and professional storytelling that feels grounded, relevant, and human.
+        <div class="content-card">
+          <h2>The person behind the brand</h2>
+          <p>
+            SCWK reflects a clean, modern, and thoughtful approach to professional content. It’s a space where concise ideas,
+            polished presentation, and purposeful communication come together.
+          </p>
+          <p>
+            Whether it’s through <strong>SCWK Bites</strong> or <strong>SCWK Lites</strong>, the goal remains the same:
+            make learning and reflection feel accessible, elegant, and impactful.
           </p>
 
-          <div class="copy">
-            <p>
-              This platform is designed to bring together concise ideas, useful reflections, and consistent learning moments for professionals who value simplicity with depth.
-            </p>
-            <p>
-              Through SCWK Bites and SCWK Lites, the
+          <div class="pill-list">
+            <span class="pill">Clean &amp; Premium</span>
+            <span class="pill">Professional</span>
+            <span class="pill">Consistent UX</span>
+            <span class="pill">Blue-Theme Identity</span>
+          </div>
+
+          <div class="action-row">
+            <a class="btn btn-primary" href="carousel.html?id=bites">View SCWK Bites</a>
+            <a class="btn btn-secondary" href="carousel.html?id=lites">View SCWK Lites</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h3>Why SCWK exists</h3>
+        <p>
+          SCWK is intentionally minimal in structure so the focus stays on the value of the content. The design language,
+          page flow, and navigation are kept consistent to create a smooth, premium experience across the site.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-row">
+        <div class="footer-copy">
+          © <span id="year"></span> SCWK — Scrum &amp; Coffee with Karthik
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="carousel.html?id=bites">SCWK Bites</a>
+          <a href="carousel.html?id=lites">SCWK Lites</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      mobileToggle.classList.toggle('is-open', isOpen);
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
