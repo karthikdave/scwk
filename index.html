@@ -6,101 +6,94 @@
   <title>SCWK | Scrum & Coffee with Karthik</title>
   <meta
     name="description"
-    content="SCWK – Scrum & Coffee with Karthik. A clean, modern personal brand hub for Agile insights, SCWK Bites, and SCWK Lites."
+    content="SCWK (Scrum & Coffee with Karthik) — a premium personal brand experience sharing insights through SCWK Bites and SCWK Lites."
   />
   <style>
     :root {
       --bg: #07111f;
-      --bg-soft: #0d1b2f;
-      --surface: rgba(255, 255, 255, 0.06);
-      --surface-2: rgba(255, 255, 255, 0.1);
+      --bg-soft: #0d1b2a;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
       --line: rgba(255, 255, 255, 0.12);
-      --text: #eef4ff;
-      --muted: #b8c7e0;
-      --brand: #3b82f6;
-      --brand-2: #60a5fa;
-      --brand-dark: #1d4ed8;
-      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-      --radius: 20px;
-      --radius-sm: 14px;
-      --max: 1180px;
-      --nav-h: 78px;
+      --text: #e8f1ff;
+      --text-soft: #b7c8e6;
+      --primary: #4ea1ff;
+      --primary-strong: #2f7fe0;
+      --accent: #7cc5ff;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --radius: 18px;
+      --max-width: 1180px;
+      --nav-height: 84px;
+      --font-stack: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      font-family: var(--font-stack);
       background:
-        radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 35%),
-        radial-gradient(circle at bottom left, rgba(96, 165, 250, 0.12), transparent 30%),
-        linear-gradient(180deg, #06101d 0%, #081424 55%, #0b1930 100%);
+        radial-gradient(circle at top right, rgba(78, 161, 255, 0.16), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(124, 197, 255, 0.08), transparent 28%),
+        linear-gradient(180deg, #06101d 0%, #0a1728 100%);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     .container {
-      width: min(100% - 32px, var(--max));
+      width: min(var(--max-width), calc(100% - 32px));
       margin: 0 auto;
     }
 
+    /* NAVBAR */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(14px);
-      background: rgba(7, 17, 31, 0.82);
+      background: rgba(7, 17, 31, 0.86);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .nav {
-      height: var(--nav-h);
+      min-height: var(--nav-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 24px;
+      padding: 14px 0;
     }
 
     .brand {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       min-width: 0;
+      flex-shrink: 0;
     }
 
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+    .brand-logo-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: grid;
-      place-items: center;
-      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
       overflow: hidden;
       flex-shrink: 0;
     }
 
-    .brand-logo img {
+    .brand-logo-wrap img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -108,20 +101,24 @@
     }
 
     .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.15;
+      min-width: 0;
     }
 
-    .brand-text strong {
-      font-size: 0.95rem;
+    .brand-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
       letter-spacing: 0.02em;
-      color: #ffffff;
+      line-height: 1.1;
     }
 
-    .brand-text span {
-      font-size: 0.76rem;
-      color: var(--muted);
+    .brand-subtitle {
+      margin: 4px 0 0;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav-links {
@@ -131,85 +128,102 @@
       flex-wrap: wrap;
     }
 
-    .nav-links a {
+    .nav-link {
       padding: 10px 14px;
-      border-radius: 999px;
-      color: var(--muted);
+      border-radius: 12px;
+      color: var(--text-soft);
       font-size: 0.95rem;
       font-weight: 600;
       transition: 0.25s ease;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #fff;
-      background: rgba(59, 130, 246, 0.14);
+    .nav-link:hover,
+    .nav-link.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .menu-btn {
+    .mobile-toggle {
       display: none;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
       color: #fff;
       cursor: pointer;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      padding: 0;
+      flex-shrink: 0;
     }
+
+    .mobile-toggle span,
+    .mobile-toggle::before,
+    .mobile-toggle::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transition: 0.25s ease;
+      position: relative;
+    }
+
+    .mobile-toggle::before { transform: translateY(-6px); }
+    .mobile-toggle::after { transform: translateY(6px); }
+
+    .mobile-toggle.is-open span { background: transparent; }
+    .mobile-toggle.is-open::before { transform: rotate(45deg); }
+    .mobile-toggle.is-open::after { transform: rotate(-45deg); }
 
     .mobile-menu {
       display: none;
-      padding: 0 0 18px;
-    }
-
-    .mobile-menu.open {
-      display: block;
+      padding: 0 0 16px;
     }
 
     .mobile-menu-panel {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 18px;
       padding: 10px;
     }
 
     .mobile-menu a {
       display: block;
-      padding: 14px 14px;
+      padding: 12px 14px;
       border-radius: 12px;
-      color: var(--muted);
+      color: var(--text-soft);
       font-weight: 600;
+      font-size: 0.95rem;
     }
 
     .mobile-menu a:hover,
     .mobile-menu a.active {
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      background: rgba(59, 130, 246, 0.14);
     }
 
-    main {
-      overflow: hidden;
-    }
+    .mobile-menu.open { display: block; }
 
+    /* HERO */
     .hero {
-      padding: 72px 0 44px;
+      padding: 56px 0 34px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 28px;
       align-items: stretch;
     }
 
     .hero-card,
     .hero-side {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 26px;
       box-shadow: var(--shadow);
     }
 
@@ -222,27 +236,24 @@
       align-items: center;
       gap: 8px;
       font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #cfe1ff;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      margin-bottom: 18px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 14px;
+      font-weight: 700;
     }
 
     .hero h1 {
-      font-size: clamp(2.2rem, 4.6vw, 4.4rem);
-      line-height: 1.05;
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4.25rem);
+      line-height: 1.08;
       letter-spacing: -0.03em;
-      margin-bottom: 16px;
     }
 
     .hero p {
+      margin: 18px 0 0;
+      color: var(--text-soft);
       font-size: 1.05rem;
-      color: var(--muted);
       max-width: 62ch;
     }
 
@@ -257,8 +268,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      min-height: 50px;
+      gap: 10px;
+      min-height: 52px;
       padding: 0 20px;
       border-radius: 14px;
       border: 1px solid transparent;
@@ -269,108 +280,155 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
       color: #fff;
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 12px 24px rgba(47, 127, 224, 0.28);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 18px 34px rgba(37, 99, 235, 0.34);
+      box-shadow: 0 16px 28px rgba(47, 127, 224, 0.34);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.06);
       border-color: rgba(255,255,255,0.12);
       color: #fff;
     }
 
     .btn-secondary:hover {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.1);
     }
 
     .hero-side {
-      padding: 24px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .side-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(78, 161, 255, 0.12);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .side-title {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.2;
+    }
+
+    .side-copy {
+      margin: 10px 0 0;
+      color: var(--text-soft);
+      font-size: 0.98rem;
+    }
+
+    .mini-stats {
       display: grid;
-      gap: 16px;
-      align-content: center;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
     }
 
-    .stat-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 18px;
+    .mini-stat {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 16px;
     }
 
-    .stat-card h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
+    .mini-stat strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
     }
 
-    .stat-card p {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .mini-stat span {
+      color: var(--text-soft);
+      font-size: 0.9rem;
     }
 
+    /* SECTIONS */
     .section {
-      padding: 26px 0 70px;
+      padding: 18px 0 54px;
     }
 
-    .section-title {
-      margin-bottom: 24px;
+    .section-head {
+      margin-bottom: 22px;
     }
 
-    .section-title h2 {
-      font-size: clamp(1.6rem, 3vw, 2.5rem);
-      margin-bottom: 8px;
+    .section-kicker {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
-    .section-title p {
-      color: var(--muted);
+    .section h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.6rem);
+      line-height: 1.15;
+    }
+
+    .section p.lead {
+      margin: 12px 0 0;
+      color: var(--text-soft);
       max-width: 70ch;
+      font-size: 1rem;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 24px;
+      gap: 22px;
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.09);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
       border-radius: 24px;
-      padding: 28px;
+      padding: 24px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      min-height: 100%;
+      gap: 14px;
     }
 
     .card-badge {
-      display: inline-block;
+      display: inline-flex;
       width: fit-content;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
       padding: 8px 12px;
       border-radius: 999px;
-      margin-bottom: 16px;
-      background: rgba(96, 165, 250, 0.14);
-      color: #d7e8ff;
-      border: 1px solid rgba(96, 165, 250, 0.18);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .card h3 {
+      margin: 0;
       font-size: 1.55rem;
-      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .card p {
-      color: var(--muted);
-      margin-bottom: 22px;
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.98rem;
     }
 
     .card .btn {
@@ -378,31 +436,48 @@
       width: fit-content;
     }
 
-    .about-strip {
-      margin-top: 26px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 24px;
-      padding: 24px;
+    .about-preview {
       display: grid;
-      grid-template-columns: 1.2fr auto;
-      gap: 18px;
-      align-items: center;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .about-preview-card,
+    .quote-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border-radius: 24px;
+      padding: 26px;
       box-shadow: var(--shadow);
     }
 
-    .about-strip p {
-      color: var(--muted);
+    .about-preview-card h3,
+    .quote-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
     }
 
+    .about-preview-card p,
+    .quote-card p {
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    .quote {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #dbeaff;
+    }
+
+    /* FOOTER */
     .site-footer {
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 24px 0 36px;
-      background: rgba(5, 12, 22, 0.35);
-      backdrop-filter: blur(10px);
+      margin-top: 10px;
+      padding: 24px 0 40px;
     }
 
-    .footer-inner {
+    .footer-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -410,81 +485,109 @@
       flex-wrap: wrap;
     }
 
-    .footer-left {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .footer-copy {
+      color: var(--text-soft);
+      font-size: 0.94rem;
     }
 
     .footer-links {
       display: flex;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 10px;
     }
 
     .footer-links a {
-      color: var(--muted);
-      font-weight: 600;
+      color: var(--text-soft);
       font-size: 0.92rem;
+      font-weight: 600;
     }
 
     .footer-links a:hover {
       color: #fff;
     }
 
+    /* RESPONSIVE */
     @media (max-width: 980px) {
       .hero-grid,
-      .about-strip {
+      .about-preview {
         grid-template-columns: 1fr;
       }
 
       .cards {
         grid-template-columns: 1fr;
       }
-    }
 
-    @media (max-width: 860px) {
       .nav-links {
         display: none;
       }
 
-      .menu-btn {
+      .mobile-toggle {
         display: inline-flex;
       }
 
+      .brand-logo-wrap {
+        width: 58px;
+        height: 58px;
+      }
+
+      .brand-subtitle {
+        max-width: 180px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --nav-height: 76px;
+      }
+
+      .container {
+        width: min(var(--max-width), calc(100% - 22px));
+      }
+
+      .nav {
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-logo-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+      }
+
+      .brand-title {
+        font-size: 0.95rem;
+      }
+
+      .brand-subtitle {
+        font-size: 0.76rem;
+        max-width: 140px;
+      }
+
       .hero {
-        padding-top: 48px;
+        padding-top: 34px;
       }
 
       .hero-card,
       .hero-side,
       .card,
-      .about-strip {
-        padding: 22px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .container {
-        width: min(100% - 20px, var(--max));
+      .about-preview-card,
+      .quote-card {
+        border-radius: 20px;
       }
 
-      .brand-text strong {
-        font-size: 0.88rem;
+      .hero-card {
+        padding: 24px;
       }
 
-      .brand-text span {
-        font-size: 0.72rem;
-      }
-
-      .hero h1 {
-        font-size: 1.95rem;
-      }
-
-      .hero p,
-      .section-title p,
-      .card p,
-      .about-strip p {
-        font-size: 0.95rem;
+      .hero-side,
+      .card,
+      .about-preview-card,
+      .quote-card {
+        padding: 20px;
       }
 
       .hero-actions {
@@ -492,14 +595,12 @@
       }
 
       .hero-actions .btn,
-      .card .btn,
-      .about-strip .btn {
+      .card .btn {
         width: 100%;
       }
 
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
+      .mini-stats {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -509,30 +610,30 @@
     <div class="container">
       <nav class="nav" aria-label="Primary navigation">
         <a class="brand" href="index.html" aria-label="SCWK Home">
-          <div class="brand-logo">
+          <div class="brand-logo-wrap">
             <img src="logo.png" alt="SCWK logo" />
           </div>
           <div class="brand-text">
-            <strong>SCWK</strong>
-            <span>Scrum &amp; Coffee with Karthik</span>
+            <p class="brand-title">SCWK</p>
+            <p class="brand-subtitle">Scrum &amp; Coffee with Karthik</p>
           </div>
         </a>
 
         <div class="nav-links">
-          <a href="index.html" class="active">Home</a>
-          <a href="about.html">About</a>
-          <a href="carousel.html?id=bites">SCWK Bites</a>
-          <a href="carousel.html?id=lites">SCWK Lites</a>
+          <a class="nav-link active" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="carousel.html?id=bites">SCWK Bites</a>
+          <a class="nav-link" href="carousel.html?id=lites">SCWK Lites</a>
         </div>
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          ☰
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
         </button>
       </nav>
 
       <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-panel">
-          <a href="index.html" class="active">Home</a>
+          <a class="active" href="index.html">Home</a>
           <a href="about.html">About</a>
           <a href="carousel.html?id=bites">SCWK Bites</a>
           <a href="carousel.html?id=lites">SCWK Lites</a>
@@ -546,11 +647,11 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-card">
-            <div class="eyebrow">Personal Brand Hub</div>
+            <div class="eyebrow">Personal Brand • Agile • Insightful Content</div>
             <h1>Scrum &amp; Coffee with Karthik</h1>
             <p>
-              SCWK is where practical Agile thinking meets clarity, consistency, and everyday leadership.
-              Explore quick insights through SCWK Bites, deeper reflections through SCWK Lites, and the story behind the brand.
+              A clean, premium space for practical thoughts, professional reflections, and curated learning moments —
+              served through <strong>SCWK Bites</strong> and <strong>SCWK Lites</strong>.
             </p>
 
             <div class="hero-actions">
@@ -561,17 +662,31 @@
           </div>
 
           <div class="hero-side">
-            <div class="stat-card">
-              <h3>SCWK Bites</h3>
-              <p>Fast, focused, practical content designed for quick value and immediate takeaways.</p>
+            <div>
+              <span class="side-badge">SCWK Experience</span>
+              <h2 class="side-title">Premium, simple, focused content — without clutter.</h2>
+              <p class="side-copy">
+                Designed to keep the spotlight on your ideas, your voice, and your brand consistency across every page.
+              </p>
             </div>
-            <div class="stat-card">
-              <h3>SCWK Lites</h3>
-              <p>Thoughtful carousel-style learning built for depth, reflection, and stronger understanding.</p>
-            </div>
-            <div class="stat-card">
-              <h3>Built for consistency</h3>
-              <p>Clean premium UI, stable navigation flow, and a simplified final architecture across active pages only.</p>
+
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <strong>SCWK Bites</strong>
+                <span>Quick, crisp, professional takeaways.</span>
+              </div>
+              <div class="mini-stat">
+                <strong>SCWK Lites</strong>
+                <span>Short-form reflections with clarity and impact.</span>
+              </div>
+              <div class="mini-stat">
+                <strong>About</strong>
+                <span>A dedicated space to meet Karthik.</span>
+              </div>
+              <div class="mini-stat">
+                <strong>Consistent UI</strong>
+                <span>Unified nav, spacing, footer, and flow.</span>
+              </div>
             </div>
           </div>
         </div>
@@ -580,41 +695,65 @@
 
     <section class="section">
       <div class="container">
-        <div class="section-title">
-          <h2>Explore the SCWK content streams</h2>
-          <p>
-            Your website now follows the final simplified structure: one home, one dedicated About page, and one reusable carousel viewer for SCWK Bites and SCWK Lites.
+        <div class="section-head">
+          <div class="section-kicker">Explore</div>
+          <h2>Choose your SCWK format</h2>
+          <p class="lead">
+            Two focused content experiences — both aligned to the same SCWK visual identity and professional tone.
           </p>
         </div>
 
         <div class="cards">
           <article class="card">
-            <div class="card-badge">SCWK Bites</div>
-            <h3>Quick, sharp, actionable</h3>
+            <span class="card-badge">SCWK Bites</span>
+            <h3>Fast, sharp, and easy to consume</h3>
             <p>
-              Short-form carousel content that delivers crisp Agile, Scrum, and leadership insights designed for fast consumption and high clarity.
+              Bite-sized content designed for quick professional value. Ideal for crisp learning moments, concise reflections,
+              and instantly usable insights.
             </p>
-            <a class="btn btn-primary" href="carousel.html?id=bites">Open Bites</a>
+            <a class="btn btn-primary" href="carousel.html?id=bites">Open SCWK Bites</a>
           </article>
 
           <article class="card">
-            <div class="card-badge">SCWK Lites</div>
-            <h3>Simple ideas, deeper value</h3>
+            <span class="card-badge">SCWK Lites</span>
+            <h3>Light reads with thoughtful perspective</h3>
             <p>
-              Lightweight but meaningful carousel learning that helps people reflect, connect ideas, and build better professional habits.
+              Short-form content that keeps things simple, polished, and meaningful — crafted for clarity without overwhelming the reader.
             </p>
-            <a class="btn btn-primary" href="carousel.html?id=lites">Open Lites</a>
+            <a class="btn btn-primary" href="carousel.html?id=lites">Open SCWK Lites</a>
           </article>
         </div>
+      </div>
+    </section>
 
-        <div class="about-strip">
-          <div>
-            <h3 style="font-size:1.35rem; margin-bottom:8px;">Meet the person behind SCWK</h3>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">About</div>
+          <h2>The person behind SCWK</h2>
+          <p class="lead">
+            Learn more about the thinking, intent, and professional identity behind Scrum &amp; Coffee with Karthik.
+          </p>
+        </div>
+
+        <div class="about-preview">
+          <div class="about-preview-card">
+            <h3>Meet Karthik</h3>
             <p>
-              Learn more about Karthik, the thinking behind the brand, and the purpose that shapes SCWK as a professional platform.
+              SCWK is built to be clean, modern, and intentional — reflecting a personal brand that values clarity,
+              professionalism, and thoughtful presentation.
+            </p>
+            <div style="margin-top: 18px;">
+              <a class="btn btn-secondary" href="about.html">Go to About Page</a>
+            </div>
+          </div>
+
+          <div class="quote-card">
+            <h3>SCWK Philosophy</h3>
+            <p class="quote">
+              “Keep the experience simple. Keep the thinking sharp. Let the content speak with clarity.”
             </p>
           </div>
-          <a class="btn btn-secondary" href="about.html">Visit About Page</a>
         </div>
       </div>
     </section>
@@ -622,35 +761,31 @@
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-left">© 2026 SCWK · Scrum &amp; Coffee with Karthik</div>
+      <div class="footer-row">
+        <div class="footer-copy">
+          © <span id="year"></span> SCWK — Scrum &amp; Coffee with Karthik
+        </div>
         <div class="footer-links">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a href="carousel.html?id=bites">Bites</a>
-          <a href="carousel.html?id=lites">Lites</a>
+          <a href="carousel.html?id=bites">SCWK Bites</a>
+          <a href="carousel.html?id=lites">SCWK Lites</a>
         </div>
       </div>
     </div>
   </footer>
 
   <script>
-    const menuBtn = document.getElementById('menuBtn');
+    const mobileToggle = document.getElementById('mobileToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
-    menuBtn.addEventListener('click', () => {
+    mobileToggle.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      menuBtn.textContent = isOpen ? '✕' : '☰';
+      mobileToggle.classList.toggle('is-open', isOpen);
+      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 
-    document.querySelectorAll('#mobileMenu a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.textContent = '☰';
-      });
-    });
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
