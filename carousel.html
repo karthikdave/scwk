@@ -1,413 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCWK Carousel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCWK Carousel | Scrum & Coffee with Karthik</title>
+  <meta name="description" content="Explore SCWK Bites and SCWK Lites in a clean, swipe-friendly carousel viewer." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .viewport {
+      overflow: hidden;
+      cursor: grab;
+      touch-action: pan-y;
+      user-select: none;
+    }
 
-<style>
-body{
-  margin:0;
-  background:#020617;
-  color:white;
-  font-family:system-ui;
-  overflow-x:hidden;
-}
+    .viewport.dragging {
+      cursor: grabbing;
+    }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:16px 24px;
-  background:#020617;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
+    .track {
+      display: flex;
+      transition: transform .35s ease;
+      will-change: transform;
+    }
 
-.top a{
-  color:#facc15;
-  text-decoration:none;
-  font-weight:700;
-}
+    .slide {
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:40px 20px;
-  text-align:center;
-}
-
-h1{
-  margin:10px 0;
-}
-
-.desc{
-  color:#9ca3af;
-  margin-bottom:30px;
-}
-
-.viewer{
-  position:relative;
-  max-width:620px;
-  margin:auto;
-}
-
-.viewport{
-  overflow:hidden;
-  cursor:grab;
-  touch-action:pan-y;
-  user-select:none;
-}
-
-.viewport.dragging{
-  cursor:grabbing;
-}
-
-.track{
-  display:flex;
-  transition:transform .35s ease;
-  will-change:transform;
-}
-
-.slide{
-  min-width:100%;
-  display:flex;
-  justify-content:center;
-}
-
-.card{
-  background:white;
-  border-radius:16px;
-  box-shadow:0 20px 50px rgba(0,0,0,.4);
-  overflow:hidden;
-  max-width:520px;
-}
-
-canvas{
-  width:100%;
-  height:auto;
-  display:block;
-}
-
-.nav{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:none;
-  background:#111827;
-  color:white;
-  font-size:22px;
-  cursor:pointer;
-  z-index:5;
-}
-
-.nav:hover{
-  background:#1f2937;
-}
-
-.prev{left:-60px}
-.next{right:-60px}
-
-.counter{
-  margin-top:14px;
-  color:#9ca3af;
-  font-size:14px;
-}
-
-.status{
-  margin-top:18px;
-  color:#9ca3af;
-  font-size:14px;
-}
-
-.error{
-  color:#fca5a5;
-  margin-top:16px;
-  font-size:14px;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-
-@media(max-width:700px){
-  .prev{left:0}
-  .next{right:0}
-}
-</style>
+    .slide-card {
+      width: 100%;
+      max-width: 360px;
+    }
+  </style>
 </head>
 
-<body>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
 
-<div class="top">
-  <a href="./index.html">← Back</a>
-  <a id="pdfLink" target="_blank">Open PDF</a>
-</div>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <a href="./index.html" class="flex items-center gap-3">
+          <img src="./logo.png" alt="SCWK Logo" class="h-10 w-auto" />
+        </a>
 
-<div class="container">
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="./index.html" class="text-slate-600 hover:text-slate-900 transition">Home</a>
+          <a href="./about.html" class="text-slate-600 hover:text-slate-900 transition">About</a>
+          <a id="nav-bites" href="./carousel.html?id=bites" class="text-slate-600 hover:text-slate-900 transition">SCWK Bites</a>
+          <a id="nav-lites" href="./carousel.html?id=lites" class="text-slate-600 hover:text-slate-900 transition">SCWK Lites</a>
+        </nav>
 
-  <h1 id="title">SCWK</h1>
-  <p class="desc" id="desc"></p>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 shadow-sm hover:bg-slate-50 transition" aria-label="Open menu">
+          <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-  <div class="viewer">
-    <button class="nav prev" id="prev" aria-label="Previous page">‹</button>
-
-    <div class="viewport" id="viewport">
-      <div class="track" id="track"></div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4">
+        <div class="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+          <a href="./index.html" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Home</a>
+          <a href="./about.html" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">About</a>
+          <a id="mobile-nav-bites" href="./carousel.html?id=bites" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">SCWK Bites</a>
+          <a id="mobile-nav-lites" href="./carousel.html?id=lites" class="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">SCWK Lites</a>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <button class="nav next" id="next" aria-label="Next page">›</button>
-  </div>
+  <main class="flex-grow">
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-slate-100 via-white to-slate-200"></div>
+      <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="max-w-3xl">
+            <p class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wider text-slate-600 shadow-sm">
+              SCWK Viewer
+            </p>
+            <h1 id="title" class="mt-5 text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+              SCWK
+            </h1>
+            <p id="desc" class="mt-5 text-lg sm:text-xl text-slate-600 leading-relaxed"></p>
+          </div>
 
-  <div class="counter" id="counter"></div>
-  <div class="status" id="status">Loading PDF...</div>
-  <div class="error" id="error"></div>
+          <div class="flex flex-wrap gap-3">
+            <a href="./index.html" class="inline-flex items-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 transition">
+              ← Back Home
+            </a>
+            <a id="pdfLink" href="#" target="_blank" class="inline-flex items-center rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
+              Open PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <!-- Viewer -->
+    <section class="pb-16 sm:pb-20">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xl">
+          <div class="flex flex-col items-center text-center mb-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold border border-blue-100">
+              <span id="counter">Loading...</span>
+            </div>
+            <p class="mt-3 text-sm text-slate-500">Swipe or use arrows to navigate the carousel</p>
+          </div>
 
-<script src="./lib/pdfjs/pdf.min.js"></script>
+          <div class="relative max-w-xl mx-auto">
+            <button class="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-slate-900 text-white text-2xl shadow-lg hover:bg-slate-800 transition disabled:opacity-40 disabled:cursor-not-allowed" id="prev" aria-label="Previous page">‹</button>
 
-<script>
-const CONFIG = {
-  bites: {
-    title: "SCWK Bites",
-    desc: "Bite-sized agile thoughts. Quick insights for busy professionals.",
-    pdf: "./pdf/bites.pdf"
-  },
-  lites: {
-    title: "SCWK Lites",
-    desc: "Light-hearted agile reflections with a smile.",
-    pdf: "./pdf/lites.pdf"
-  }
-};
+            <div class="px-10 sm:px-12">
+              <div class="viewport" id="viewport">
+                <div class="track" id="track"></div>
+              </div>
+            </div>
 
-const params = new URLSearchParams(location.search);
-const id = params.get("id") || "bites";
-const data = CONFIG[id] || CONFIG.bites;
+            <button class="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-slate-900 text-white text-2xl shadow-lg hover:bg-slate-800 transition disabled:opacity-40 disabled:cursor-not-allowed" id="next" aria-label="Next page">›</button>
+          </div>
 
-document.getElementById("title").innerText = data.title;
-document.getElementById("desc").innerText = data.desc;
-document.getElementById("pdfLink").href = data.pdf;
+          <div id="status" class="mt-6 text-center text-sm text-slate-500">Loading PDF...</div>
+          <div id="error" class="mt-4 text-center text-sm text-red-500 whitespace-pre-wrap"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-const track = document.getElementById("track");
-const viewport = document.getElementById("viewport");
-const counter = document.getElementById("counter");
-const status = document.getElementById("status");
-const errorBox = document.getElementById("error");
-const prevBtn = document.getElementById("prev");
-const nextBtn = document.getElementById("next");
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+      <div>
+        <p class="font-semibold">SCWK • Scrum & Coffee with Karthik</p>
+        <p class="text-sm text-slate-500">Bite-sized Agile thoughts. Light-hearted learning.</p>
+      </div>
 
-let index = 0;
-let pages = 0;
-let isAnimating = false;
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="./index.html" class="text-slate-500 hover:text-slate-900">Home</a>
+        <a href="./about.html" class="text-slate-500 hover:text-slate-900">About</a>
+        <a href="./carousel.html?id=bites" class="text-slate-500 hover:text-slate-900">SCWK Bites</a>
+        <a href="./carousel.html?id=lites" class="text-slate-500 hover:text-slate-900">SCWK Lites</a>
+      </div>
+    </div>
+  </footer>
 
-// Drag / swipe state
-let isPointerDown = false;
-let startX = 0;
-let currentDelta = 0;
-let isDragging = false;
-let pointerType = "mouse";
+  <script src="./lib/pdfjs/pdf.min.js"></script>
 
-function showError(msg){
-  errorBox.textContent = msg;
-  status.textContent = "";
-}
+  <script>
+    const CONFIG = {
+      bites: {
+        title: "SCWK Bites",
+        desc: "Bite-sized Agile thoughts. Quick insights for busy professionals.",
+        pdf: "./pdf/bites.pdf"
+      },
+      lites: {
+        title: "SCWK Lites",
+        desc: "Light-hearted Agile reflections with a smile.",
+        pdf: "./pdf/lites.pdf"
+      }
+    };
 
-function updateNav(){
-  prevBtn.style.opacity = index === 0 ? "0.45" : "1";
-  nextBtn.style.opacity = index === pages - 1 ? "0.45" : "1";
-}
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id") || "bites";
+    const data = CONFIG[id] || CONFIG.bites;
 
-function getBaseTranslatePercent(){
-  return -(index * 100);
-}
+    document.getElementById("title").innerText = data.title;
+    document.getElementById("desc").innerText = data.desc;
+    document.getElementById("pdfLink").href = data.pdf;
 
-function setTrackPosition(extraPx = 0, animate = true){
-  if (animate) {
-    track.style.transition = "transform .35s ease";
-  } else {
-    track.style.transition = "none";
-  }
+    // Active nav highlight
+    const isBites = id === "bites";
+    const desktopBites = document.getElementById("nav-bites");
+    const desktopLites = document.getElementById("nav-lites");
+    const mobileBites = document.getElementById("mobile-nav-bites");
+    const mobileLites = document.getElementById("mobile-nav-lites");
 
-  if (extraPx === 0) {
-    track.style.transform = `translateX(${getBaseTranslatePercent()}%)`;
-  } else {
-    track.style.transform = `translateX(calc(${getBaseTranslatePercent()}% + ${extraPx}px))`;
-  }
-}
-
-function update(){
-  setTrackPosition(0, true);
-  counter.innerText = pages ? `Page ${index + 1} / ${pages}` : "";
-  updateNav();
-}
-
-function goTo(newIndex){
-  if (isAnimating) return;
-  if (newIndex < 0 || newIndex > pages - 1) return;
-
-  index = newIndex;
-  isAnimating = true;
-  update();
-
-  setTimeout(() => {
-    isAnimating = false;
-  }, 380);
-}
-
-prevBtn.onclick = () => goTo(index - 1);
-nextBtn.onclick = () => goTo(index + 1);
-
-function attachDragSwipe(){
-  const threshold = 70;
-
-  function pointerDown(clientX, type){
-    if (pages <= 1) return;
-    if (isAnimating) return;
-
-    isPointerDown = true;
-    isDragging = false;
-    startX = clientX;
-    currentDelta = 0;
-    pointerType = type;
-    viewport.classList.add("dragging");
-    setTrackPosition(0, false);
-  }
-
-  function pointerMove(clientX){
-    if (!isPointerDown) return;
-
-    currentDelta = clientX - startX;
-
-    if (Math.abs(currentDelta) > 6) {
-      isDragging = true;
+    if (isBites) {
+      desktopBites.className = "text-blue-600 font-semibold";
+      mobileBites.className = "rounded-xl px-3 py-2 text-sm font-semibold text-blue-600 bg-blue-50";
+    } else {
+      desktopLites.className = "text-blue-600 font-semibold";
+      mobileLites.className = "rounded-xl px-3 py-2 text-sm font-semibold text-blue-600 bg-blue-50";
     }
 
-    if (isDragging) {
+    // Mobile menu
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpenIcon = document.getElementById('menu-open-icon');
+    const menuCloseIcon = document.getElementById('menu-close-icon');
+
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      menuOpenIcon.classList.toggle('hidden');
+      menuCloseIcon.classList.toggle('hidden');
+    });
+
+    const track = document.getElementById("track");
+    const viewport = document.getElementById("viewport");
+    const counter = document.getElementById("counter");
+    const status = document.getElementById("status");
+    const errorBox = document.getElementById("error");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+
+    let index = 0;
+    let pages = 0;
+    let isAnimating = false;
+
+    let isPointerDown = false;
+    let startX = 0;
+    let currentDelta = 0;
+    let isDragging = false;
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      status.textContent = "";
+    }
+
+    function updateNav() {
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === pages - 1;
+    }
+
+    function getBaseTranslatePercent() {
+      return -(index * 100);
+    }
+
+    function setTrackPosition(extraPx = 0, animate = true) {
+      track.style.transition = animate ? "transform .35s ease" : "none";
+
+      if (extraPx === 0) {
+        track.style.transform = `translateX(${getBaseTranslatePercent()}%)`;
+      } else {
+        track.style.transform = `translateX(calc(${getBaseTranslatePercent()}% + ${extraPx}px))`;
+      }
+    }
+
+    function update() {
+      setTrackPosition(0, true);
+      counter.innerText = pages ? `Slide ${index + 1} of ${pages}` : "";
+      updateNav();
+    }
+
+    function goTo(newIndex) {
+      if (isAnimating) return;
+      if (newIndex < 0 || newIndex > pages - 1) return;
+
+      index = newIndex;
+      isAnimating = true;
+      update();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 380);
+    }
+
+    prevBtn.onclick = () => goTo(index - 1);
+    nextBtn.onclick = () => goTo(index + 1);
+
+    function onPointerDown(e) {
+      if (pages <= 1) return;
+
+      isPointerDown = true;
+      isDragging = false;
+      startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      currentDelta = 0;
+      viewport.classList.add("dragging");
+      setTrackPosition(0, false);
+    }
+
+    function onPointerMove(e) {
+      if (!isPointerDown) return;
+
+      const currentX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      currentDelta = currentX - startX;
+
+      if (Math.abs(currentDelta) > 6) {
+        isDragging = true;
+      }
+
       setTrackPosition(currentDelta, false);
     }
-  }
 
-  function pointerUp(){
-    if (!isPointerDown) return;
+    function onPointerUp() {
+      if (!isPointerDown) return;
 
-    viewport.classList.remove("dragging");
-
-    if (!isDragging) {
       isPointerDown = false;
+      viewport.classList.remove("dragging");
+
+      const threshold = Math.min(90, viewport.clientWidth * 0.18);
+
+      if (isDragging && Math.abs(currentDelta) > threshold) {
+        if (currentDelta < 0) {
+          goTo(index + 1);
+        } else {
+          goTo(index - 1);
+        }
+      } else {
+        setTrackPosition(0, true);
+      }
+
       currentDelta = 0;
-      setTrackPosition(0, true);
-      return;
+      isDragging = false;
     }
 
-    if (currentDelta <= -threshold && index < pages - 1) {
-      index++;
-    } else if (currentDelta >= threshold && index > 0) {
-      index--;
+    viewport.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
+
+    viewport.addEventListener("touchstart", onPointerDown, { passive: true });
+    viewport.addEventListener("touchmove", onPointerMove, { passive: true });
+    viewport.addEventListener("touchend", onPointerUp);
+    viewport.addEventListener("touchcancel", onPointerUp);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") goTo(index - 1);
+      if (e.key === "ArrowRight") goTo(index + 1);
+    });
+
+    async function renderPdf() {
+      try {
+        if (typeof pdfjsLib === "undefined") {
+          showError("PDF viewer failed to load.\n\nLocal pdf.min.js loaded but pdfjsLib not found.");
+          return;
+        }
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js";
+
+        const pdf = await pdfjsLib.getDocument(data.pdf).promise;
+        pages = pdf.numPages;
+
+        for (let i = 1; i <= pages; i++) {
+          const page = await pdf.getPage(i);
+
+          const baseViewport = page.getViewport({ scale: 1 });
+          const targetWidth = Math.min(window.innerWidth < 640 ? 300 : 340, 340);
+          const scale = targetWidth / baseViewport.width;
+          const viewportData = page.getViewport({ scale });
+
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          canvas.width = viewportData.width;
+          canvas.height = viewportData.height;
+          canvas.className = "w-full h-auto block rounded-2xl";
+
+          await page.render({
+            canvasContext: ctx,
+            viewport: viewportData
+          }).promise;
+
+          const slide = document.createElement("div");
+          slide.className = "slide";
+
+          const card = document.createElement("div");
+          card.className = "slide-card rounded-3xl bg-slate-50 border border-slate-200 p-3 sm:p-4 shadow-inner";
+
+          const inner = document.createElement("div");
+          inner.className = "overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg";
+
+          inner.appendChild(canvas);
+          card.appendChild(inner);
+          slide.appendChild(card);
+          track.appendChild(slide);
+        }
+
+        status.textContent = "";
+        update();
+      } catch (err) {
+        console.error(err);
+        showError("Could not load the PDF.\n\nCheck that the file exists and GitHub Pages has published the latest commit.");
+      }
     }
 
-    isPointerDown = false;
-    isDragging = false;
-    currentDelta = 0;
-    update();
-  }
-
-  // Desktop mouse
-  viewport.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    pointerDown(e.clientX, "mouse");
-  });
-
-  window.addEventListener("mousemove", (e) => {
-    pointerMove(e.clientX);
-  });
-
-  window.addEventListener("mouseup", () => {
-    pointerUp();
-  });
-
-  // Touch mobile
-  viewport.addEventListener("touchstart", (e) => {
-    if (e.touches.length !== 1) return;
-    pointerDown(e.touches[0].clientX, "touch");
-  }, { passive: true });
-
-  viewport.addEventListener("touchmove", (e) => {
-    if (!isPointerDown) return;
-    if (e.touches.length !== 1) return;
-    pointerMove(e.touches[0].clientX);
-  }, { passive: true });
-
-  viewport.addEventListener("touchend", () => {
-    pointerUp();
-  });
-
-  viewport.addEventListener("touchcancel", () => {
-    pointerUp();
-  });
-
-  // Prevent image/canvas drag ghost
-  viewport.addEventListener("dragstart", (e) => e.preventDefault());
-}
-
-async function loadPDF(){
-  try {
-    if (typeof pdfjsLib === "undefined") {
-      showError("PDF viewer failed to load.\n\nLocal pdf.min.js loaded but pdfjsLib not found.");
-      return;
-    }
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://unpkg.com/pdfjs-dist@3.10.111/build/pdf.worker.min.js";
-
-    const pdf = await pdfjsLib.getDocument(data.pdf).promise;
-    pages = pdf.numPages;
-
-    for (let i = 1; i <= pages; i++) {
-      const page = await pdf.getPage(i);
-
-      const baseViewport = page.getViewport({ scale: 1 });
-
-      // Compact LinkedIn-style size
-      const targetWidth = Math.min(window.innerWidth < 700 ? window.innerWidth - 80 : 520, 520);
-      const scale = targetWidth / baseViewport.width;
-
-      const viewportScaled = page.getViewport({ scale });
-
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = viewportScaled.width;
-      canvas.height = viewportScaled.height;
-
-      await page.render({
-        canvasContext: ctx,
-        viewport: viewportScaled
-      }).promise;
-
-      const slide = document.createElement("div");
-      slide.className = "slide";
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      card.appendChild(canvas);
-      slide.appendChild(card);
-      track.appendChild(slide);
-    }
-
-    status.textContent = "";
-    update();
-    attachDragSwipe();
-
-  } catch (err) {
-    console.error(err);
-    showError("PDF failed to render.\n\n" + (err?.message || err));
-  }
-}
-
-loadPDF();
-</script>
+    renderPdf();
+  </script>
 
 </body>
 </html>
