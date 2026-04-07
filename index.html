@@ -286,6 +286,7 @@
     /* SECTION */
     .section {
       padding: 22px 0 40px;
+      scroll-margin-top: 140px;
     }
 
     .section-card {
@@ -376,6 +377,56 @@
       gap: 12px;
     }
 
+    /* ABOUT RESTORED */
+    .about-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--border);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      background: #ffffff;
+      border: 1px solid #dbe7ff;
+      border-radius: 28px;
+      padding: 14px;
+      box-shadow: 0 12px 24px rgba(11, 61, 145, 0.08);
+    }
+
+    .about-image {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .about-copy h3 {
+      margin: 0 0 14px;
+      font-size: clamp(30px, 3vw, 46px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: #0f172a;
+    }
+
+    .about-copy p {
+      margin: 0 0 14px;
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .about-copy p:last-child {
+      margin-bottom: 0;
+    }
+
     .footer {
       padding: 20px 0 48px;
     }
@@ -403,6 +454,14 @@
 
       .hero-grid {
         grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-image-wrap {
+        max-width: 360px;
       }
     }
 
@@ -459,7 +518,8 @@
       }
 
       .hero-card,
-      .section-card {
+      .section-card,
+      .about-card {
         padding: 22px;
         border-radius: 24px;
       }
@@ -468,7 +528,8 @@
         font-size: clamp(34px, 12vw, 52px);
       }
 
-      .hero-copy p {
+      .hero-copy p,
+      .about-copy p {
         font-size: 16px;
       }
 
@@ -480,6 +541,10 @@
         padding: 10px 14px;
         font-size: 14px;
       }
+
+      .about-image-wrap {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -489,7 +554,7 @@
       <div class="header-inner">
         <a class="brand" href="index.html" aria-label="SCWK Home">
           <div class="brand-logo-wrap">
-            <img src="images/scwk-logo.png" alt="SCWK Logo" class="brand-logo" />
+            <img src="scwk-logo.png" alt="SCWK Logo" class="brand-logo" />
           </div>
           <div class="brand-text">
             <h1>Scrum &amp; Coffee with Karthik</h1>
@@ -624,13 +689,27 @@
 
     <section id="about" class="section">
       <div class="container">
-        <div class="section-card">
-          <div class="section-head">
-            <div>
-              <h3>About SCWK</h3>
+        <div class="about-card">
+          <div class="about-grid">
+            <div class="about-image-wrap">
+              <img src="karthik.jpg" alt="Karthik Dave" class="about-image" />
+            </div>
+
+            <div class="about-copy">
+              <h3>About Karthik</h3>
               <p>
-                SCWK stands for <strong>Scrum &amp; Coffee with Karthik</strong> — a personal brand built around crisp
-                Agile thinking, practical leadership insights, and professional storytelling through premium carousel content.
+                I’m <strong>Karthik</strong>, the voice behind <strong>SCWK — Scrum &amp; Coffee with Karthik</strong>.
+              </p>
+              <p>
+                Through SCWK, I share crisp, practical, and experience-driven insights on Agile, Scrum, leadership,
+                delivery, and product-minded thinking — designed for professionals who value clarity over clutter.
+              </p>
+              <p>
+                SCWK Bites gives you quick, snackable takeaways. SCWK Lites gives you lightweight thought pieces with a
+                clean visual storytelling format.
+              </p>
+              <p>
+                This space is built to make professional learning feel simple, premium, and easy to consume.
               </p>
             </div>
           </div>
