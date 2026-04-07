@@ -10,62 +10,72 @@
   />
   <style>
     :root {
-      --bg: #f5f8ff;
-      --surface: #ffffff;
-      --surface-soft: #f8fbff;
       --primary: #0b3d91;
       --primary-dark: #072b67;
-      --primary-soft: #dfeeff;
       --text: #0f172a;
       --muted: #475569;
       --border: #dbe7ff;
-      --shadow: 0 14px 34px rgba(11, 61, 145, 0.08);
-      --shadow-soft: 0 8px 18px rgba(15, 23, 42, 0.08);
+      --bg-top: #f8fbff;
+      --bg-bottom: #eef5ff;
+      --card-bg: #ffffff;
+      --stage-bg: linear-gradient(180deg, #edf4ff 0%, #e5efff 100%);
+      --shadow-main: 0 14px 34px rgba(11, 61, 145, 0.08);
+      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.12);
       --max-width: 1080px;
+
+      /* Core: tighter LinkedIn-like stage */
+      --stage-height: min(72vh, 760px);
+      --stage-max-canvas-height: calc(min(72vh, 760px) - 40px);
     }
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       color: var(--text);
+      overflow-x: hidden;
     }
 
     .container {
-      width: min(var(--max-width), calc(100% - 32px));
+      width: min(var(--max-width), calc(100% - 28px));
       margin: 0 auto;
     }
 
     .viewer-page {
-      padding: 24px 0 34px;
       min-height: 100vh;
+      padding: 18px 0 24px;
       display: flex;
       align-items: flex-start;
     }
 
     .viewer-shell {
       width: 100%;
-      background: linear-gradient(135deg, #ffffff 0%, #f6faff 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbff 100%);
       border: 1px solid var(--border);
       border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 22px;
+      box-shadow: var(--shadow-main);
+      padding: 18px;
     }
 
     .viewer-head {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .viewer-head .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 12px;
+      padding: 6px 12px;
       border-radius: 999px;
       background: #eef5ff;
       color: var(--primary);
@@ -74,63 +84,161 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       border: 1px solid #d9e8ff;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .viewer-head h1 {
-      margin: 0 0 8px;
-      font-size: clamp(24px, 4vw, 36px);
+      margin: 0 0 6px;
+      font-size: clamp(22px, 3vw, 32px);
+      line-height: 1.2;
       color: var(--text);
     }
 
     .viewer-head p {
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     .status {
       text-align: center;
-      min-height: 24px;
-      margin-bottom: 14px;
+      min-height: 20px;
+      margin: 10px 0 12px;
       color: var(--muted);
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .status.error {
       color: #b91c1c;
     }
 
+    /* LinkedIn-like slide stage */
+    .stage-wrap {
+      position: relative;
+    }
+
     .canvas-frame {
+      position: relative;
       width: 100%;
-      background: #e9f1ff;
+      height: var(--stage-height);
+      min-height: 420px;
+      max-height: 760px;
+      background: var(--stage-bg);
       border: 1px solid #d9e8ff;
-      border-radius: 20px;
-      padding: 12px;
-      min-height: 300px;
+      border-radius: 22px;
+      padding: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: auto;
+      overflow: hidden; /* important: removes ugly internal scroll */
+      user-select: none;
+      touch-action: pan-y;
+    }
+
+    .slide-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     canvas {
       display: block;
       max-width: 100%;
+      max-height: var(--stage-max-canvas-height);
+      width: auto;
       height: auto;
       background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+      border-radius: 14px;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.22s ease, opacity 0.22s ease;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .canvas-transitioning canvas {
+      opacity: 0.92;
+      transform: scale(0.985);
+    }
+
+    /* Click zones for desktop/mobile tap */
+    .nav-zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 18%;
+      z-index: 3;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-zone.left {
+      left: 0;
+    }
+
+    .nav-zone.right {
+      right: 0;
+    }
+
+    .canvas-frame:hover .nav-zone {
+      opacity: 1;
+    }
+
+    .nav-zone::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      display: flex;
+    }
+
+    .nav-zone.left::after {
+      left: 10px;
+    }
+
+    .nav-zone.right::after {
+      right: 10px;
+    }
+
+    .nav-zone.left::before,
+    .nav-zone.right::before {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      z-index: 4;
+    }
+
+    .nav-zone.left::before {
+      content: "‹";
+      left: 26px;
+    }
+
+    .nav-zone.right::before {
+      content: "›";
+      right: 24px;
     }
 
     .controls {
-      margin-top: 18px;
+      margin-top: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -138,8 +246,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
+      min-height: 42px;
+      padding: 0 16px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 800;
@@ -174,7 +282,7 @@
     }
 
     .page-indicator {
-      min-width: 120px;
+      min-width: 110px;
       text-align: center;
       font-weight: 800;
       color: var(--text);
@@ -182,9 +290,47 @@
       font-size: 14px;
     }
 
+    /* Page dots for carousel feel */
+    .dots {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-height: 20px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: none;
+      background: #c8dafd;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      padding: 0;
+    }
+
+    .dot:hover {
+      transform: scale(1.15);
+    }
+
+    .dot.active {
+      background: var(--primary);
+      transform: scale(1.18);
+    }
+
+    .hint {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
     .back-link-wrap {
       text-align: center;
-      margin-top: 18px;
+      margin-top: 14px;
     }
 
     .back-link {
@@ -198,30 +344,71 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 900px) {
+      :root {
+        --stage-height: min(68vh, 680px);
+        --stage-max-canvas-height: calc(min(68vh, 680px) - 36px);
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --stage-height: min(66vh, 600px);
+        --stage-max-canvas-height: calc(min(66vh, 600px) - 28px);
+      }
+
       .container {
-        width: min(var(--max-width), calc(100% - 20px));
+        width: min(var(--max-width), calc(100% - 16px));
+      }
+
+      .viewer-page {
+        padding: 10px 0 16px;
       }
 
       .viewer-shell {
-        border-radius: 20px;
-        padding: 16px;
+        border-radius: 18px;
+        padding: 12px;
+      }
+
+      .viewer-head h1 {
+        font-size: 22px;
+      }
+
+      .viewer-head p {
+        font-size: 12px;
       }
 
       .canvas-frame {
-        padding: 8px;
+        min-height: 360px;
+        border-radius: 16px;
+        padding: 10px;
       }
 
       .controls {
-        flex-direction: column;
+        gap: 8px;
       }
 
       .controls .btn {
-        width: 100%;
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 13px;
       }
 
-      .page-indicator {
-        order: -1;
+      .nav-zone {
+        width: 24%;
+      }
+
+      .nav-zone::after {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-zone.left::before {
+        left: 22px;
+      }
+
+      .nav-zone.right::before {
+        right: 20px;
       }
     }
   </style>
@@ -238,14 +425,26 @@
 
         <div id="status" class="status">Loading PDF document...</div>
 
-        <div class="canvas-frame">
-          <canvas id="pdfCanvas"></canvas>
+        <div class="stage-wrap">
+          <div id="canvasFrame" class="canvas-frame">
+            <button id="leftZone" class="nav-zone left" aria-label="Previous page"></button>
+            <div id="slideStage" class="slide-stage">
+              <canvas id="pdfCanvas"></canvas>
+            </div>
+            <button id="rightZone" class="nav-zone right" aria-label="Next page"></button>
+          </div>
         </div>
 
         <div class="controls">
           <button id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
           <div id="pageIndicator" class="page-indicator">Page 0 / 0</div>
           <button id="nextBtn" class="btn btn-primary" disabled>Next</button>
+        </div>
+
+        <div id="dots" class="dots"></div>
+
+        <div class="hint">
+          Swipe on mobile • Use arrow keys on desktop • Tap/click sides to navigate
         </div>
 
         <div class="back-link-wrap">
@@ -278,16 +477,23 @@
       const viewerTitle = document.getElementById("viewerTitle");
       const viewerSubtitle = document.getElementById("viewerSubtitle");
       const statusEl = document.getElementById("status");
+      const canvasFrame = document.getElementById("canvasFrame");
+      const slideStage = document.getElementById("slideStage");
       const canvas = document.getElementById("pdfCanvas");
       const ctx = canvas.getContext("2d");
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
       const pageIndicator = document.getElementById("pageIndicator");
+      const dotsWrap = document.getElementById("dots");
+      const leftZone = document.getElementById("leftZone");
+      const rightZone = document.getElementById("rightZone");
 
       let pdfDoc = null;
       let currentPage = 1;
       let isRendering = false;
       let pendingPage = null;
+      let touchStartX = 0;
+      let touchEndX = 0;
 
       function setStatus(message, isError = false) {
         statusEl.textContent = message;
@@ -301,7 +507,33 @@
         nextBtn.disabled = !pdfDoc || currentPage >= total || isRendering;
       }
 
+      function buildDots() {
+        dotsWrap.innerHTML = "";
+        if (!pdfDoc) return;
+
+        const total = pdfDoc.numPages;
+
+        for (let i = 1; i <= total; i++) {
+          const dot = document.createElement("button");
+          dot.className = "dot" + (i === currentPage ? " active" : "");
+          dot.setAttribute("aria-label", `Go to page ${i}`);
+          dot.addEventListener("click", () => queueRenderPage(i));
+          dotsWrap.appendChild(dot);
+        }
+      }
+
+      function updateDots() {
+        const dots = dotsWrap.querySelectorAll(".dot");
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("active", index + 1 === currentPage);
+        });
+      }
+
       function queueRenderPage(pageNum) {
+        if (!pdfDoc) return;
+
+        if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
+
         if (isRendering) {
           pendingPage = pageNum;
         } else {
@@ -314,16 +546,29 @@
 
         isRendering = true;
         updateControls();
+        canvasFrame.classList.add("canvas-transitioning");
         setStatus(`Rendering page ${pageNum}...`);
 
         try {
           const page = await pdfDoc.getPage(pageNum);
 
-          const container = document.querySelector(".canvas-frame");
-          const containerWidth = Math.max(320, container.clientWidth - 24);
+          const frameStyle = window.getComputedStyle(canvasFrame);
+          const framePaddingX =
+            parseFloat(frameStyle.paddingLeft) + parseFloat(frameStyle.paddingRight);
+          const framePaddingY =
+            parseFloat(frameStyle.paddingTop) + parseFloat(frameStyle.paddingBottom);
 
-          const initialViewport = page.getViewport({ scale: 1 });
-          const scale = containerWidth / initialViewport.width;
+          const availableWidth = Math.max(280, canvasFrame.clientWidth - framePaddingX - 10);
+          const availableHeight = Math.max(300, canvasFrame.clientHeight - framePaddingY - 10);
+
+          const baseViewport = page.getViewport({ scale: 1 });
+
+          const widthScale = availableWidth / baseViewport.width;
+          const heightScale = availableHeight / baseViewport.height;
+
+          /* KEY FIX: contain, not fill -> avoids giant ugly tall render */
+          const scale = Math.min(widthScale, heightScale);
+
           const viewport = page.getViewport({ scale });
 
           const outputScale = window.devicePixelRatio || 1;
@@ -342,13 +587,15 @@
           await page.render(renderContext).promise;
 
           currentPage = pageNum;
-          setStatus("PDF loaded successfully.");
+          updateDots();
+          setStatus("Ready");
         } catch (error) {
           console.error("Render error:", error);
           setStatus("Unable to render this PDF page.", true);
         } finally {
           isRendering = false;
           updateControls();
+          canvasFrame.classList.remove("canvas-transitioning");
 
           if (pendingPage !== null) {
             const nextPending = pendingPage;
@@ -388,6 +635,7 @@
           pdfDoc = await loadingTask.promise;
           currentPage = 1;
 
+          buildDots();
           updateControls();
           await renderPage(currentPage);
         } catch (error) {
@@ -396,20 +644,60 @@
         }
       }
 
-      prevBtn.addEventListener("click", function () {
+      function goPrev() {
         if (!pdfDoc || currentPage <= 1 || isRendering) return;
         queueRenderPage(currentPage - 1);
-      });
+      }
 
-      nextBtn.addEventListener("click", function () {
+      function goNext() {
         if (!pdfDoc || currentPage >= pdfDoc.numPages || isRendering) return;
         queueRenderPage(currentPage + 1);
+      }
+
+      prevBtn.addEventListener("click", goPrev);
+      nextBtn.addEventListener("click", goNext);
+      leftZone.addEventListener("click", goPrev);
+      rightZone.addEventListener("click", goNext);
+
+      /* Keyboard support */
+      window.addEventListener("keydown", function (e) {
+        if (!pdfDoc) return;
+        if (e.key === "ArrowLeft") goPrev();
+        if (e.key === "ArrowRight") goNext();
       });
 
-      window.addEventListener("resize", function () {
-        if (pdfDoc && !isRendering) {
-          queueRenderPage(currentPage);
+      /* Swipe support */
+      canvasFrame.addEventListener("touchstart", function (e) {
+        if (!e.changedTouches || !e.changedTouches.length) return;
+        touchStartX = e.changedTouches[0].clientX;
+      }, { passive: true });
+
+      canvasFrame.addEventListener("touchend", function (e) {
+        if (!e.changedTouches || !e.changedTouches.length) return;
+        touchEndX = e.changedTouches[0].clientX;
+
+        const deltaX = touchEndX - touchStartX;
+        const threshold = 40;
+
+        if (Math.abs(deltaX) < threshold) return;
+
+        if (deltaX > 0) {
+          goPrev();
+        } else {
+          goNext();
         }
+      }, { passive: true });
+
+      /* Refit current page on resize */
+      let resizeTimer;
+      window.addEventListener("resize", function () {
+        if (!pdfDoc) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (!isRendering) {
+            queueRenderPage(currentPage);
+          }
+        }, 120);
       });
 
       loadPdf();
