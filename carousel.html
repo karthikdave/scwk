@@ -190,6 +190,11 @@
       color: var(--primary);
       font-weight: 700;
       font-size: 14px;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 560px) {
@@ -249,7 +254,8 @@
     </div>
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- USE LOCAL PDF.JS (NOT CDN) -->
+  <script src="./lib/pdfjs/pdf.min.js"></script>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -259,15 +265,149 @@
       bites: {
         title: "SCWK Bites",
         subtitle: "A focused, page-by-page carousel experience for quick and practical insights.",
-        path: "pdf/bites.pdf"
+        path: "./pdf/bites.pdf"
       },
       lites: {
         title: "SCWK Lites",
         subtitle: "A clean, premium carousel flow with a lighter reading rhythm.",
-        path: "pdf/lites.pdf"
+        path: "./pdf/lites.pdf"
       }
     };
 
     const viewerTitle = document.getElementById("viewerTitle");
     const viewerSubtitle = document.getElementById("viewerSubtitle");
-   
+    const statusEl = document.getElementById("status");
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const pageIndicator = document.getElementById("pageIndicator");
+
+    let pdfDoc = null;
+    let currentPage = 1;
+    let isRendering = false;
+    let pendingPage = null;
+
+    function setStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.classList.toggle("error", isError);
+    }
+
+    function updateButtons() {
+      const hasDoc = !!pdfDoc;
+      prevBtn.disabled = !hasDoc || currentPage <= 1 || isRendering;
+      nextBtn.disabled = !hasDoc || currentPage >= pdfDoc.numPages || isRendering;
+      pageIndicator.textContent = hasDoc ? `Page ${currentPage} / ${pdfDoc.numPages}` : "Page 0 / 0";
+    }
+
+    function fitScale(page) {
+      const frame = document.querySelector(".canvas-frame");
+      const availableWidth = Math.max(320, frame.clientWidth - 24);
+      const unscaledViewport = page.getViewport({ scale: 1 });
+      const scale = availableWidth / unscaledViewport.width;
+      return Math.min(scale, 2);
+    }
+
+    async function renderPage(pageNum) {
+      if (!pdfDoc) return;
+
+      isRendering = true;
+      updateButtons();
+      setStatus(`Rendering page ${pageNum}...`);
+
+      try {
+        const page = await pdfDoc.getPage(pageNum);
+        const scale = fitScale(page);
+        const viewport = page.getViewport({ scale });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({
+          canvasContext: ctx,
+          viewport
+        }).promise;
+
+        currentPage = pageNum;
+        setStatus("Loaded successfully.");
+      } catch (error) {
+        console.error("Render error:", error);
+        setStatus("Failed to render PDF page.", true);
+      } finally {
+        isRendering = false;
+        updateButtons();
+
+        if (pendingPage !== null && pendingPage !== currentPage) {
+          const nextPending = pendingPage;
+          pendingPage = null;
+          queueRenderPage(nextPending);
+        } else {
+          pendingPage = null;
+        }
+      }
+    }
+
+    function queueRenderPage(pageNum) {
+      if (isRendering) {
+        pendingPage = pageNum;
+      } else {
+        renderPage(pageNum);
+      }
+    }
+
+    async function loadPdf() {
+      if (!config[id]) {
+        viewerTitle.textContent = "Invalid Viewer Request";
+        viewerSubtitle.textContent = "Please return home and choose SCWK Bites or SCWK Lites.";
+        setStatus("Invalid or missing PDF identifier.", true);
+        updateButtons();
+        return;
+      }
+
+      const selected = config[id];
+      viewerTitle.textContent = selected.title;
+      viewerSubtitle.textContent = selected.subtitle;
+
+      try {
+        if (typeof pdfjsLib === "undefined") {
+          throw new Error("pdfjsLib is not loaded.");
+        }
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "./lib/pdfjs/pdf.worker.min.js";
+
+        setStatus("Loading PDF document...");
+
+        const loadingTask = pdfjsLib.getDocument(selected.path);
+        pdfDoc = await loadingTask.promise;
+
+        currentPage = 1;
+        updateButtons();
+        await renderPage(currentPage);
+      } catch (error) {
+        console.error("PDF load error:", error);
+        viewerSubtitle.textContent = "There was a problem loading the document.";
+        setStatus("Failed to load PDF. Please verify file paths and refresh.", true);
+        updateButtons();
+      }
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (!pdfDoc || currentPage <= 1) return;
+      queueRenderPage(currentPage - 1);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!pdfDoc || currentPage >= pdfDoc.numPages) return;
+      queueRenderPage(currentPage + 1);
+    });
+
+    window.addEventListener("resize", () => {
+      if (pdfDoc && !isRendering) {
+        queueRenderPage(currentPage);
+      }
+    });
+
+    loadPdf();
+  </script>
+</body>
+</html>
