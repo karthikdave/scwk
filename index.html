@@ -10,12 +10,7 @@
   />
   <style>
     :root {
-      --bg: #f4f8ff;
-      --surface: #ffffff;
-      --surface-soft: #f8fbff;
       --primary: #0b3d91;
-      --primary-dark: #072b67;
-      --primary-soft: #dfeeff;
       --accent: #1d5fd1;
       --text: #0f172a;
       --muted: #475569;
@@ -26,13 +21,8 @@
       --header-height: 98px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -82,8 +72,8 @@
     }
 
     .brand-logo-wrap {
-      width: 240px;
-      height: 82px;
+      width: 250px;
+      height: 86px;
       background: transparent;
       border: none;
       display: flex;
@@ -132,12 +122,13 @@
       padding: 34px 0 24px;
     }
 
-    .hero-card {
+    .hero-card,
+    .section-card {
       background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
       border: 1px solid var(--border);
-      border-radius: 34px;
+      border-radius: 30px;
       box-shadow: var(--shadow);
-      padding: 34px;
+      padding: 30px;
     }
 
     .hero-grid {
@@ -266,14 +257,6 @@
       padding: 20px 0 34px;
     }
 
-    .section-card {
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      box-shadow: var(--shadow);
-      padding: 30px;
-    }
-
     .section-head {
       display: flex;
       align-items: flex-end;
@@ -354,44 +337,6 @@
       gap: 12px;
     }
 
-    .about-grid {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .about-photo {
-      width: 100%;
-      max-width: 300px;
-      aspect-ratio: 1 / 1;
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid #dbe7ff;
-      box-shadow: 0 16px 30px rgba(11, 61, 145, 0.12);
-      background: #eef5ff;
-    }
-
-    .about-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .about-copy h4 {
-      margin: 0 0 14px;
-      font-size: clamp(24px, 2vw, 34px);
-      font-weight: 900;
-      color: #0f172a;
-    }
-
-    .about-copy p {
-      margin: 0 0 14px;
-      color: #475569;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-
     .footer {
       padding: 18px 0 42px;
     }
@@ -409,8 +354,8 @@
 
     @media (max-width: 1180px) {
       .brand-logo-wrap {
-        width: 210px;
-        height: 74px;
+        width: 220px;
+        height: 76px;
       }
 
       .hero-grid {
@@ -418,20 +363,8 @@
       }
     }
 
-    @media (max-width: 980px) {
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .about-photo {
-        max-width: 240px;
-      }
-    }
-
     @media (max-width: 900px) {
-      :root {
-        --header-height: auto;
-      }
+      :root { --header-height: auto; }
 
       .header-inner {
         flex-direction: column;
@@ -458,8 +391,8 @@
       }
 
       .brand-logo-wrap {
-        width: 170px;
-        height: 62px;
+        width: 180px;
+        height: 64px;
       }
 
       .hero {
@@ -503,9 +436,9 @@
 
         <nav class="nav" aria-label="Primary Navigation">
           <a href="index.html" class="active">Home</a>
-          <a href="#bites">Bites</a>
-          <a href="#lites">Lites</a>
-          <a href="#about">About</a>
+          <a href="carousel.html?id=bites">Bites</a>
+          <a href="carousel.html?id=lites">Lites</a>
+          <a href="about.html">About</a>
         </nav>
       </div>
     </div>
@@ -525,8 +458,8 @@
                 and product-minded audiences.
               </p>
               <div class="hero-actions">
-                <a href="#bites" class="btn btn-primary">Explore Carousels</a>
-                <a href="#about" class="btn btn-secondary">Learn More</a>
+                <a href="carousel.html?id=bites" class="btn btn-primary">Explore Carousels</a>
+                <a href="about.html" class="btn btn-secondary">Learn More</a>
               </div>
             </div>
 
@@ -621,39 +554,6 @@
               <div class="card-actions">
                 <a href="carousel.html?id=lites" class="btn btn-secondary">Preview Experience</a>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section">
-      <div class="container">
-        <div class="section-card">
-          <div class="section-head">
-            <div>
-              <h3>About</h3>
-            </div>
-          </div>
-
-          <div class="about-grid">
-            <div class="about-photo">
-              <img src="images/karthik.jpg" alt="Karthik" />
-            </div>
-
-            <div class="about-copy">
-              <h4>Scrum &amp; Coffee with Karthik</h4>
-              <p>
-                SCWK is my personal brand space where I share practical Agile thinking, leadership reflections,
-                and crisp professional insights in a simple, premium carousel format.
-              </p>
-              <p>
-                Through SCWK Bites and SCWK Lites, I aim to make ideas easy to consume, visually clean,
-                and useful for professionals who value clarity, speed, and substance.
-              </p>
-              <p>
-                This is a space built around thoughtful storytelling, modern content flow, and a clean LinkedIn-style feel.
-              </p>
             </div>
           </div>
         </div>
