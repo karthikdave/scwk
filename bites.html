@@ -1,89 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Bites</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCWK Bites | Scrum & Coffee with Karthik</title>
+  <meta
+    name="description"
+    content="Browse SCWK Bites - multiple premium carousel posts from Scrum & Coffee with Karthik."
+  />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #0b3d91;
+      --accent: #1d5fd1;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbe7ff;
+      --shadow: 0 16px 36px rgba(11, 61, 145, 0.08);
+      --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.08);
+      --max-width: 1280px;
+      --header-height: 128px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(219, 231, 255, 0.95);
+    }
+
+    .header-inner {
+      min-height: var(--header-height);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 0 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      flex: 0 0 auto;
+    }
+
+    .brand-logo-wrap {
+      width: 290px;
+      height: 96px;
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav a {
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      color: #1e293b;
+      transition: all 0.2s ease;
+    }
+
+    .nav a:hover {
+      background: #eef5ff;
+      color: var(--primary);
+    }
+
+    .nav a.active {
+      background: #dfeeff;
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 28px 0 18px;
+    }
+
+    .hero-card,
+    .section-card,
+    .post-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 28px;
+    }
+
+    .hero-title {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.05;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-text {
+      margin: 0;
+      color: #334155;
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 900px;
+    }
+
+    .hero-actions {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: #ffffff;
+      box-shadow: 0 14px 28px rgba(11, 61, 145, 0.18);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1px solid #dbe7ff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section {
+      padding: 12px 0 38px;
+    }
+
+    .section-card {
+      padding: 24px;
+    }
+
+    .section-head {
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .post-card {
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 32px rgba(11, 61, 145, 0.12);
+    }
+
+    .post-preview {
+      width: 100%;
+      min-height: 320px;
+      background: #eef4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      border-bottom: 1px solid #e5edff;
+      overflow: hidden;
+    }
+
+    .post-preview canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      background: #fff;
+    }
+
+    .post-content {
+      padding: 20px;
+    }
+
+    .post-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eef5ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid #d9e8ff;
+      margin-bottom: 14px;
+    }
+
+    .post-title {
+      margin: 0 0 10px;
+      font-size: clamp(20px, 1.8vw, 28px);
+      line-height: 1.25;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .post-subtext {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .post-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px dashed #c8dafd;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 0 0 42px;
+    }
+
+    .footer-card {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px 22px;
+      text-align: center;
+      color: #475569;
+      font-size: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 1180px) {
+      .brand-logo-wrap {
+        width: 250px;
+        height: 84px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      :root { --header-height: auto; }
+
+      .header-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .posts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 20px));
+      }
+
+      .brand-logo-wrap {
+        width: 210px;
+        height: 72px;
+      }
+
+      .hero-card,
+      .section-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .post-preview {
+        min-height: 240px;
+        padding: 14px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .nav a {
+        padding: 10px 14px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a class="brand" href="index.html" aria-label="SCWK Home">
+          <div class="brand-logo-wrap">
+            <img src="images/logo.png" alt="SCWK Logo" class="brand-logo" />
+          </div>
+        </a>
 
-<body class="bg-gray-100 font-sans">
+        <nav class="nav" aria-label="Primary Navigation">
+          <a href="index.html">Home</a>
+          <a href="bites.html" class="active">Bites</a>
+          <a href="carousel.html?id=lites">Lites</a>
+          <a href="about.html">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
-<nav class="bg-white shadow px-6 py-3 flex justify-between items-center">
-  <img src="logo.png" class="h-10">
-  <a href="index.html" class="text-blue-600">Home</a>
-</nav>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <h1 class="hero-title">SCWK <span>Bites</span></h1>
+          <p class="hero-text">
+            Browse all your SCWK Bites in one clean archive. Each post opens in your premium carousel viewer, just like a polished LinkedIn-style content library.
+          </p>
+          <div class="hero-actions">
+            <a href="#bites-posts" class="btn btn-primary">Browse All Bites</a>
+            <a href="index.html" class="btn btn-secondary">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="text-center mt-8">
-  <h1 class="text-3xl font-bold">⚡ Bites</h1>
-</section>
+    <section id="bites-posts" class="section">
+      <div class="container">
+        <div class="section-card">
+          <div class="section-head">
+            <h2>All Bites Posts</h2>
+            <p>Your growing collection of practical, snackable professional insights.</p>
+          </div>
 
-<div id="posts" class="max-w-xl mx-auto mt-8 space-y-6 px-4"></div>
+          <div id="posts" class="posts-grid"></div>
+          <div id="emptyState" class="empty-state" style="display:none;">
+            No Bites posts found yet. Add your next PDF post in <strong>data.json</strong>.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-card">
+        © 2026 SCWK — Scrum &amp; Coffee with Karthik
+      </div>
+    </div>
+  </footer>
 
-const container = document.getElementById("posts");
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-fetch("data.json")
-.then(res => res.json())
-.then(data => {
+    const container = document.getElementById("posts");
+    const emptyState = document.getElementById("emptyState");
 
-  data.posts
-    .filter(p => p.type === "bites")
-    .reverse()
-    .forEach(post => {
-
-      const card = document.createElement("div");
-      card.className = "bg-white rounded-xl shadow overflow-hidden cursor-pointer hover:shadow-lg transition";
+    function createPostCard(post) {
+      const card = document.createElement("article");
+      card.className = "post-card";
 
       const preview = document.createElement("div");
-      preview.className = "w-full h-64 bg-gray-200 flex items-center justify-center overflow-hidden";
+      preview.className = "post-preview";
 
       const canvas = document.createElement("canvas");
-      canvas.className = "max-w-full max-h-full object-contain";
       preview.appendChild(canvas);
 
       const content = document.createElement("div");
-      content.className = "p-4";
+      content.className = "post-content";
+
+      const safeTitle = post.title || "Untitled SCWK Bite";
+      const safeFile = post.file || "#";
+      const safeId = post.id || "";
+
       content.innerHTML = `
-        <h2 class="font-semibold text-lg">${post.title}</h2>
-        <div class="text-blue-600 mt-2 text-sm">View Carousel →</div>
+        <div class="post-badge">SCWK Bite</div>
+        <h3 class="post-title">${safeTitle}</h3>
+        <p class="post-subtext">Open this post in the premium carousel viewer or download the original PDF.</p>
+        <div class="post-actions">
+          <a href="carousel.html?id=${encodeURIComponent(safeId)}" class="btn btn-primary">Open Carousel</a>
+          <a href="${safeFile}" class="btn btn-secondary" target="_blank" download>Download PDF</a>
+        </div>
       `;
 
       card.appendChild(preview);
       card.appendChild(content);
-
-      card.onclick = () => {
-        window.location.href = `carousel.html?id=${post.id}`;
-      };
-
       container.appendChild(card);
 
-      pdfjsLib.getDocument(post.file).promise
-      .then(pdf => pdf.getPage(1))
-      .then(page => {
+      if (safeFile !== "#") {
+        pdfjsLib.getDocument(safeFile).promise
+          .then(pdf => pdf.getPage(1))
+          .then(page => {
+            const previewWidth = Math.max(preview.clientWidth - 36, 260);
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = previewWidth / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
 
-        const viewport = page.getViewport({ scale: 1 });
-        const scale = preview.clientWidth / viewport.width;
-        const scaledViewport = page.getViewport({ scale });
+            const ctx = canvas.getContext("2d");
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
 
-        const ctx = canvas.getContext("2d");
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
+            return page.render({
+              canvasContext: ctx,
+              viewport: scaledViewport
+            }).promise;
+          })
+          .catch(() => {
+            preview.innerHTML = '<div style="color:#475569;font-weight:700;">Preview unavailable</div>';
+          });
+      }
+    }
 
-        page.render({
-          canvasContext: ctx,
-          viewport: scaledViewport
-        });
+    fetch("data.json")
+      .then(res => res.json())
+      .then(data => {
+        const bitesPosts = (data.posts || [])
+          .filter(post => post.type && post.type.toLowerCase() === "bites")
+          .reverse();
 
+        if (!bitesPosts.length) {
+          emptyState.style.display = "block";
+          return;
+        }
+
+        bitesPosts.forEach(createPostCard);
+      })
+      .catch(() => {
+        emptyState.style.display = "block";
+        emptyState.innerHTML = "Could not load <strong>data.json</strong>. Please check file path and JSON format.";
       });
-
-    });
-
-});
-</script>
-
+  </script>
 </body>
 </html>
