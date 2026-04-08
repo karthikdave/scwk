@@ -1,23 +1,136 @@
-<!-- ONLY showing changed part (rest is EXACT SAME as your FC) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carousel Viewer</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .controls {
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+<header id="title">Loading...</header>
+
+<canvas id="pdfCanvas"></canvas>
+
+<div class="controls">
+  <button id="prev">Prev</button>
+  <span id="pageInfo"></span>
+  <button id="next">Next</button>
+</div>
 
 <script>
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+const params = new URLSearchParams(window.location.search);
 
-  const config = {
-    bites: {
-      title: "SCWK Bites",
-      subtitle: "A focused, page-by-page carousel experience for quick and practical insights.",
-      path: "pdfs/bites.pdf"
-    },
-    lites: {
-      title: "SCWK Lites",
-      subtitle: "A clean, premium carousel flow with a lighter reading rhythm.",
-      path: "pdfs/lites.pdf"
-    }
-  };
+// ✅ SUPPORT BOTH
+const pdfParam = params.get("pdf");
+const id = params.get("id");
 
-  // बाकी code SAME (unchanged)
-})();
+// ✅ CONFIG (for id mode)
+const config = {
+  bites: "pdfs/bites.pdf",
+  lites: "pdfs/lites.pdf"
+};
+
+let pdfPath = pdfParam || config[id];
+
+if (!pdfPath) {
+  document.getElementById("title").innerText = "Invalid link ❌";
+  throw new Error("No PDF specified");
+}
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let pdfDoc = null;
+let pageNum = 1;
+
+const canvas = document.getElementById("pdfCanvas");
+const ctx = canvas.getContext("2d");
+
+function renderPage(num) {
+  pdfDoc.getPage(num).then(page => {
+    const viewport = page.getViewport({ scale: 1.5 });
+
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    page.render({
+      canvasContext: ctx,
+      viewport: viewport
+    });
+
+    document.getElementById("pageInfo").innerText =
+      `Page ${num} / ${pdfDoc.numPages}`;
+  });
+}
+
+function loadPDF() {
+  pdfjsLib.getDocument(pdfPath).promise.then(pdf => {
+    pdfDoc = pdf;
+    document.getElementById("title").innerText = pdfPath;
+    renderPage(pageNum);
+  }).catch(() => {
+    document.getElementById("title").innerText =
+      "PDF failed to load ❌ (check path)";
+  });
+}
+
+document.getElementById("prev").onclick = () => {
+  if (pageNum <= 1) return;
+  pageNum--;
+  renderPage(pageNum);
+};
+
+document.getElementById("next").onclick = () => {
+  if (pageNum >= pdfDoc.numPages) return;
+  pageNum++;
+  renderPage(pageNum);
+};
+
+loadPDF();
 </script>
+
+</body>
+</html>
