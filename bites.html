@@ -1,82 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCWK Bites</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="icon" type="image/png" href="/images/logo.png">
-<style>
-  body { font-family: 'Inter', sans-serif; background-color: #f9f9f9; }
-  .card:hover { transform: translateY(-4px); transition: 0.3s; }
-</style>
+  <meta charset="UTF-8">
+  <title>SCWK Bites</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex flex-col">
 
-<!-- Header -->
-<header class="sticky top-0 bg-white shadow z-50">
-  <div class="max-w-5xl mx-auto flex items-center justify-between p-4">
-    <a href="index.html"><img src="/images/logo.png" alt="SCWK Logo" class="h-14"></a>
-    <nav class="space-x-6">
-      <a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a>
-      <a href="about.html" class="text-gray-600 hover:text-blue-600">About</a>
-      <a href="bites.html" class="text-blue-600 font-semibold">Bites</a>
-      <a href="lites.html" class="text-gray-600 hover:text-blue-600">Lites</a>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+<!-- HEADER -->
+<header class="sticky top-0 bg-white shadow-sm z-50">
+  <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+    
+    <!-- LOGO -->
+    <a href="index.html">
+      <img src="/images/logo.png" class="h-10">
+    </a>
+
+    <!-- MENU -->
+    <nav class="space-x-6 text-sm font-medium">
+      <a href="index.html" class="hover:text-blue-600">Home</a>
+      <a href="about.html" class="hover:text-blue-600">About</a>
+      <a href="bites.html" class="text-blue-600">Bites</a>
+      <a href="lites.html" class="hover:text-blue-600">Lites</a>
     </nav>
   </div>
 </header>
 
-<!-- Main content -->
-<main class="flex-1 max-w-5xl mx-auto py-8 px-4">
-  <h1 class="text-3xl font-bold mb-6">SCWK Bites Archive</h1>
-  <p class="mb-8 text-gray-700">Short, sharp insights from Scrum & Agile, ready to explore.</p>
+<!-- PAGE TITLE -->
+<section class="text-center py-10">
+  <h1 class="text-3xl font-bold">SCWK Bites ☕</h1>
+  <p class="text-gray-500 mt-2">Short, sharp Agile insights</p>
+</section>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- POSTS GRID -->
+<section class="max-w-6xl mx-auto px-4 pb-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-    <!-- Post Card Example 1 -->
-    <div class="card bg-white rounded-lg shadow p-4 flex flex-col">
-      <img src="/images/bite1-cover.png" alt="Bite 1 Cover" class="rounded mb-4">
-      <h2 class="text-xl font-semibold mb-2">Daily Standups Made Simple</h2>
-      <p class="text-gray-600 mb-4">Make your standups efficient in 5 minutes or less.</p>
-      <div class="mt-auto flex space-x-2">
-        <a href="carousel.html?file=/pdfs/bite1.pdf" target="_blank" class="flex-1 bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700">Open Carousel</a>
-        <a href="/pdfs/bite1.pdf" download class="flex-1 border border-blue-600 text-blue-600 text-center py-2 rounded hover:bg-blue-50">Download PDF</a>
+  <!-- POST CARD 1 -->
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+    
+    <img src="/images/bite1.png" class="w-full">
+
+    <div class="p-4">
+      <h2 class="font-semibold text-lg">Daily Scrum Mistakes</h2>
+      <p class="text-gray-500 text-sm mt-1">Stop turning it into a status meeting</p>
+
+      <div class="flex gap-3 mt-4">
+        <a href="carousel.html?file=/pdfs/bite1.pdf"
+           class="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg text-sm">
+          Open
+        </a>
+
+        <a href="/pdfs/bite1.pdf" download
+           class="flex-1 text-center border border-gray-300 py-2 rounded-lg text-sm">
+          Download
+        </a>
       </div>
     </div>
-
-    <!-- Post Card Example 2 -->
-    <div class="card bg-white rounded-lg shadow p-4 flex flex-col">
-      <img src="/images/bite2-cover.png" alt="Bite 2 Cover" class="rounded mb-4">
-      <h2 class="text-xl font-semibold mb-2">Sprint Planning Hacks</h2>
-      <p class="text-gray-600 mb-4">Plan smarter sprints with these actionable tips.</p>
-      <div class="mt-auto flex space-x-2">
-        <a href="carousel.html?file=/pdfs/bite2.pdf" target="_blank" class="flex-1 bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700">Open Carousel</a>
-        <a href="/pdfs/bite2.pdf" download class="flex-1 border border-blue-600 text-blue-600 text-center py-2 rounded hover:bg-blue-50">Download PDF</a>
-      </div>
-    </div>
-
-    <!-- Post Card Example 3 -->
-    <div class="card bg-white rounded-lg shadow p-4 flex flex-col">
-      <img src="/images/bite3-cover.png" alt="Bite 3 Cover" class="rounded mb-4">
-      <h2 class="text-xl font-semibold mb-2">Retrospectives That Work</h2>
-      <p class="text-gray-600 mb-4">Turn retrospectives into actionable improvements.</p>
-      <div class="mt-auto flex space-x-2">
-        <a href="carousel.html?file=/pdfs/bite3.pdf" target="_blank" class="flex-1 bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700">Open Carousel</a>
-        <a href="/pdfs/bite3.pdf" download class="flex-1 border border-blue-600 text-blue-600 text-center py-2 rounded hover:bg-blue-50">Download PDF</a>
-      </div>
-    </div>
-
-    <!-- Add more cards here following same structure -->
 
   </div>
-</main>
 
-<!-- Footer -->
-<footer class="bg-white shadow mt-12">
-  <div class="max-w-5xl mx-auto py-6 px-4 text-center text-gray-500">
-    © 2026 SCWK | Scrum and Coffee with Karthik
+  <!-- POST CARD 2 -->
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+    
+    <img src="/images/bite2.png" class="w-full">
+
+    <div class="p-4">
+      <h2 class="font-semibold text-lg">Scrum vs Kanban</h2>
+      <p class="text-gray-500 text-sm mt-1">Know when to use what</p>
+
+      <div class="flex gap-3 mt-4">
+        <a href="carousel.html?file=/pdfs/bite2.pdf"
+           class="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg text-sm">
+          Open
+        </a>
+
+        <a href="/pdfs/bite2.pdf" download
+           class="flex-1 text-center border border-gray-300 py-2 rounded-lg text-sm">
+          Download
+        </a>
+      </div>
+    </div>
+
   </div>
-</footer>
+
+</section>
 
 </body>
 </html>
