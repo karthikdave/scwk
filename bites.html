@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bites | SCWK</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  body {
+    background: linear-gradient(to bottom, #eff6ff, #ffffff);
+  }
+
+  .card-hover {
+    transition: all 0.25s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+</style>
+
+</head>
+
+<body class="text-gray-900 font-sans">
+
+<header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
+  <div class="max-w-6xl mx-auto px-6 py-4 text-center">
+
+    <div class="flex justify-center mb-3">
+      <img src="images/logo.png" class="h-14 md:h-16" alt="SCWK Logo">
+    </div>
+
+    <nav class="flex justify-center gap-4 text-sm">
+      <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
+      <a href="bites.html" class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold">Bites</a>
+      <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+      <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
+    </nav>
+
+  </div>
+</header>
+
+<section class="max-w-5xl mx-auto px-6 pt-24 pb-10 text-center">
+  <h1 class="text-4xl font-bold mb-4">Bites</h1>
+
+  <p class="text-gray-600 max-w-xl mx-auto">
+    Sharp moments where you realise something in your team isn’t working the way you think.
+  </p>
+</section>
+
+<!-- 🔥 FIXED WIDTH CONTAINER -->
+<section class="max-w-3xl mx-auto px-6 pb-20">
+
+  <div class="grid md:grid-cols-2 gap-10">
+
+    <!-- BITE 002 (latest first) -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-002'"
+         class="cursor-pointer card-hover">
+
+      <img src="images/bites/bites-002/b1.png" 
+           class="rounded-xl shadow-md mb-4">
+
+      <h3 class="font-semibold text-lg">
+        Your team looks fast — but nothing is actually improving
+      </h3>
+
+    </div>
+
+    <!-- BITE 001 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-001'"
+         class="cursor-pointer card-hover">
+
+      <img src="images/bites/bites-001/b1.png" 
+           class="rounded-xl shadow-md mb-4">
+
+      <h3 class="font-semibold text-lg">
+        Your standups feel busy — but nothing actually changes
+      </h3>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="py-10 text-center text-sm text-gray-400">
+  Scrum & Coffee with Karthik • SCWK © 2026
+</section>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SCWK AI | Clarity Engine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  body {
+    background: linear-gradient(to bottom, #eff6ff, #ffffff);
+  }
+</style>
+
+</head>
+
+<body class="text-gray-900 font-sans">
+
+<header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
+  <div class="max-w-6xl mx-auto px-6 py-4 text-center">
+
+    <div class="flex justify-center mb-3">
+      <img src="images/logo.png" class="h-16 md:h-20" alt="SCWK Logo">
+    </div>
+
+    <nav class="flex justify-center gap-4 text-sm">
+      <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
+      <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
+      <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+      <a href="ai.html" class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold">AI</a>
+      <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
+    </nav>
+
+  </div>
+</header>
+
+<section class="max-w-2xl mx-auto px-6 pt-28 pb-20 text-center">
+
+  <h1 class="text-3xl md:text-4xl font-bold mb-4">
+    SCWK Clarity Engine
+  </h1>
+
+  <p class="text-gray-600 mb-10">
+    One problem. One insight. One direction.
+  </p>
+
+  <div class="bg-white shadow-lg rounded-2xl p-6 text-left">
+
+    <textarea id="userInput"
+      placeholder="Example: Standup is too long..."
+      class="w-full border rounded-xl p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      rows="3"></textarea>
+
+    <button onclick="askSCWK()"
+      class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 w-full">
+      Get clarity
+    </button>
+
+    <div id="responseBox" class="mt-6 text-lg font-semibold text-gray-900 whitespace-pre-line"></div>
+
+  </div>
+
+</section>
+
+<script>
+function askSCWK() {
+  const input = document.getElementById("userInput").value.toLowerCase().trim();
+  const box = document.getElementById("responseBox");
+
+  if (!input) {
+    box.innerText = "Type something.";
+    return;
+  }
+
+  box.innerText = "Thinking...";
+
+  setTimeout(() => {
+
+    let responses = [];
+
+    if (input.includes("standup") || input.includes("dsm")) {
+      responses = [
+        "Long standup = unclear work.\nFix the work, not the meeting.",
+        "DSM noise = no real coordination.\nYou're talking, not aligning.",
+        "Standup confusion = missing ownership.\nNo owner = long discussion."
+      ];
+    }
+
+    else if (input.match(/delay|late|deadline|slow|miss/)) {
+      responses = [
+        "Missed deadlines = invisible blockers.\nYou don’t see the problem early enough.",
+        "Slow delivery = unclear dependencies.\nWork is waiting, not moving.",
+        "Delay = hidden work.\nWhat you don’t see is slowing you down."
+      ];
+    }
+
+    else if (input.match(/unclear|confused|not clear/)) {
+      responses = [
+        "Unclear input = slow output.\nClarity saves more time than speed.",
+        "Confusion = undefined work.\nNobody knows what good looks like.",
+        "No clarity = rework coming.\nYou will pay for this later."
+      ];
+    }
+
+    else if (input.includes("meeting")) {
+      responses = [
+        "Long meetings = unclear purpose.\nIf purpose is clear, time reduces.",
+        "Too many meetings = unclear decisions.\nDecisions are not happening.",
+        "Meetings fail when thinking is unclear.\nStructure drives clarity."
+      ];
+    }
+
+    else if (input.match(/overload|too much|busy|pressure/)) {
+      responses = [
+        "Too much work = no prioritization.\nEverything feels important, so nothing moves.",
+        "Busy team = unfocused team.\nActivity is not progress.",
+        "Overload = poor prioritization.\nYou’re doing more, achieving less."
+      ];
+    }
+
+    else if (input.match(/scrum|agile/)) {
+      responses = [
+        "Scrum confusion = wrong execution.\nYou’re doing rituals, not thinking.",
+        "Agile failing = mindset missing.\nProcess alone won’t fix this.",
+        "Framework is fine.\nExecution is weak."
+      ];
+    }
+
+    else {
+      responses = [
+        "Messy problem = missing structure.\nStart with clarity, not action.",
+        "If everything feels wrong, clarity is missing.\nDefine the problem first.",
+        "Problem unclear = thinking unclear.\nYou’re solving the wrong thing."
+      ];
+    }
+
+    const reply = responses[Math.floor(Math.random() * responses.length)];
+    box.innerText = reply;
+
+  }, 200);
+}
+</script>
+
+</body>
+</html>
