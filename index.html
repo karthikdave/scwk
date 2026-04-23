@@ -8,34 +8,49 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background: linear-gradient(to bottom, #eff6ff, #ffffff);
     overflow-x: hidden;
   }
 
-  .card-hover {
-    transition: all 0.25s ease;
-  }
-
-  .card-hover:hover {
-    transform: translateY(-6px) scale(1.01);
-  }
-
+  /* ===== Premium Reveal System ===== */
   .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
+    transform: translateY(30px) scale(0.98);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
   }
 
   .reveal.active {
     opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Slight depth feel on cards */
+  .card-hover {
+    transition: all 0.3s ease;
+    will-change: transform;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  /* Subtle hero depth */
+  .hero {
     transform: translateY(0);
+    transition: transform 0.2s ease-out;
   }
 </style>
 </head>
 
 <body class="text-gray-900 font-sans">
 
+<!-- HEADER -->
 <header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
   <div class="max-w-6xl mx-auto px-6 py-4 text-center">
 
@@ -53,7 +68,8 @@
   </div>
 </header>
 
-<section class="max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
+<!-- HERO -->
+<section id="hero" class="hero max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
   <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
     Your team is doing Scrum.<br>
     <span class="text-blue-700">But nothing is actually improving.</span>
@@ -68,6 +84,7 @@
   </p>
 </section>
 
+<!-- PAIN STORY -->
 <section class="max-w-4xl mx-auto px-6 py-16 text-center reveal">
   <p class="text-lg text-gray-700 leading-relaxed mb-6">
     Standups feel like updates.<br>
@@ -85,6 +102,7 @@
   </p>
 </section>
 
+<!-- CORE TRUTH -->
 <section class="text-center py-10 reveal">
   <p class="text-2xl font-bold">
     This is not a Scrum problem.
@@ -95,6 +113,7 @@
   </p>
 </section>
 
+<!-- ENTRY POINT -->
 <section class="max-w-6xl mx-auto px-6 py-20 reveal">
   <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
 
@@ -132,6 +151,7 @@
   </div>
 </section>
 
+<!-- CARDS -->
 <section class="max-w-6xl mx-auto px-6 pb-16 reveal">
   <h2 class="text-2xl font-bold mb-8 text-center">Start here</h2>
 
@@ -158,6 +178,7 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
@@ -166,19 +187,21 @@
   history.scrollRestoration = "manual";
 
   const reveals = document.querySelectorAll('.reveal');
+  const hero = document.getElementById('hero');
 
   function revealOnScroll() {
-    const triggerBottom = window.innerHeight * 0.85;
+    const trigger = window.innerHeight * 0.85;
 
     reveals.forEach(el => {
-      const boxTop = el.getBoundingClientRect().top;
-
-      if (boxTop < triggerBottom) {
-        el.classList.add('active');
-      } else {
-        el.classList.remove('active');
-      }
+      const top = el.getBoundingClientRect().top;
+      if (top < trigger) el.classList.add('active');
     });
+
+    /* subtle hero depth effect */
+    const offset = window.scrollY * 0.02;
+    if (hero) {
+      hero.style.transform = `translateY(${offset}px)`;
+    }
   }
 
   window.addEventListener("load", () => {
@@ -186,7 +209,7 @@
     revealOnScroll();
   });
 
-  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener("scroll", revealOnScroll);
 </script>
 
 </body>
