@@ -35,7 +35,14 @@ body {
   </div>
 </header>
 
-<div class="h-[calc(100vh-60px)] flex items-center justify-center">
+<!-- MAIN VIEW -->
+<div class="h-[calc(100vh-60px)] flex items-center justify-center relative">
+
+  <!-- 🔥 LOADER (RESTORED) -->
+  <div id="loader"
+       class="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-10">
+    <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
 
   <div class="relative w-full h-[85vh] flex items-center justify-center px-4">
 
@@ -56,7 +63,6 @@ body {
     </div>
 
   </div>
-
 </div>
 
 <script>
@@ -75,13 +81,14 @@ if (!folder) {
 
 const basePath = "images/" + folder;
 
-/* ✅ NEW: detect prefix */
+/* prefix logic */
 const prefix = folder.includes("lites") ? "l" : "b";
 
 let currentIndex = 1;
 let totalImages = 0;
 
 const img = document.getElementById("carouselImage");
+const loader = document.getElementById("loader");
 const counter = document.getElementById("counter");
 const dotsContainer = document.getElementById("dots");
 const leftArrow = document.getElementById("leftArrow");
@@ -145,6 +152,8 @@ function renderDots() {
 }
 
 function loadImage() {
+  loader.style.display = "flex";
+
   img.style.opacity = 0;
   img.style.transform = "scale(0.96)";
 
@@ -159,6 +168,7 @@ function loadImage() {
 img.onload = () => {
   img.style.opacity = 1;
   img.style.transform = "scale(1)";
+  loader.style.display = "none";
 };
 
 function nextImage() {
