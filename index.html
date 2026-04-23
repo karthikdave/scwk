@@ -137,21 +137,18 @@
 
   <div class="grid md:grid-cols-3 gap-8">
 
-    <!-- UPDATED CARD 1 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-002'"
          class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
       <h3 class="font-semibold text-lg">Your team looks fast — but nothing is actually improving</h3>
       <p class="text-sm text-gray-500 mt-2">Progress feels real… but outcomes don’t change</p>
     </div>
 
-    <!-- UPDATED CARD 2 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-001'"
          class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
       <h3 class="font-semibold text-lg">Your standups feel busy — but nothing actually changes</h3>
       <p class="text-sm text-gray-500 mt-2">You’re sharing updates, not creating alignment</p>
     </div>
 
-    <!-- UPDATED CARD 3 -->
     <div onclick="location.href='carousel.html?folder=lites/lites-003'"
          class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
       <h3 class="font-semibold text-lg">You’re fixing things faster — but solving the wrong problem</h3>
@@ -166,15 +163,12 @@
 </section>
 
 <script>
-  window.onload = () => {
-    window.scrollTo(0, 0);
-    revealOnScroll();
-  };
+  history.scrollRestoration = "manual";
 
   const reveals = document.querySelectorAll('.reveal');
 
   function revealOnScroll() {
-    const triggerBottom = window.innerHeight * 0.95;
+    const triggerBottom = window.innerHeight * 0.85;
 
     reveals.forEach(el => {
       const boxTop = el.getBoundingClientRect().top;
@@ -186,6 +180,11 @@
       }
     });
   }
+
+  window.addEventListener("load", () => {
+    window.scrollTo(0, 0);
+    revealOnScroll();
+  });
 
   window.addEventListener('scroll', revealOnScroll);
 </script>
