@@ -17,12 +17,10 @@
     overflow-x: hidden;
   }
 
-  /* ===== Premium Reveal System ===== */
   .reveal {
     opacity: 0;
     transform: translateY(30px) scale(0.98);
     transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: transform, opacity;
   }
 
   .reveal.active {
@@ -30,20 +28,32 @@
     transform: translateY(0) scale(1);
   }
 
-  /* Slight depth feel on cards */
-  .card-hover {
-    transition: all 0.3s ease;
-    will-change: transform;
+  .card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    cursor: pointer;
   }
 
-  .card-hover:hover {
-    transform: translateY(-8px) scale(1.02);
+  .card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
   }
 
-  /* Subtle hero depth */
-  .hero {
-    transform: translateY(0);
-    transition: transform 0.2s ease-out;
+  .card:hover img {
+    transform: scale(1.05);
+  }
+
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: white;
   }
 </style>
 </head>
@@ -55,7 +65,7 @@
   <div class="max-w-6xl mx-auto px-6 py-4 text-center">
 
     <div class="flex justify-center mb-3">
-      <img src="images/logo.png" class="h-16 md:h-20" alt="SCWK Logo">
+      <img src="images/logo.png" class="h-16 md:h-20">
     </div>
 
     <nav class="flex justify-center gap-4 text-sm">
@@ -69,113 +79,53 @@
 </header>
 
 <!-- HERO -->
-<section id="hero" class="hero max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
+<section id="hero" class="max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
   <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
     Your team is doing Scrum.<br>
     <span class="text-blue-700">But nothing is actually improving.</span>
   </h1>
 
-  <p class="text-lg text-gray-600 max-w-xl mx-auto mb-6 leading-relaxed">
-    You’re not alone. Most teams follow Scrum… and still feel stuck.
+  <p class="text-lg text-gray-600 max-w-xl mx-auto mb-6">
+    Most teams follow Scrum… and still feel stuck.
   </p>
 
-  <p class="text-sm text-gray-400 max-w-xl mx-auto">
-    Patterns observed across real Scrum teams — not theory.
-  </p>
+  <div class="flex justify-center gap-4 mt-6">
+    <a href="bites.html" class="px-6 py-3 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Explore Bites</a>
+    <a href="lites.html" class="px-6 py-3 bg-white border rounded-full text-sm hover:bg-gray-100">Explore Lites</a>
+  </div>
 </section>
 
-<!-- PAIN STORY -->
-<section class="max-w-4xl mx-auto px-6 py-16 text-center reveal">
-  <p class="text-lg text-gray-700 leading-relaxed mb-6">
-    Standups feel like updates.<br>
-    Sprints end… but nothing really changes.<br>
-    Everyone is busy — but delivery still feels slow.
-  </p>
+<!-- ENTRY -->
+<section class="max-w-6xl mx-auto px-6 py-16 reveal">
+  <div class="grid md:grid-cols-2 gap-8">
 
-  <p class="text-lg text-gray-700 leading-relaxed mb-8">
-    Things aren’t broken enough to panic.<br>
-    But not clear enough to improve.
-  </p>
+    <div onclick="location.href='bites.html'" class="bg-blue-50 p-8 rounded-2xl cursor-pointer">
+      <h3 class="text-xl font-semibold mb-2">⚡ Bites</h3>
+      <p class="text-gray-600 text-sm">
+        Sharp moments where something in your team suddenly makes sense.
+      </p>
+    </div>
 
-  <p class="text-xl font-semibold text-blue-700">
-    That’s the real problem.
-  </p>
-</section>
-
-<!-- CORE TRUTH -->
-<section class="text-center py-10 reveal">
-  <p class="text-2xl font-bold">
-    This is not a Scrum problem.
-  </p>
-
-  <p class="text-lg text-gray-600 mt-2">
-    It’s a thinking problem inside the team.
-  </p>
-</section>
-
-<!-- ENTRY POINT -->
-<section class="max-w-6xl mx-auto px-6 py-20 reveal">
-  <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
-
-    <h2 class="text-2xl font-bold mb-4">Start where it clicks for you</h2>
-
-    <p class="text-gray-600 max-w-2xl mx-auto mb-10">
-      You can either see the problem clearly… or understand it simply.
-    </p>
-
-    <div class="grid md:grid-cols-3 gap-6 text-left">
-
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">⚡ Bites</h3>
-        <p class="text-sm text-gray-600">
-          When you realise your team isn’t stuck — it’s just misaligned.
-        </p>
-      </div>
-
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">☕ Lites</h3>
-        <p class="text-sm text-gray-600">
-          When messy Scrum problems suddenly become obvious.
-        </p>
-      </div>
-
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">📌 Real Insight</h3>
-        <p class="text-sm text-gray-600">
-          No theory. Just what actually happens inside teams.
-        </p>
-      </div>
-
+    <div onclick="location.href='lites.html'" class="bg-cyan-50 p-8 rounded-2xl cursor-pointer">
+      <h3 class="text-xl font-semibold mb-2">☕ Lites</h3>
+      <p class="text-gray-600 text-sm">
+        Visual breakdowns that simplify messy Scrum realities.
+      </p>
     </div>
 
   </div>
 </section>
 
-<!-- CARDS -->
-<section class="max-w-6xl mx-auto px-6 pb-16 reveal">
-  <h2 class="text-2xl font-bold mb-8 text-center">Start here</h2>
+<!-- LATEST BITES -->
+<section class="max-w-6xl mx-auto px-6 py-16 reveal">
+  <h2 class="text-2xl font-bold mb-8">Latest Bites</h2>
+  <div id="bitesHome" class="grid md:grid-cols-3 gap-8"></div>
+</section>
 
-  <div class="grid md:grid-cols-3 gap-8">
-
-    <div onclick="location.href='carousel.html?folder=bites/bites-002'"
-         class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
-      <h3 class="font-semibold text-lg">Your team looks fast — but nothing is actually improving</h3>
-      <p class="text-sm text-gray-500 mt-2">Progress feels real… but outcomes don’t change</p>
-    </div>
-
-    <div onclick="location.href='carousel.html?folder=bites/bites-001'"
-         class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
-      <h3 class="font-semibold text-lg">Your standups feel busy — but nothing actually changes</h3>
-      <p class="text-sm text-gray-500 mt-2">You’re sharing updates, not creating alignment</p>
-    </div>
-
-    <div onclick="location.href='carousel.html?folder=lites/lites-003'"
-         class="bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer">
-      <h3 class="font-semibold text-lg">You’re fixing things faster — but solving the wrong problem</h3>
-      <p class="text-sm text-gray-500 mt-2">Tools are improving… clarity isn’t</p>
-    </div>
-
-  </div>
+<!-- LATEST LITES -->
+<section class="max-w-6xl mx-auto px-6 py-16 reveal">
+  <h2 class="text-2xl font-bold mb-8">Latest Lites</h2>
+  <div id="litesHome" class="grid md:grid-cols-3 gap-8"></div>
 </section>
 
 <!-- FOOTER -->
@@ -184,32 +134,80 @@
 </section>
 
 <script>
-  history.scrollRestoration = "manual";
+const repoOwner = "karthikdave";
+const repoName = "scwk";
+const branch = "main";
 
-  const reveals = document.querySelectorAll('.reveal');
-  const hero = document.getElementById('hero');
+/* ===== LOAD BITES ===== */
+fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites?ref=${branch}`)
+.then(res => res.json())
+.then(data => {
+  const grid = document.getElementById("bitesHome");
 
-  function revealOnScroll() {
-    const trigger = window.innerHeight * 0.85;
+  data.filter(f => f.type === "dir")
+      .sort((a,b) => b.name.localeCompare(a.name))
+      .slice(0,3)
+      .forEach(folder => {
 
-    reveals.forEach(el => {
-      const top = el.getBoundingClientRect().top;
-      if (top < trigger) el.classList.add('active');
-    });
+        const name = folder.name;
+        const card = document.createElement("div");
 
-    /* subtle hero depth effect */
-    const offset = window.scrollY * 0.02;
-    if (hero) {
-      hero.style.transform = `translateY(${offset}px)`;
+        card.className = "card";
+        card.onclick = () => location.href = `carousel.html?folder=bites/${name}`;
+
+        card.innerHTML = `
+          <img src="images/bites/${name}/b1.png">
+          <div class="overlay">
+            <h3 class="text-sm font-semibold">${name.replace("bites-","Bite ")}</h3>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+});
+
+/* ===== LOAD LITES ===== */
+fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/lites?ref=${branch}`)
+.then(res => res.json())
+.then(data => {
+  const grid = document.getElementById("litesHome");
+
+  data.filter(f => f.type === "dir")
+      .sort((a,b) => b.name.localeCompare(a.name))
+      .slice(0,3)
+      .forEach(folder => {
+
+        const name = folder.name;
+        const card = document.createElement("div");
+
+        card.className = "card";
+        card.onclick = () => location.href = `carousel.html?folder=lites/${name}`;
+
+        card.innerHTML = `
+          <img src="images/lites/${name}/l1.png">
+          <div class="overlay">
+            <h3 class="text-sm font-semibold">${name.replace("lites-","Lite ")}</h3>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+});
+
+/* REVEAL */
+const reveals = document.querySelectorAll('.reveal');
+
+function revealOnScroll() {
+  const trigger = window.innerHeight * 0.85;
+  reveals.forEach(el => {
+    if (el.getBoundingClientRect().top < trigger) {
+      el.classList.add('active');
     }
-  }
-
-  window.addEventListener("load", () => {
-    window.scrollTo(0, 0);
-    revealOnScroll();
   });
+}
 
-  window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
 </script>
 
 </body>
