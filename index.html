@@ -156,6 +156,13 @@ body {
 </section>
 
 <script>
+/* 🔥 SCROLL FIX BUILT-IN */
+history.scrollRestoration = "manual";
+window.onload = () => {
+  window.scrollTo(0, 0);
+};
+
+/* DATA LOAD */
 const repoOwner = "karthikdave";
 const repoName = "scwk";
 const branch = "main";
@@ -227,7 +234,7 @@ Promise.all([
 
 });
 
-// reveal
+/* REVEAL */
 const reveals = document.querySelectorAll('.reveal');
 const hero = document.getElementById('hero');
 
