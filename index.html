@@ -8,16 +8,13 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
   overflow-x: hidden;
 }
 
-/* Reveal */
 .reveal {
   opacity: 0;
   transform: translateY(30px) scale(0.98);
@@ -29,7 +26,6 @@ body {
   transform: translateY(0) scale(1);
 }
 
-/* Cards */
 .card-hover {
   transition: all 0.3s ease;
 }
@@ -38,7 +34,6 @@ body {
   transform: translateY(-8px) scale(1.02);
 }
 
-/* Hero depth */
 .hero {
   transform: translateY(0);
   transition: transform 0.2s ease-out;
@@ -48,7 +43,6 @@ body {
 
 <body class="text-gray-900 font-sans">
 
-<!-- HEADER -->
 <header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
   <div class="max-w-6xl mx-auto px-6 py-4 text-center">
 
@@ -66,7 +60,6 @@ body {
   </div>
 </header>
 
-<!-- HERO -->
 <section id="hero" class="hero max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
   <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
     Your team is doing Scrum.<br>
@@ -82,7 +75,6 @@ body {
   </p>
 </section>
 
-<!-- STORY -->
 <section class="max-w-4xl mx-auto px-6 py-16 text-center reveal">
   <p class="text-lg text-gray-700 leading-relaxed mb-6">
     Standups feel like updates.<br>
@@ -100,13 +92,11 @@ body {
   </p>
 </section>
 
-<!-- CORE -->
 <section class="text-center py-10 reveal">
   <p class="text-2xl font-bold">This is not a Scrum problem.</p>
   <p class="text-lg text-gray-600 mt-2">It’s a thinking problem inside the team.</p>
 </section>
 
-<!-- ENTRY -->
 <section class="max-w-6xl mx-auto px-6 py-20 reveal">
   <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
 
@@ -144,25 +134,23 @@ body {
   </div>
 </section>
 
-<!-- DYNAMIC CARDS -->
 <section class="max-w-6xl mx-auto px-6 pb-16 reveal">
   <h2 class="text-2xl font-bold mb-8 text-center">Start here</h2>
   <div id="homeGrid" class="grid md:grid-cols-3 gap-8"></div>
 </section>
 
-<!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
 
 <script>
-/* 🔥 SCROLL FIX BUILT-IN */
+/* SAFE scroll fix */
 history.scrollRestoration = "manual";
-window.onload = () => {
-  window.scrollTo(0, 0);
-};
+window.addEventListener("load", () => {
+  setTimeout(() => window.scrollTo(0,0), 50);
+});
 
-/* DATA LOAD */
+/* data */
 const repoOwner = "karthikdave";
 const repoName = "scwk";
 const branch = "main";
@@ -171,7 +159,6 @@ const homeGrid = document.getElementById("homeGrid");
 
 function createCard(type, folderName, image, title) {
   const card = document.createElement("div");
-
   card.className = "bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer";
 
   card.onclick = () => {
@@ -186,72 +173,54 @@ function createCard(type, folderName, image, title) {
   return card;
 }
 
-Promise.all([
-  fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites?ref=${branch}`).then(r=>r.json()),
-  fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/lites?ref=${branch}`).then(r=>r.json())
-])
-.then(([bites, lites]) => {
+function loadContent() {
 
-  const latestBites = bites
-    .filter(f => f.type === "dir")
-    .sort((a,b) => b.name.localeCompare(a.name))
-    .slice(0,3);
+  Promise.all([
+    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites?ref=${branch}`).then(r=>r.json()),
+    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/lites?ref=${branch}`).then(r=>r.json())
+  ])
+  .then(([bites, lites]) => {
 
-  const latestLites = lites
-    .filter(f => f.type === "dir")
-    .sort((a,b) => b.name.localeCompare(a.name))
-    .slice(0,3);
+    const latestBites = bites.filter(f=>f.type==="dir").sort((a,b)=>b.name.localeCompare(a.name)).slice(0,3);
+    const latestLites = lites.filter(f=>f.type==="dir").sort((a,b)=>b.name.localeCompare(a.name)).slice(0,3);
 
-  latestBites.forEach(folder => {
-    const name = folder.name;
-    const image = `images/bites/${name}/b1.png`;
+    latestBites.forEach(folder => loadCard("bites", folder.name, `images/bites/${folder.name}/b1.png`));
+    latestLites.forEach(folder => loadCard("lites", folder.name, `images/lites/${folder.name}/l1.png`));
 
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites/${name}/title.txt?ref=${branch}`)
-    .then(r=>r.json())
-    .then(file => {
-      const title = atob(file.content).trim();
-      homeGrid.appendChild(createCard("bites", name, image, title));
-    })
-    .catch(() => {
-      homeGrid.appendChild(createCard("bites", name, image, name));
-    });
   });
 
-  latestLites.forEach(folder => {
-    const name = folder.name;
-    const image = `images/lites/${name}/l1.png`;
-
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/lites/${name}/title.txt?ref=${branch}`)
-    .then(r=>r.json())
-    .then(file => {
-      const title = atob(file.content).trim();
-      homeGrid.appendChild(createCard("lites", name, image, title));
-    })
-    .catch(() => {
-      homeGrid.appendChild(createCard("lites", name, image, name));
-    });
-  });
-
-});
-
-/* REVEAL */
-const reveals = document.querySelectorAll('.reveal');
-const hero = document.getElementById('hero');
-
-function revealOnScroll() {
-  const trigger = window.innerHeight * 0.85;
-
-  reveals.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < trigger) el.classList.add('active');
-  });
-
-  const offset = window.scrollY * 0.02;
-  if (hero) hero.style.transform = `translateY(${offset}px)`;
 }
 
-window.addEventListener("load", revealOnScroll);
+function loadCard(type, name, image) {
+  fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/${type}/${name}/title.txt?ref=${branch}`)
+  .then(r=>r.json())
+  .then(file => {
+    const title = atob(file.content).trim();
+    homeGrid.appendChild(createCard(type, name, image, title));
+  })
+  .catch(()=>{
+    homeGrid.appendChild(createCard(type, name, image, name));
+  });
+}
+
+/* reveal */
+function revealOnScroll() {
+  const trigger = window.innerHeight * 0.85;
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < trigger) {
+      el.classList.add('active');
+    }
+  });
+}
+
+/* init */
+window.addEventListener("load", () => {
+  loadContent();
+  revealOnScroll();
+});
+
 window.addEventListener("scroll", revealOnScroll);
+
 </script>
 
 </body>
