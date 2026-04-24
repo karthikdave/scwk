@@ -8,24 +8,21 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body {
-  background: linear-gradient(to bottom, #eff6ff, #ffffff);
-}
+  body {
+    background: linear-gradient(to bottom, #eff6ff, #ffffff);
+  }
 
-.card {
-  background: #0f172a;
-  color: white;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-}
+  .card-hover {
+    transition: all 0.25s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
 </style>
 </head>
 
-<body class="font-sans">
+<body class="text-gray-900 font-sans">
 
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-14 mx-auto mb-3">
@@ -47,30 +44,50 @@ body {
 <script>
 const grid = document.getElementById("grid");
 
+/* 👇 YOU ONLY UPDATE THIS LIST WHEN ADDING NEW CONTENT */
 const bites = ["003","002","001"];
 
-bites.forEach(id => {
-  const folder = `bites/bites-${id}`;
+/* fetch title.txt safely */
+async function getTitle(folder, fallback) {
+  try {
+    const res = await fetch(`images/${folder}/title.txt`);
+    if (!res.ok) return fallback;
+    const text = await res.text();
+    return text.trim() || fallback;
+  } catch {
+    return fallback;
+  }
+}
 
-  const card = document.createElement("div");
-  card.className = "card cursor-pointer";
+(async () => {
 
-  card.innerHTML = `
-    <img src="images/${folder}/b1.png" class="w-full">
-    <div class="p-4">
-      <div class="text-xs text-blue-300 mb-1">⚡ Bite ${id}</div>
-      <h3 class="text-sm font-semibold leading-snug">
-        Insight from real Scrum teams
+  for (const id of bites) {
+
+    const folder = `bites/bites-${id}`;
+    const fallback = `Bite ${id}`;
+
+    const title = await getTitle(folder, fallback);
+
+    const card = document.createElement("div");
+    card.className = "cursor-pointer card-hover";
+
+    card.innerHTML = `
+      <img src="images/${folder}/b1.png"
+           class="rounded-xl shadow-md mb-4">
+
+      <h3 class="font-semibold text-lg">
+        ${title}
       </h3>
-    </div>
-  `;
+    `;
 
-  card.onclick = () => {
-    location.href = `carousel.html?folder=${folder}`;
-  };
+    card.onclick = () => {
+      location.href = `carousel.html?folder=${folder}`;
+    };
 
-  grid.appendChild(card);
-});
+    grid.appendChild(card);
+  }
+
+})();
 </script>
 
 </body>
