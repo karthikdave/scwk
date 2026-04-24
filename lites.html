@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Lites | SCWK</title>
+<title>Bites | SCWK</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -11,30 +11,35 @@
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
 }
-.card-hover {
-  transition: all 0.25s ease;
+
+.card {
+  background: #0f172a;
+  color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
-.card-hover:hover {
+.card:hover {
   transform: translateY(-6px) scale(1.02);
 }
 </style>
 </head>
 
-<body class="text-gray-900 font-sans">
+<body class="font-sans">
 
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-14 mx-auto mb-3">
 
   <nav class="flex justify-center gap-4 text-sm">
     <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
-    <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
-    <a href="lites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full">Lites</a>
+    <a href="bites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full">Bites</a>
+    <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
     <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
   </nav>
 </header>
 
 <section class="text-center mt-16">
-  <h1 class="text-3xl font-bold">Lites</h1>
+  <h1 class="text-3xl font-bold">Bites</h1>
 </section>
 
 <div id="grid" class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-8 px-6"></div>
@@ -42,18 +47,22 @@ body {
 <script>
 const grid = document.getElementById("grid");
 
-/* MANUAL SAFE LIST */
-const lites = ["004","003","002","001"];
+const bites = ["003","002","001"];
 
-lites.forEach(id => {
-  const folder = `lites/lites-${id}`;
+bites.forEach(id => {
+  const folder = `bites/bites-${id}`;
 
   const card = document.createElement("div");
-  card.className = "cursor-pointer card-hover";
+  card.className = "card cursor-pointer";
 
   card.innerHTML = `
-    <img src="images/${folder}/l1.png" class="rounded-xl shadow-md mb-4">
-    <h3 class="font-semibold text-lg">Lite ${id}</h3>
+    <img src="images/${folder}/b1.png" class="w-full">
+    <div class="p-4">
+      <div class="text-xs text-blue-300 mb-1">⚡ Bite ${id}</div>
+      <h3 class="text-sm font-semibold leading-snug">
+        Insight from real Scrum teams
+      </h3>
+    </div>
   `;
 
   card.onclick = () => {
