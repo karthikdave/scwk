@@ -14,22 +14,12 @@ body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
 }
 
-/* Card style (black consistency) */
+/* subtle hover */
 .card {
-  background: #0f172a;
-  color: white;
-  border-radius: 16px;
-  overflow: hidden;
   transition: all 0.3s ease;
 }
-
 .card:hover {
   transform: translateY(-6px) scale(1.02);
-}
-
-/* subtle overlay for text readability */
-.card-content {
-  padding: 16px;
 }
 </style>
 </head>
@@ -49,52 +39,68 @@ body {
 </header>
 
 <!-- HERO -->
-<section class="max-w-4xl mx-auto text-center pt-20 pb-10 px-6">
-  <h1 class="text-4xl md:text-5xl font-bold mb-4">
+<section class="max-w-4xl mx-auto text-center pt-24 pb-12 px-6">
+  <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
     Your team is doing Scrum.<br>
     <span class="text-blue-700">But nothing is actually improving.</span>
   </h1>
 
-  <p class="text-gray-600 max-w-xl mx-auto">
-    Real patterns from real teams. No theory. Just clarity.
+  <p class="text-lg text-gray-600 max-w-xl mx-auto">
+    SCWK captures real patterns from real teams — the moments where things feel “off”… but no one can clearly explain why.
   </p>
 </section>
 
-<!-- START HERE -->
-<section class="max-w-5xl mx-auto px-6 py-10">
+<!-- WHAT IS SCWK -->
+<section class="max-w-3xl mx-auto text-center px-6 py-10">
+  <h2 class="text-2xl font-bold mb-4">What is SCWK?</h2>
 
-  <h2 class="text-2xl font-bold text-center mb-10">Start here</h2>
+  <p class="text-gray-600 leading-relaxed">
+    Scrum & Coffee with Karthik is a collection of real-world insights from working with Scrum teams.
+    Not theory. Not frameworks. Just what actually happens inside teams — and why it often doesn’t work the way we expect.
+  </p>
+</section>
+
+<!-- ENTRY OPTIONS -->
+<section class="max-w-5xl mx-auto px-6 py-16">
+
+  <h2 class="text-2xl font-bold text-center mb-10">
+    Start where it clicks for you
+  </h2>
 
   <div class="grid md:grid-cols-2 gap-8">
 
-    <!-- LATEST BITE -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-004'"
-         class="card cursor-pointer">
+    <!-- BITES -->
+    <div onclick="location.href='bites.html'"
+         class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
 
-      <img src="images/bites/bites-004/b1.png" class="w-full">
+      <div class="p-6">
+        <div class="text-sm text-blue-300 mb-2">⚡ Bites</div>
 
-      <div class="card-content">
-        <div class="text-xs text-blue-300 mb-2">⚡ Latest Bite</div>
-
-        <h3 class="text-lg font-semibold leading-snug">
-          Your team is busy — but nothing actually moves forward
+        <h3 class="text-xl font-semibold mb-3">
+          When something feels off in your team
         </h3>
+
+        <p class="text-sm text-gray-300">
+          Short moments where you suddenly realise — things aren’t working the way you thought.
+        </p>
       </div>
 
     </div>
 
-    <!-- LATEST LITE -->
-    <div onclick="location.href='carousel.html?folder=lites/lites-004'"
-         class="card cursor-pointer">
+    <!-- LITES -->
+    <div onclick="location.href='lites.html'"
+         class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
 
-      <img src="images/lites/lites-004/l1.png" class="w-full">
+      <div class="p-6">
+        <div class="text-sm text-green-300 mb-2">☕ Lites</div>
 
-      <div class="card-content">
-        <div class="text-xs text-green-300 mb-2">☕ Latest Lite</div>
-
-        <h3 class="text-lg font-semibold leading-snug">
-          You're solving tasks faster — but not solving the real problem
+        <h3 class="text-xl font-semibold mb-3">
+          When things finally make sense
         </h3>
+
+        <p class="text-sm text-gray-300">
+          Simple explanations that bring clarity to messy Scrum problems.
+        </p>
       </div>
 
     </div>
@@ -103,40 +109,18 @@ body {
 
 </section>
 
-<!-- CTA -->
-<section class="text-center py-12">
-
-  <p class="text-gray-600 mb-6">
-    Want to explore more insights?
+<!-- CLOSING -->
+<section class="text-center py-12 px-6">
+  <p class="text-gray-600 max-w-xl mx-auto">
+    You don’t need more frameworks.  
+    You need clearer thinking inside your team.
   </p>
-
-  <div class="flex justify-center gap-4">
-
-    <a href="bites.html"
-       class="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700">
-       Explore Bites →
-    </a>
-
-    <a href="lites.html"
-       class="px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-black">
-       Explore Lites →
-    </a>
-
-  </div>
-
 </section>
 
 <!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
-
-<script>
-/* Scroll always top */
-window.onbeforeunload = function () {
-  window.scrollTo(0, 0);
-};
-</script>
 
 </body>
 </html>
