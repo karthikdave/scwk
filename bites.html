@@ -1,83 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Bites | SCWK</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-  body {
-    background: linear-gradient(to bottom, #eff6ff, #ffffff);
-  }
-
-  .card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-    cursor: pointer;
-  }
-
-  .card img {
-    width: 100%;
-    height: 260px;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-
-  .card:hover img {
-    transform: scale(1.05);
-  }
-
-  .overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 16px;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-    color: white;
-  }
-</style>
-
-</head>
-
-<body class="text-gray-900 font-sans">
-
-<header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
-  <div class="max-w-6xl mx-auto px-6 py-4 text-center">
-
-    <div class="flex justify-center mb-3">
-      <img src="images/logo.png" class="h-14 md:h-16" alt="SCWK Logo">
-    </div>
-
-    <nav class="flex justify-center gap-4 text-sm">
-      <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
-      <a href="bites.html" class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold">Bites</a>
-      <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
-      <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
-    </nav>
-
-  </div>
-</header>
-
-<section class="max-w-5xl mx-auto px-6 pt-24 pb-10 text-center">
-  <h1 class="text-4xl font-bold mb-4">Bites</h1>
-
-  <p class="text-gray-600 max-w-xl mx-auto">
-    Sharp moments where you realise something in your team isn’t working the way you think.
-  </p>
-</section>
-
-<section class="max-w-5xl mx-auto px-6 pb-20">
-  <div id="bitesGrid" class="grid md:grid-cols-3 gap-8"></div>
-</section>
-
-<section class="py-10 text-center text-sm text-gray-400">
-  Scrum & Coffee with Karthik • SCWK © 2026
-</section>
-
 <script>
 const repoOwner = "karthikdave";
 const repoName = "scwk";
@@ -99,7 +19,6 @@ fetch(apiUrl)
 
     const folderName = folder.name;
     const imagePath = `images/bites/${folderName}/b1.png`;
-    const title = folderName.replace("bites-", "Bite ");
 
     const card = document.createElement("div");
     card.className = "card";
@@ -108,12 +27,29 @@ fetch(apiUrl)
       location.href = `carousel.html?folder=bites/${folderName}`;
     };
 
-    card.innerHTML = `
-      <img src="${imagePath}">
-      <div class="overlay">
-        <h3 class="text-lg font-semibold">${title}</h3>
-      </div>
-    `;
+    // 👉 fetch title.txt
+    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites/${folderName}/title.txt?ref=${branch}`)
+    .then(res => res.json())
+    .then(file => {
+      const title = atob(file.content).trim();
+
+      card.innerHTML = `
+        <img src="${imagePath}">
+        <div class="overlay">
+          <h3 class="text-lg font-semibold">${title}</h3>
+        </div>
+      `;
+    })
+    .catch(() => {
+      // fallback
+      const title = folderName.replace("bites-", "Bite ");
+      card.innerHTML = `
+        <img src="${imagePath}">
+        <div class="overlay">
+          <h3 class="text-lg font-semibold">${title}</h3>
+        </div>
+      `;
+    });
 
     grid.appendChild(card);
 
@@ -121,6 +57,3 @@ fetch(apiUrl)
 
 });
 </script>
-
-</body>
-</html>
