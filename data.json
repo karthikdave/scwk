@@ -1,16 +1,22 @@
 {
-  "posts": [
+  "bites": [
     {
-      "id": "1",
-      "type": "bites",
-      "title": "SCWK Bite #1 - Agile Basics",
-      "file": "pdf/bites.pdf"
+      "id": "001",
+      "folder": "bites/bites-001",
+      "title": "Your standups feel busy — but nothing actually changes",
+      "image": "images/bites/bites-001/b1.png"
     },
     {
-      "id": "2",
-      "type": "dose",
-      "title": "SCWK Dose #1 - Scrum Deep Dive",
-      "file": "pdf/dose.pdf"
+      "id": "002",
+      "folder": "bites/bites-002",
+      "title": "Your team looks fast — but nothing is actually improving",
+      "image": "images/bites/bites-002/b1.png"
+    },
+    {
+      "id": "003",
+      "folder": "bites/bites-003",
+      "title": "You’re shipping work — but not shipping understanding",
+      "image": "images/bites/bites-003/b1.png"
     }
   ]
 }
