@@ -35,60 +35,63 @@
   </nav>
 </header>
 
-<section class="text-center mt-16">
-  <h1 class="text-3xl font-bold">Bites</h1>
+<section class="max-w-5xl mx-auto px-6 pt-24 pb-10 text-center">
+  <h1 class="text-4xl font-bold mb-4">Bites</h1>
+
+  <p class="text-gray-600 max-w-xl mx-auto">
+    Sharp moments where you realise something in your team isn’t working the way you think.
+  </p>
 </section>
 
-<div id="grid" class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-8 px-6"></div>
+<!-- GRID -->
+<section class="max-w-5xl mx-auto px-6 pb-20">
+  <div class="grid md:grid-cols-3 gap-8">
 
-<script>
-const grid = document.getElementById("grid");
+    <!-- BITE 003 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-003'"
+         class="cursor-pointer card-hover">
 
-/* 👇 YOU ONLY UPDATE THIS LIST WHEN ADDING NEW CONTENT */
-const bites = ["003","002","001"];
-
-/* fetch title.txt safely */
-async function getTitle(folder, fallback) {
-  try {
-    const res = await fetch(`images/${folder}/title.txt`);
-    if (!res.ok) return fallback;
-    const text = await res.text();
-    return text.trim() || fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-(async () => {
-
-  for (const id of bites) {
-
-    const folder = `bites/bites-${id}`;
-    const fallback = `Bite ${id}`;
-
-    const title = await getTitle(folder, fallback);
-
-    const card = document.createElement("div");
-    card.className = "cursor-pointer card-hover";
-
-    card.innerHTML = `
-      <img src="images/${folder}/b1.png"
+      <img src="images/bites/bites-003/b1.png"
            class="rounded-xl shadow-md mb-4">
 
       <h3 class="font-semibold text-lg">
-        ${title}
+        Bite 003
       </h3>
-    `;
 
-    card.onclick = () => {
-      location.href = `carousel.html?folder=${folder}`;
-    };
+    </div>
 
-    grid.appendChild(card);
-  }
+    <!-- BITE 002 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-002'"
+         class="cursor-pointer card-hover">
 
-})();
-</script>
+      <img src="images/bites/bites-002/b1.png"
+           class="rounded-xl shadow-md mb-4">
+
+      <h3 class="font-semibold text-lg">
+        Bite 002
+      </h3>
+
+    </div>
+
+    <!-- BITE 001 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-001'"
+         class="cursor-pointer card-hover">
+
+      <img src="images/bites/bites-001/b1.png"
+           class="rounded-xl shadow-md mb-4">
+
+      <h3 class="font-semibold text-lg">
+        Bite 001
+      </h3>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="py-10 text-center text-sm text-gray-400">
+  Scrum & Coffee with Karthik • SCWK © 2026
+</section>
 
 </body>
 </html>
