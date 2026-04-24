@@ -59,25 +59,39 @@
 </section>
 
 <script>
-fetch("data.json")
+const repoOwner = "karthikdave";
+const repoName = "scwk";
+const branch = "main";
+
+const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites?ref=${branch}`;
+
+fetch(apiUrl)
 .then(res => res.json())
 .then(data => {
 
   const grid = document.getElementById("bitesGrid");
 
-  data.bites.forEach(bite => {
+  // Filter only folders
+  const folders = data
+    .filter(item => item.type === "dir")
+    .sort((a, b) => b.name.localeCompare(a.name)); // newest first
+
+  folders.forEach(folder => {
+
+    const folderName = folder.name;
+    const imagePath = `images/bites/${folderName}/b1.png`;
 
     const card = document.createElement("div");
     card.className = "cursor-pointer card-hover";
 
     card.onclick = () => {
-      location.href = `carousel.html?folder=${bite.folder}`;
+      location.href = `carousel.html?folder=bites/${folderName}`;
     };
 
     card.innerHTML = `
-      <img src="${bite.image}" class="rounded-xl shadow-md mb-4">
+      <img src="${imagePath}" class="rounded-xl shadow-md mb-4">
       <h3 class="font-semibold text-lg">
-        ${bite.title}
+        ${folderName.replace("bites-", "Bite ")}
       </h3>
     `;
 
