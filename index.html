@@ -12,215 +12,130 @@ html { scroll-behavior: smooth; }
 
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
-  overflow-x: hidden;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(30px) scale(0.98);
-  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.card-hover {
+/* Card style (black consistency) */
+.card {
+  background: #0f172a;
+  color: white;
+  border-radius: 16px;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.card-hover:hover {
-  transform: translateY(-8px) scale(1.02);
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
 }
 
-.hero {
-  transform: translateY(0);
-  transition: transform 0.2s ease-out;
+/* subtle overlay for text readability */
+.card-content {
+  padding: 16px;
 }
 </style>
 </head>
 
-<body class="text-gray-900 font-sans">
+<body class="font-sans text-gray-900">
 
-<header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b">
-  <div class="max-w-6xl mx-auto px-6 py-4 text-center">
+<!-- HEADER -->
+<header class="bg-white shadow px-6 py-4 text-center">
+  <img src="images/logo.png" class="h-16 mx-auto mb-3">
 
-    <div class="flex justify-center mb-3">
-      <img src="images/logo.png" class="h-16 md:h-20" alt="SCWK Logo">
-    </div>
-
-    <nav class="flex justify-center gap-4 text-sm">
-      <a href="index.html" class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold">Home</a>
-      <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
-      <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
-      <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
-    </nav>
-
-  </div>
+  <nav class="flex justify-center gap-4 text-sm">
+    <a href="index.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-semibold">Home</a>
+    <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
+    <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+    <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
+  </nav>
 </header>
 
-<section id="hero" class="hero max-w-5xl mx-auto px-6 pt-32 pb-16 text-center reveal">
-  <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+<!-- HERO -->
+<section class="max-w-4xl mx-auto text-center pt-20 pb-10 px-6">
+  <h1 class="text-4xl md:text-5xl font-bold mb-4">
     Your team is doing Scrum.<br>
     <span class="text-blue-700">But nothing is actually improving.</span>
   </h1>
 
-  <p class="text-lg text-gray-600 max-w-xl mx-auto mb-6 leading-relaxed">
-    You’re not alone. Most teams follow Scrum… and still feel stuck.
-  </p>
-
-  <p class="text-sm text-gray-400 max-w-xl mx-auto">
-    Patterns observed across real Scrum teams — not theory.
+  <p class="text-gray-600 max-w-xl mx-auto">
+    Real patterns from real teams. No theory. Just clarity.
   </p>
 </section>
 
-<section class="max-w-4xl mx-auto px-6 py-16 text-center reveal">
-  <p class="text-lg text-gray-700 leading-relaxed mb-6">
-    Standups feel like updates.<br>
-    Sprints end… but nothing really changes.<br>
-    Everyone is busy — but delivery still feels slow.
-  </p>
+<!-- START HERE -->
+<section class="max-w-5xl mx-auto px-6 py-10">
 
-  <p class="text-lg text-gray-700 leading-relaxed mb-8">
-    Things aren’t broken enough to panic.<br>
-    But not clear enough to improve.
-  </p>
+  <h2 class="text-2xl font-bold text-center mb-10">Start here</h2>
 
-  <p class="text-xl font-semibold text-blue-700">
-    That’s the real problem.
-  </p>
-</section>
+  <div class="grid md:grid-cols-2 gap-8">
 
-<section class="text-center py-10 reveal">
-  <p class="text-2xl font-bold">This is not a Scrum problem.</p>
-  <p class="text-lg text-gray-600 mt-2">It’s a thinking problem inside the team.</p>
-</section>
+    <!-- LATEST BITE -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-004'"
+         class="card cursor-pointer">
 
-<section class="max-w-6xl mx-auto px-6 py-20 reveal">
-  <div class="bg-white rounded-3xl shadow-lg p-10 text-center">
+      <img src="images/bites/bites-004/b1.png" class="w-full">
 
-    <h2 class="text-2xl font-bold mb-4">Start where it clicks for you</h2>
+      <div class="card-content">
+        <div class="text-xs text-blue-300 mb-2">⚡ Latest Bite</div>
 
-    <p class="text-gray-600 max-w-2xl mx-auto mb-10">
-      You can either see the problem clearly… or understand it simply.
-    </p>
-
-    <div class="grid md:grid-cols-3 gap-6 text-left">
-
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">⚡ Bites</h3>
-        <p class="text-sm text-gray-600">
-          When you realise your team isn’t stuck — it’s just misaligned.
-        </p>
+        <h3 class="text-lg font-semibold leading-snug">
+          Your team is busy — but nothing actually moves forward
+        </h3>
       </div>
 
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">☕ Lites</h3>
-        <p class="text-sm text-gray-600">
-          When messy Scrum problems suddenly become obvious.
-        </p>
-      </div>
+    </div>
 
-      <div class="bg-blue-50 p-6 rounded-xl">
-        <h3 class="font-semibold mb-2">📌 Real Insight</h3>
-        <p class="text-sm text-gray-600">
-          No theory. Just what actually happens inside teams.
-        </p>
+    <!-- LATEST LITE -->
+    <div onclick="location.href='carousel.html?folder=lites/lites-004'"
+         class="card cursor-pointer">
+
+      <img src="images/lites/lites-004/l1.png" class="w-full">
+
+      <div class="card-content">
+        <div class="text-xs text-green-300 mb-2">☕ Latest Lite</div>
+
+        <h3 class="text-lg font-semibold leading-snug">
+          You're solving tasks faster — but not solving the real problem
+        </h3>
       </div>
 
     </div>
 
   </div>
+
 </section>
 
-<section class="max-w-6xl mx-auto px-6 pb-16 reveal">
-  <h2 class="text-2xl font-bold mb-8 text-center">Start here</h2>
-  <div id="homeGrid" class="grid md:grid-cols-3 gap-8"></div>
+<!-- CTA -->
+<section class="text-center py-12">
+
+  <p class="text-gray-600 mb-6">
+    Want to explore more insights?
+  </p>
+
+  <div class="flex justify-center gap-4">
+
+    <a href="bites.html"
+       class="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+       Explore Bites →
+    </a>
+
+    <a href="lites.html"
+       class="px-6 py-3 bg-gray-800 text-white rounded-full hover:bg-black">
+       Explore Lites →
+    </a>
+
+  </div>
+
 </section>
 
+<!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
 
 <script>
-/* SAFE scroll fix */
-history.scrollRestoration = "manual";
-window.addEventListener("load", () => {
-  setTimeout(() => window.scrollTo(0,0), 50);
-});
-
-/* data */
-const repoOwner = "karthikdave";
-const repoName = "scwk";
-const branch = "main";
-
-const homeGrid = document.getElementById("homeGrid");
-
-function createCard(type, folderName, image, title) {
-  const card = document.createElement("div");
-  card.className = "bg-white p-6 rounded-2xl shadow-md card-hover cursor-pointer";
-
-  card.onclick = () => {
-    location.href = `carousel.html?folder=${type}/${folderName}`;
-  };
-
-  card.innerHTML = `
-    <img src="${image}" class="rounded-xl mb-4">
-    <h3 class="font-semibold text-lg">${title}</h3>
-  `;
-
-  return card;
-}
-
-function loadContent() {
-
-  Promise.all([
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/bites?ref=${branch}`).then(r=>r.json()),
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/lites?ref=${branch}`).then(r=>r.json())
-  ])
-  .then(([bites, lites]) => {
-
-    const latestBites = bites.filter(f=>f.type==="dir").sort((a,b)=>b.name.localeCompare(a.name)).slice(0,3);
-    const latestLites = lites.filter(f=>f.type==="dir").sort((a,b)=>b.name.localeCompare(a.name)).slice(0,3);
-
-    latestBites.forEach(folder => loadCard("bites", folder.name, `images/bites/${folder.name}/b1.png`));
-    latestLites.forEach(folder => loadCard("lites", folder.name, `images/lites/${folder.name}/l1.png`));
-
-  });
-
-}
-
-function loadCard(type, name, image) {
-  fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/images/${type}/${name}/title.txt?ref=${branch}`)
-  .then(r=>r.json())
-  .then(file => {
-    const title = atob(file.content).trim();
-    homeGrid.appendChild(createCard(type, name, image, title));
-  })
-  .catch(()=>{
-    homeGrid.appendChild(createCard(type, name, image, name));
-  });
-}
-
-/* reveal */
-function revealOnScroll() {
-  const trigger = window.innerHeight * 0.85;
-  document.querySelectorAll('.reveal').forEach(el => {
-    if (el.getBoundingClientRect().top < trigger) {
-      el.classList.add('active');
-    }
-  });
-}
-
-/* init */
-window.addEventListener("load", () => {
-  loadContent();
-  revealOnScroll();
-});
-
-window.addEventListener("scroll", revealOnScroll);
-
+/* Scroll always top */
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+};
 </script>
 
 </body>
