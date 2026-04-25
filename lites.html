@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Bites | SCWK</title>
+<title>Lites | SCWK</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -12,64 +12,90 @@ body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
 }
 
-.card {
-  background: #0f172a;
-  color: white;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: all 0.3s ease;
+.card-hover {
+  transition: all 0.25s ease;
 }
-.card:hover {
+
+.card-hover:hover {
   transform: translateY(-6px) scale(1.02);
 }
 </style>
 </head>
 
-<body class="font-sans">
+<body class="text-gray-900 font-sans">
 
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-14 mx-auto mb-3">
 
   <nav class="flex justify-center gap-4 text-sm">
     <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
-    <a href="bites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full">Bites</a>
-    <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+    <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
+    <a href="lites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-semibold">Lites</a>
     <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
   </nav>
 </header>
 
-<section class="text-center mt-16">
-  <h1 class="text-3xl font-bold">Bites</h1>
+<section class="max-w-5xl mx-auto px-6 pt-24 pb-10 text-center">
+  <h1 class="text-4xl font-bold mb-4">Lites</h1>
+
+  <p class="text-gray-600 max-w-xl mx-auto">
+    Simple ways to see what’s really happening inside your Scrum team.
+  </p>
 </section>
 
-<div id="grid" class="max-w-5xl mx-auto mt-10 grid md:grid-cols-3 gap-8 px-6"></div>
+<section class="max-w-5xl mx-auto px-6 pb-20">
+  <div class="grid md:grid-cols-3 gap-8">
 
-<script>
-const grid = document.getElementById("grid");
-
-const bites = ["003","002","001"];
-
-bites.forEach(id => {
-  const folder = `bites/bites-${id}`;
-
-  const card = document.createElement("div");
-  card.className = "card cursor-pointer";
-
-  card.innerHTML = `
-    <img src="images/${folder}/b1.png" class="w-full">
-    <div class="p-4">
-      <div class="text-xs text-blue-300 mb-1">⚡ Bite ${id}</div>
-      <h3 class="text-sm font-semibold leading-snug">
-        Insight from real Scrum teams
-      </h3>
+    <!-- LITE 003 -->
+    <div onclick="location.href='carousel.html?folder=lites/lites-003'" class="cursor-pointer card-hover">
+      <img src="images/lites/lites-003/l1.png" class="rounded-xl shadow-md mb-4">
+      <h3 id="title-003" class="font-semibold text-lg">Lite 003</h3>
     </div>
-  `;
 
-  card.onclick = () => {
-    location.href = `carousel.html?folder=${folder}`;
-  };
+    <!-- LITE 002 -->
+    <div onclick="location.href='carousel.html?folder=lites/lites-002'" class="cursor-pointer card-hover">
+      <img src="images/lites/lites-002/l1.png" class="rounded-xl shadow-md mb-4">
+      <h3 id="title-002" class="font-semibold text-lg">Lite 002</h3>
+    </div>
 
-  grid.appendChild(card);
+    <!-- LITE 001 -->
+    <div onclick="location.href='carousel.html?folder=lites/lites-001'" class="cursor-pointer card-hover">
+      <img src="images/lites/lites-001/l1.png" class="rounded-xl shadow-md mb-4">
+      <h3 id="title-001" class="font-semibold text-lg">Lite 001</h3>
+    </div>
+
+  </div>
+</section>
+
+<section class="py-10 text-center text-sm text-gray-400">
+  Scrum & Coffee with Karthik • SCWK © 2026
+</section>
+
+<!-- Title loader -->
+<script>
+async function loadTitle(id) {
+  try {
+    const res = await fetch(`images/lites/lites-${id}/title.txt`);
+    if (!res.ok) return;
+    const text = await res.text();
+    const el = document.getElementById(`title-${id}`);
+    if (el && text.trim()) el.innerText = text.trim();
+  } catch {}
+}
+
+["003","002","001"].forEach(loadTitle);
+</script>
+
+<!-- Scroll fix -->
+<script>
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 0);
 });
 </script>
 
