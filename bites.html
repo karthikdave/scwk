@@ -71,7 +71,7 @@ body {
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
 
-<!-- ONLY ADD THIS SCRIPT -->
+<!-- Title loader -->
 <script>
 async function loadTitle(id) {
   try {
@@ -84,6 +84,13 @@ async function loadTitle(id) {
 }
 
 ["003","002","001"].forEach(loadTitle);
+</script>
+
+<!-- Scroll fix -->
+<script>
+window.onload = () => {
+  window.scrollTo(0, 0);
+};
 </script>
 
 </body>
