@@ -86,11 +86,17 @@ async function loadTitle(id) {
 ["003","002","001"].forEach(loadTitle);
 </script>
 
-<!-- Scroll fix -->
+<!-- Scroll fix (FINAL) -->
 <script>
-window.onload = () => {
-  window.scrollTo(0, 0);
-};
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 0);
+});
 </script>
 
 </body>
