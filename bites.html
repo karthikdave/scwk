@@ -49,19 +49,19 @@ body {
     <!-- BITE 003 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-003'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-003/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 class="font-semibold text-lg">Bite 003</h3>
+      <h3 id="title-003" class="font-semibold text-lg">Bite 003</h3>
     </div>
 
     <!-- BITE 002 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-002'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-002/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 class="font-semibold text-lg">Bite 002</h3>
+      <h3 id="title-002" class="font-semibold text-lg">Bite 002</h3>
     </div>
 
     <!-- BITE 001 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-001'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-001/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 class="font-semibold text-lg">Bite 001</h3>
+      <h3 id="title-001" class="font-semibold text-lg">Bite 001</h3>
     </div>
 
   </div>
@@ -70,6 +70,21 @@ body {
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
+
+<!-- ONLY ADD THIS SCRIPT -->
+<script>
+async function loadTitle(id) {
+  try {
+    const res = await fetch(`images/bites/bites-${id}/title.txt`);
+    if (!res.ok) return;
+    const text = await res.text();
+    const el = document.getElementById(`title-${id}`);
+    if (el && text.trim()) el.innerText = text.trim();
+  } catch {}
+}
+
+["003","002","001"].forEach(loadTitle);
+</script>
 
 </body>
 </html>
