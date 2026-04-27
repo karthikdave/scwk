@@ -80,12 +80,21 @@ img {
 
 <script>
 
-// Get params
+// =========================
+// PARAM HANDLING
+// =========================
 const urlParams = new URLSearchParams(window.location.search);
-const folder = urlParams.get("folder");
+let folder = urlParams.get("folder");
 const count = parseInt(urlParams.get("count")) || 6;
 
-// Main loader
+// Ensure correct base path
+if (folder && !folder.startsWith("images/")) {
+  folder = "images/" + folder;
+}
+
+// =========================
+// LOAD FUNCTION
+// =========================
 function loadContent(folderPath, totalImages) {
 
   const loader = document.getElementById("loader");
@@ -108,13 +117,8 @@ function loadContent(folderPath, totalImages) {
 
     let img = new Image();
 
-    // Try PNG first, then JPG fallback
+    // Try PNG first
     img.src = `${folderPath}/b${i}.png`;
-
-    img.onerror = function () {
-      img.onerror = null; // prevent loop
-      img.src = `${folderPath}/b${i}.jpg`;
-    };
 
     img.onload = function () {
       loaded++;
@@ -122,16 +126,22 @@ function loadContent(folderPath, totalImages) {
     };
 
     img.onerror = function () {
-      console.log("Failed:", img.src);
-      loaded++;
-      checkDone();
+      // fallback to JPG
+      img.onerror = function () {
+        console.log("Failed:", img.src);
+        loaded++;
+        checkDone();
+      };
+      img.src = `${folderPath}/b${i}.jpg`;
     };
 
     content.appendChild(img);
   }
 }
 
-// Trigger
+// =========================
+// TRIGGER
+// =========================
 if (folder) {
   loadContent(folder, count);
 }
