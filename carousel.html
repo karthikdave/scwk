@@ -80,12 +80,12 @@ img {
 
 <script>
 
-// 🔥 AUTO LOAD BASED ON URL PARAM
+// Get params
 const urlParams = new URLSearchParams(window.location.search);
 const folder = urlParams.get("folder");
 const count = parseInt(urlParams.get("count")) || 6;
 
-// 🚀 MAIN FUNCTION
+// Main loader
 function loadContent(folderPath, totalImages) {
 
   const loader = document.getElementById("loader");
@@ -97,25 +97,41 @@ function loadContent(folderPath, totalImages) {
 
   let loaded = 0;
 
+  function checkDone() {
+    if (loaded === totalImages) {
+      loader.style.display = "none";
+      content.style.opacity = 1;
+    }
+  }
+
   for (let i = 1; i <= totalImages; i++) {
 
     let img = new Image();
-    img.src = `${folderPath}/b${i}.jpg`; // change to .png if needed
+
+    // Try PNG first, then JPG fallback
+    img.src = `${folderPath}/b${i}.png`;
+
+    img.onerror = function () {
+      img.onerror = null; // prevent loop
+      img.src = `${folderPath}/b${i}.jpg`;
+    };
 
     img.onload = function () {
       loaded++;
+      checkDone();
+    };
 
-      if (loaded === totalImages) {
-        loader.style.display = "none";
-        content.style.opacity = 1;
-      }
+    img.onerror = function () {
+      console.log("Failed:", img.src);
+      loaded++;
+      checkDone();
     };
 
     content.appendChild(img);
   }
 }
 
-// 👉 Trigger
+// Trigger
 if (folder) {
   loadContent(folder, count);
 }
