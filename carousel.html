@@ -50,17 +50,25 @@ body {
   max-height: 90%;
   border-radius: 12px;
   display: none;
+  transition: transform 0.2s ease;
 }
 
-/* Nav */
+/* Nav (minimal) */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 30px;
+  font-size: 26px;
   cursor: pointer;
   user-select: none;
   padding: 10px;
+  color: rgba(255,255,255,0.3);
+  transition: all 0.2s ease;
+}
+
+.nav:hover {
+  color: #38BDF8;
+  transform: translateY(-50%) scale(1.2);
 }
 
 #prev { left: 10px; }
@@ -75,14 +83,16 @@ body {
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: #64748b;
   border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .dot.active {
   background: #38BDF8;
+  transform: scale(1.4);
 }
 
 /* Counter */
@@ -90,7 +100,7 @@ body {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 14px;
+  font-size: 13px;
   color: #94a3b8;
 }
 </style>
@@ -136,6 +146,8 @@ const loader = document.getElementById("loader");
 const slide = document.getElementById("slide");
 const dotsContainer = document.getElementById("dots");
 const counter = document.getElementById("counter");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
 
 // ===== LOAD IMAGES =====
 function preloadImages() {
@@ -181,16 +193,15 @@ function showSlide(index) {
   document.querySelectorAll(".dot").forEach((d, i) => {
     d.classList.toggle("active", i === index);
   });
+
+  // 👉 Hide/show arrows smartly
+  prevBtn.style.display = (index === 0) ? "none" : "block";
+  nextBtn.style.display = (index === images.length - 1) ? "none" : "block";
 }
 
 // ===== NAV =====
-document.getElementById("prev").onclick = () => {
-  showSlide((current - 1 + images.length) % images.length);
-};
-
-document.getElementById("next").onclick = () => {
-  showSlide((current + 1) % images.length);
-};
+prevBtn.onclick = () => showSlide(current - 1);
+nextBtn.onclick = () => showSlide(current + 1);
 
 // ===== DOTS =====
 function createDots() {
@@ -209,16 +220,15 @@ let startX = 0;
 document.addEventListener("touchstart", e => startX = e.touches[0].clientX);
 document.addEventListener("touchend", e => {
   let endX = e.changedTouches[0].clientX;
-  if (endX - startX > 50) document.getElementById("prev").click();
-  if (startX - endX > 50) document.getElementById("next").click();
+  if (endX - startX > 50 && current > 0) prevBtn.click();
+  if (startX - endX > 50 && current < images.length - 1) nextBtn.click();
 });
 
-// Mouse swipe
 document.addEventListener("mousedown", e => startX = e.clientX);
 document.addEventListener("mouseup", e => {
   let endX = e.clientX;
-  if (endX - startX > 50) document.getElementById("prev").click();
-  if (startX - endX > 50) document.getElementById("next").click();
+  if (endX - startX > 50 && current > 0) prevBtn.click();
+  if (startX - endX > 50 && current < images.length - 1) nextBtn.click();
 });
 
 // ===== START =====
