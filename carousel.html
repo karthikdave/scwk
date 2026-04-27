@@ -35,20 +35,22 @@ body {
   </nav>
 </header>
 
-<!-- CAROUSEL -->
+<!-- KEEP YOUR EXISTING STRUCTURE -->
 <section class="max-w-xl mx-auto px-6 pt-20 text-center">
 
+  <!-- IMAGE -->
   <img id="slideImage" src="" class="rounded-xl shadow-md mx-auto mb-6">
 
-  <div class="flex justify-center gap-4 mb-6">
+  <!-- CONTROLS -->
+  <div class="flex justify-center gap-4 mb-4">
     <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
     <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
   </div>
 
-  <!-- SHARE BUTTON -->
-  <button onclick="sharePage()"
+  <!-- ✅ SHARE (ONLY ADDITION) -->
+  <button onclick="sharePage(event)"
     class="text-sm text-blue-600 hover:underline">
-    🔗 Share this
+    🔗 Share
   </button>
 
 </section>
@@ -62,18 +64,19 @@ const params = new URLSearchParams(window.location.search);
 const folder = params.get('folder');
 
 let current = 1;
-let total = 10; // max slides fallback
+let total = 10;
 
 function loadSlide() {
   const img = document.getElementById("slideImage");
-  const path = `images/${folder}/${folder.includes('bites') ? 'b' : 'l'}${current}.png`;
+  const prefix = folder.includes('bites') ? 'b' : 'l';
+  const path = `images/${folder}/${prefix}${current}.png`;
 
   img.src = path;
 
   img.onerror = () => {
     total = current - 1;
     if (current > total) current = total;
-    img.src = `images/${folder}/${folder.includes('bites') ? 'b' : 'l'}${current}.png`;
+    img.src = `images/${folder}/${prefix}${current}.png`;
   };
 }
 
@@ -91,7 +94,10 @@ function prevSlide() {
   }
 }
 
-function sharePage() {
+/* ✅ SHARE FUNCTION (ONLY ADDITION) */
+function sharePage(e) {
+  if (e) e.stopPropagation();
+
   const url = window.location.href;
 
   if (navigator.share) {
