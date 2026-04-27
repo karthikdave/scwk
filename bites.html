@@ -52,6 +52,18 @@ body {
       <h3 id="title-006" class="font-semibold text-lg">Bite 006</h3>
     </div>
 
+    <!-- BITE 005 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-005'" class="cursor-pointer card-hover">
+      <img src="images/bites/bites-005/b1.png" class="rounded-xl shadow-md mb-4">
+      <h3 id="title-005" class="font-semibold text-lg">Bite 005</h3>
+    </div>
+
+    <!-- BITE 004 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-004'" class="cursor-pointer card-hover">
+      <img src="images/bites/bites-004/b1.png" class="rounded-xl shadow-md mb-4">
+      <h3 id="title-004" class="font-semibold text-lg">Bite 004</h3>
+    </div>
+
     <!-- BITE 003 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-003'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-003/b1.png" class="rounded-xl shadow-md mb-4">
@@ -89,7 +101,7 @@ async function loadTitle(id) {
   } catch {}
 }
 
-["006","003","002","001"].forEach(loadTitle);
+["006","005","004","003","002","001"].forEach(loadTitle);
 </script>
 
 <!-- Scroll fix -->
