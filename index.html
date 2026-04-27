@@ -7,6 +7,15 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDEN6YVJ4Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QDEN6YVJ4Y');
+</script>
+
 <style>
 html { scroll-behavior: smooth; }
 
@@ -175,7 +184,6 @@ async function loadTitle(path, elementId) {
 loadTitle("images/bites/bites-006/title.txt", "title-bite");
 loadTitle("images/lites/lites-006/title.txt", "title-lite");
 
-// scroll fix
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
