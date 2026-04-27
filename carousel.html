@@ -10,7 +10,9 @@
 <style>
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
+  overflow: hidden; /* prevents unwanted scroll */
 }
+
 .dot {
   height: 8px;
   width: 8px;
@@ -24,8 +26,9 @@ body {
 </style>
 </head>
 
-<body class="font-sans text-gray-900">
+<body class="font-sans text-gray-900 flex flex-col h-screen">
 
+<!-- HEADER -->
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-14 mx-auto mb-3">
 
@@ -33,31 +36,39 @@ body {
     <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
     <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
     <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+    <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
   </nav>
 </header>
 
-<section class="max-w-xl mx-auto px-6 pt-20 text-center">
+<!-- CAROUSEL -->
+<main class="flex-1 flex items-center justify-center">
 
-  <!-- DOTS (TOP - FIXED) -->
-  <div id="dotsContainer" class="flex justify-center gap-2 mb-4"></div>
+  <div class="w-full max-w-md text-center px-4">
 
-  <!-- IMAGE -->
-  <img id="slideImage" src="" class="rounded-xl shadow-md mx-auto mb-6">
+    <!-- DOTS -->
+    <div id="dotsContainer" class="flex justify-center gap-2 mb-3"></div>
 
-  <!-- PAGE -->
-  <div id="pageNumber" class="text-sm text-gray-500 mb-4"></div>
+    <!-- IMAGE -->
+    <img id="slideImage"
+         class="rounded-xl shadow-md mx-auto mb-4 max-h-[60vh] object-contain">
 
-  <!-- CONTROLS -->
-  <div class="flex justify-center gap-4">
-    <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
-    <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
+    <!-- PAGE -->
+    <div id="pageNumber" class="text-sm text-gray-500 mb-3"></div>
+
+    <!-- CONTROLS -->
+    <div class="flex justify-center gap-4">
+      <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
+      <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
+    </div>
+
   </div>
 
-</section>
+</main>
 
-<section class="py-10 text-center text-sm text-gray-400">
+<!-- FOOTER -->
+<footer class="py-4 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
-</section>
+</footer>
 
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -67,7 +78,8 @@ let current = 1;
 let total = 0;
 let prefix = folder.includes('bites') ? 'b' : 'l';
 
-function detectTotalSlides(callback) {
+/* detect slides */
+function detectTotalSlides(cb) {
   let i = 1;
 
   function check() {
@@ -81,7 +93,7 @@ function detectTotalSlides(callback) {
 
     img.onerror = () => {
       total = i - 1;
-      callback();
+      cb();
     };
   }
 
@@ -89,11 +101,10 @@ function detectTotalSlides(callback) {
 }
 
 function loadSlide() {
-  const img = document.getElementById("slideImage");
-  img.src = `images/${folder}/${prefix}${current}.png`;
+  document.getElementById("slideImage").src =
+    `images/${folder}/${prefix}${current}.png`;
 
-  updatePage();
-  highlightDot();
+  updateUI();
 }
 
 function nextSlide() {
@@ -110,37 +121,35 @@ function prevSlide() {
   }
 }
 
-function updatePage() {
-  document.getElementById("pageNumber").innerText = `${current} / ${total}`;
+function updateUI() {
+  document.getElementById("pageNumber").innerText =
+    `${current} / ${total}`;
+
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((d, i) => {
+    d.classList.toggle("active", i + 1 === current);
+  });
 }
 
 function renderDots() {
-  const container = document.getElementById("dotsContainer");
-  container.innerHTML = "";
+  const c = document.getElementById("dotsContainer");
+  c.innerHTML = "";
 
   for (let i = 1; i <= total; i++) {
-    const dot = document.createElement("span");
-    dot.classList.add("dot");
+    const d = document.createElement("span");
+    d.className = "dot";
+    if (i === current) d.classList.add("active");
 
-    if (i === current) dot.classList.add("active");
-
-    dot.onclick = () => {
+    d.onclick = () => {
       current = i;
       loadSlide();
     };
 
-    container.appendChild(dot);
+    c.appendChild(d);
   }
 }
 
-function highlightDot() {
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((dot, index) => {
-    dot.classList.toggle("active", index + 1 === current);
-  });
-}
-
-/* INIT */
+/* init */
 detectTotalSlides(() => {
   renderDots();
   loadSlide();
