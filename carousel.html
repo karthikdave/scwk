@@ -7,207 +7,105 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDEN6YVJ4Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QDEN6YVJ4Y');
+</script>
+
 <style>
 body {
-  margin: 0;
-  background: radial-gradient(circle at center, #ffffff 0%, #eef3fb 100%);
-  overflow: hidden;
-  font-family: "Segoe UI", sans-serif;
-}
-
-#carouselImage {
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  background: linear-gradient(to bottom, #eff6ff, #ffffff);
 }
 </style>
 </head>
 
-<body>
+<body class="font-sans text-gray-900">
 
-<header class="h-[60px] flex items-center justify-between px-6 border-b bg-white/90 backdrop-blur">
-  <button onclick="goBack()" 
-    class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition">
-    ← Back
-  </button>
+<header class="bg-white shadow px-6 py-4 text-center">
+  <img src="images/logo.png" class="h-14 mx-auto mb-3">
 
-  <div class="flex items-center gap-4">
-    <div id="counter" class="text-sm text-gray-500 font-semibold"></div>
-    <div id="dots" class="flex gap-1.5"></div>
-  </div>
+  <nav class="flex justify-center gap-4 text-sm">
+    <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
+    <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
+    <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
+  </nav>
 </header>
 
-<!-- MAIN VIEW -->
-<div class="h-[calc(100vh-60px)] flex items-center justify-center relative">
+<!-- CAROUSEL -->
+<section class="max-w-xl mx-auto px-6 pt-20 text-center">
 
-  <!-- 🔥 LOADER (RESTORED) -->
-  <div id="loader"
-       class="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-sm z-10">
-    <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  <img id="slideImage" src="" class="rounded-xl shadow-md mx-auto mb-6">
+
+  <div class="flex justify-center gap-4 mb-6">
+    <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
+    <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
   </div>
 
-  <div class="relative w-full h-[85vh] flex items-center justify-center px-4">
+  <!-- SHARE BUTTON -->
+  <button onclick="sharePage()"
+    class="text-sm text-blue-600 hover:underline">
+    🔗 Share this
+  </button>
 
-    <img id="carouselImage"
-      class="max-h-full max-w-[96vw] object-contain rounded-xl shadow-xl scale-95 opacity-0">
+</section>
 
-    <div onclick="prevImage()" class="absolute left-0 top-0 h-full w-1/3 cursor-pointer"></div>
-    <div onclick="nextImage()" class="absolute right-0 top-0 h-full w-1/3 cursor-pointer"></div>
-
-    <div id="leftArrow" onclick="prevImage()" 
-      class="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-gray-700 text-2xl opacity-40 hover:opacity-100 hover:bg-white/40 hover:scale-110 transition-all duration-200 cursor-pointer">
-      ‹
-    </div>
-
-    <div id="rightArrow" onclick="nextImage()" 
-      class="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-gray-700 text-2xl opacity-40 hover:opacity-100 hover:bg-white/40 hover:scale-110 transition-all duration-200 cursor-pointer">
-      ›
-    </div>
-
-  </div>
-</div>
+<section class="py-10 text-center text-sm text-gray-400">
+  Scrum & Coffee with Karthik • SCWK © 2026
+</section>
 
 <script>
-
-window.onload = () => {
-  window.scrollTo(0, 0);
-};
-
 const params = new URLSearchParams(window.location.search);
-const folder = params.get("folder");
+const folder = params.get('folder');
 
-if (!folder) {
-  document.body.innerHTML = "Missing folder";
-  throw new Error("No folder");
-}
+let current = 1;
+let total = 10; // max slides fallback
 
-const basePath = "images/" + folder;
+function loadSlide() {
+  const img = document.getElementById("slideImage");
+  const path = `images/${folder}/${folder.includes('bites') ? 'b' : 'l'}${current}.png`;
 
-/* prefix logic */
-const prefix = folder.includes("lites") ? "l" : "b";
+  img.src = path;
 
-let currentIndex = 1;
-let totalImages = 0;
-
-const img = document.getElementById("carouselImage");
-const loader = document.getElementById("loader");
-const counter = document.getElementById("counter");
-const dotsContainer = document.getElementById("dots");
-const leftArrow = document.getElementById("leftArrow");
-const rightArrow = document.getElementById("rightArrow");
-
-let touchStartX = 0;
-let touchEndX = 0;
-
-function detectImages() {
-  tryLoad(1);
-}
-
-function tryLoad(i) {
-  const test = new Image();
-  test.src = basePath + "/" + prefix + i + ".png";
-
-  test.onload = () => {
-    totalImages = i;
-    tryLoad(i + 1);
-  };
-
-  test.onerror = () => {
-    if (totalImages === 0) {
-      document.body.innerHTML = "Content not found";
-      return;
-    }
-    renderDots();
-    loadImage();
+  img.onerror = () => {
+    total = current - 1;
+    if (current > total) current = total;
+    img.src = `images/${folder}/${folder.includes('bites') ? 'b' : 'l'}${current}.png`;
   };
 }
 
-function updateCounter() {
-  counter.innerText = currentIndex + " / " + totalImages;
-}
-
-function updateArrows() {
-  leftArrow.style.display = currentIndex === 1 ? "none" : "flex";
-  rightArrow.style.display = currentIndex === totalImages ? "none" : "flex";
-}
-
-function updateDots() {
-  const dots = dotsContainer.children;
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].className =
-      "w-2 h-2 rounded-full transition " +
-      (i + 1 === currentIndex ? "bg-blue-600 scale-110" : "bg-gray-300");
+function nextSlide() {
+  if (current < total) {
+    current++;
+    loadSlide();
   }
 }
 
-function renderDots() {
-  dotsContainer.innerHTML = "";
-  for (let i = 1; i <= totalImages; i++) {
-    const dot = document.createElement("div");
-    dot.className = "w-2 h-2 rounded-full cursor-pointer";
-    dot.onclick = () => {
-      currentIndex = i;
-      loadImage();
-    };
-    dotsContainer.appendChild(dot);
+function prevSlide() {
+  if (current > 1) {
+    current--;
+    loadSlide();
   }
 }
 
-function loadImage() {
-  loader.style.display = "flex";
+function sharePage() {
+  const url = window.location.href;
 
-  img.style.opacity = 0;
-  img.style.transform = "scale(0.96)";
-
-  setTimeout(() => {
-    img.src = basePath + "/" + prefix + currentIndex + ".png";
-    updateCounter();
-    updateArrows();
-    updateDots();
-  }, 120);
-}
-
-img.onload = () => {
-  img.style.opacity = 1;
-  img.style.transform = "scale(1)";
-  loader.style.display = "none";
-};
-
-function nextImage() {
-  if (currentIndex < totalImages) {
-    currentIndex++;
-    loadImage();
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url: url
+    });
+  } else {
+    navigator.clipboard.writeText(url);
+    alert("Link copied!");
   }
 }
 
-function prevImage() {
-  if (currentIndex > 1) {
-    currentIndex--;
-    loadImage();
-  }
-}
-
-function goBack() {
-  window.history.back();
-}
-
-document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight") nextImage();
-  if (e.key === "ArrowLeft") prevImage();
-  if (e.key === "Escape") goBack();
-});
-
-document.addEventListener("touchstart", e => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener("touchend", e => {
-  touchEndX = e.changedTouches[0].screenX;
-
-  if (touchEndX < touchStartX - 50) nextImage();
-  if (touchEndX > touchStartX + 50) prevImage();
-});
-
-detectImages();
-
+loadSlide();
 </script>
 
 </body>
