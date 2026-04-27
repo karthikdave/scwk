@@ -7,18 +7,19 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDEN6YVJ4Y"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-QDEN6YVJ4Y');
-</script>
-
 <style>
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
+}
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot.active {
+  background-color: #2563eb;
 }
 </style>
 </head>
@@ -35,7 +36,6 @@ body {
   </nav>
 </header>
 
-<!-- KEEP YOUR EXISTING STRUCTURE -->
 <section class="max-w-xl mx-auto px-6 pt-20 text-center">
 
   <!-- IMAGE -->
@@ -47,11 +47,11 @@ body {
     <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
   </div>
 
-  <!-- ✅ SHARE (ONLY ADDITION) -->
-  <button onclick="sharePage(event)"
-    class="text-sm text-blue-600 hover:underline">
-    🔗 Share
-  </button>
+  <!-- PAGE COUNT -->
+  <div id="pageNumber" class="text-sm text-gray-500 mb-2"></div>
+
+  <!-- DOTS -->
+  <div id="dotsContainer" class="flex justify-center gap-2"></div>
 
 </section>
 
@@ -65,19 +65,21 @@ const folder = params.get('folder');
 
 let current = 1;
 let total = 10;
+let prefix = folder.includes('bites') ? 'b' : 'l';
 
 function loadSlide() {
   const img = document.getElementById("slideImage");
-  const prefix = folder.includes('bites') ? 'b' : 'l';
-  const path = `images/${folder}/${prefix}${current}.png`;
-
-  img.src = path;
+  img.src = `images/${folder}/${prefix}${current}.png`;
 
   img.onerror = () => {
     total = current - 1;
     if (current > total) current = total;
     img.src = `images/${folder}/${prefix}${current}.png`;
+    renderDots();
+    updatePage();
   };
+
+  updatePage();
 }
 
 function nextSlide() {
@@ -94,24 +96,36 @@ function prevSlide() {
   }
 }
 
-/* ✅ SHARE FUNCTION (ONLY ADDITION) */
-function sharePage(e) {
-  if (e) e.stopPropagation();
+function updatePage() {
+  document.getElementById("pageNumber").innerText = `${current} / ${total}`;
+  highlightDot();
+}
 
-  const url = window.location.href;
+function renderDots() {
+  const container = document.getElementById("dotsContainer");
+  container.innerHTML = "";
 
-  if (navigator.share) {
-    navigator.share({
-      title: document.title,
-      url: url
-    });
-  } else {
-    navigator.clipboard.writeText(url);
-    alert("Link copied!");
+  for (let i = 1; i <= total; i++) {
+    const dot = document.createElement("span");
+    dot.classList.add("dot");
+    if (i === current) dot.classList.add("active");
+    dot.onclick = () => {
+      current = i;
+      loadSlide();
+    };
+    container.appendChild(dot);
   }
 }
 
+function highlightDot() {
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active", index + 1 === current);
+  });
+}
+
 loadSlide();
+setTimeout(renderDots, 500);
 </script>
 
 </body>
