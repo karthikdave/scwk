@@ -7,6 +7,15 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDEN6YVJ4Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QDEN6YVJ4Y');
+</script>
+
 <style>
 body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
@@ -29,7 +38,7 @@ body {
 
   <nav class="flex justify-center gap-4 text-sm">
     <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
-    <a href="bites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-semibold">Bites</a>
+    <a href="bites.html" class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full">Bites</a>
     <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
     <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
   </nav>
@@ -46,45 +55,40 @@ body {
 <section class="max-w-5xl mx-auto px-6 pb-20">
   <div class="grid md:grid-cols-3 gap-8">
 
-    <!-- BITE 006 (NEW) -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-006'" class="cursor-pointer card-hover relative">
-      
-      <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
-        NEW
-      </span>
-
+    <!-- BITE 006 -->
+    <div onclick="location.href='carousel.html?folder=bites/bites-006'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-006/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-006" class="font-semibold text-lg">Bite 006</h3>
+      <h3 id="title-006" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 005 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-005'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-005/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-005" class="font-semibold text-lg">Bite 005</h3>
+      <h3 id="title-005" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 004 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-004'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-004/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-004" class="font-semibold text-lg">Bite 004</h3>
+      <h3 id="title-004" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 003 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-003'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-003/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-003" class="font-semibold text-lg">Bite 003</h3>
+      <h3 id="title-003" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 002 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-002'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-002/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-002" class="font-semibold text-lg">Bite 002</h3>
+      <h3 id="title-002" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 001 -->
     <div onclick="location.href='carousel.html?folder=bites/bites-001'" class="cursor-pointer card-hover">
       <img src="images/bites/bites-001/b1.png" class="rounded-xl shadow-md mb-4">
-      <h3 id="title-001" class="font-semibold text-lg">Bite 001</h3>
+      <h3 id="title-001" class="font-semibold text-lg">Loading...</h3>
     </div>
 
   </div>
@@ -94,32 +98,23 @@ body {
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
 
-<!-- Title loader -->
 <script>
-async function loadTitle(id) {
+async function loadTitle(path, id) {
   try {
-    const res = await fetch(`images/bites/bites-${id}/title.txt`);
+    const res = await fetch(path);
     if (!res.ok) return;
     const text = await res.text();
-    const el = document.getElementById(`title-${id}`);
+    const el = document.getElementById(id);
     if (el && text.trim()) el.innerText = text.trim();
   } catch {}
 }
 
-["006","005","004","003","002","001"].forEach(loadTitle);
-</script>
-
-<!-- Scroll fix -->
-<script>
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 0);
-});
+loadTitle("images/bites/bites-006/title.txt", "title-006");
+loadTitle("images/bites/bites-005/title.txt", "title-005");
+loadTitle("images/bites/bites-004/title.txt", "title-004");
+loadTitle("images/bites/bites-003/title.txt", "title-003");
+loadTitle("images/bites/bites-002/title.txt", "title-002");
+loadTitle("images/bites/bites-001/title.txt", "title-001");
 </script>
 
 </body>
