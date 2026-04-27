@@ -11,32 +11,29 @@ body {
   font-family: Inter, sans-serif;
   background: #0f172a;
   color: #fff;
+  overflow: hidden;
 }
 
-/* Container */
-#content-container {
+#viewer {
   position: relative;
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Loader */
 #loader {
-  display: none;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
   color: #38BDF8;
-  z-index: 10;
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid rgba(56, 189, 248, 0.2);
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(56,189,248,0.2);
   border-top: 3px solid #38BDF8;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -44,20 +41,57 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Content */
-#content {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Slide */
+#slide {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  display: none;
 }
 
-img {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 12px;
+/* Nav */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+#prev { left: 10px; }
+#next { right: 10px; }
+
+/* Dots */
+#dots {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #64748b;
+  border-radius: 50%;
+}
+
+.dot.active {
+  background: #38BDF8;
+}
+
+/* Counter */
+#counter {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 14px;
+  color: #94a3b8;
 }
 </style>
 
@@ -65,86 +99,130 @@ img {
 
 <body>
 
-<div id="content-container">
+<div id="viewer">
 
-  <!-- Loader -->
   <div id="loader">
     <div class="spinner"></div>
-    <div style="margin-top:10px; font-size:14px;">Loading...</div>
+    <div style="margin-top:8px;">Loading...</div>
   </div>
 
-  <!-- Content -->
-  <div id="content"></div>
+  <img id="slide">
+
+  <div id="prev" class="nav">&#10094;</div>
+  <div id="next" class="nav">&#10095;</div>
+
+  <div id="dots"></div>
+  <div id="counter"></div>
 
 </div>
 
 <script>
 
-// =========================
-// PARAM HANDLING
-// =========================
-const urlParams = new URLSearchParams(window.location.search);
-let folder = urlParams.get("folder");
-const count = parseInt(urlParams.get("count")) || 6;
+// ===== PARAMS =====
+const params = new URLSearchParams(window.location.search);
+let folder = params.get("folder");
+const total = parseInt(params.get("count")) || 6;
 
-// Ensure correct base path
 if (folder && !folder.startsWith("images/")) {
   folder = "images/" + folder;
 }
 
-// =========================
-// LOAD FUNCTION
-// =========================
-function loadContent(folderPath, totalImages) {
+// ===== STATE =====
+let current = 0;
+let images = [];
 
-  const loader = document.getElementById("loader");
-  const content = document.getElementById("content");
+// ===== ELEMENTS =====
+const loader = document.getElementById("loader");
+const slide = document.getElementById("slide");
+const dotsContainer = document.getElementById("dots");
+const counter = document.getElementById("counter");
 
-  loader.style.display = "block";
-  content.style.opacity = 0;
-  content.innerHTML = "";
-
+// ===== LOAD IMAGES =====
+function preloadImages() {
   let loaded = 0;
 
-  function checkDone() {
-    if (loaded === totalImages) {
-      loader.style.display = "none";
-      content.style.opacity = 1;
-    }
-  }
-
-  for (let i = 1; i <= totalImages; i++) {
-
+  for (let i = 1; i <= total; i++) {
     let img = new Image();
+    img.src = `${folder}/b${i}.png`;
 
-    // Try PNG first
-    img.src = `${folderPath}/b${i}.png`;
+    img.onerror = function () {
+      img.src = `${folder}/b${i}.jpg`;
+    };
 
     img.onload = function () {
+      images.push(img.src);
       loaded++;
-      checkDone();
+      if (loaded === total) init();
     };
 
     img.onerror = function () {
-      // fallback to JPG
-      img.onerror = function () {
-        console.log("Failed:", img.src);
-        loaded++;
-        checkDone();
-      };
-      img.src = `${folderPath}/b${i}.jpg`;
+      loaded++;
+      if (loaded === total) init();
     };
-
-    content.appendChild(img);
   }
 }
 
-// =========================
-// TRIGGER
-// =========================
-if (folder) {
-  loadContent(folder, count);
+// ===== INIT =====
+function init() {
+  loader.style.display = "none";
+  slide.style.display = "block";
+
+  createDots();
+  showSlide(0);
 }
+
+// ===== SHOW SLIDE =====
+function showSlide(index) {
+  current = index;
+  slide.src = images[index];
+
+  counter.innerText = `${index + 1} / ${images.length}`;
+
+  document.querySelectorAll(".dot").forEach((d, i) => {
+    d.classList.toggle("active", i === index);
+  });
+}
+
+// ===== NAV =====
+document.getElementById("prev").onclick = () => {
+  showSlide((current - 1 + images.length) % images.length);
+};
+
+document.getElementById("next").onclick = () => {
+  showSlide((current + 1) % images.length);
+};
+
+// ===== DOTS =====
+function createDots() {
+  dotsContainer.innerHTML = "";
+  images.forEach((_, i) => {
+    let d = document.createElement("div");
+    d.className = "dot";
+    d.onclick = () => showSlide(i);
+    dotsContainer.appendChild(d);
+  });
+}
+
+// ===== SWIPE =====
+let startX = 0;
+
+document.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+document.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+  if (endX - startX > 50) document.getElementById("prev").click();
+  if (startX - endX > 50) document.getElementById("next").click();
+});
+
+// Mouse swipe
+document.addEventListener("mousedown", e => startX = e.clientX);
+document.addEventListener("mouseup", e => {
+  let endX = e.clientX;
+  if (endX - startX > 50) document.getElementById("prev").click();
+  if (startX - endX > 50) document.getElementById("next").click();
+});
+
+// ===== START =====
+preloadImages();
 
 </script>
 
