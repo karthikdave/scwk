@@ -2,158 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SCWK Carousel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>SCWK Viewer</title>
 
 <style>
 body {
-  background: linear-gradient(to bottom, #eff6ff, #ffffff);
-  overflow: hidden; /* prevents unwanted scroll */
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: #0f172a;
+  color: #fff;
 }
 
-.dot {
-  height: 8px;
-  width: 8px;
-  background-color: #d1d5db;
-  border-radius: 50%;
-  display: inline-block;
+/* Container */
+#content-container {
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
-.dot.active {
-  background-color: #2563eb;
+
+/* Loader */
+#loader {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #38BDF8;
+  z-index: 10;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(56, 189, 248, 0.2);
+  border-top: 3px solid #38BDF8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Content */
+#content {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 12px;
 }
 </style>
+
 </head>
 
-<body class="font-sans text-gray-900 flex flex-col h-screen">
+<body>
 
-<!-- HEADER -->
-<header class="bg-white shadow px-6 py-4 text-center">
-  <img src="images/logo.png" class="h-14 mx-auto mb-3">
+<div id="content-container">
 
-  <nav class="flex justify-center gap-4 text-sm">
-    <a href="index.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Home</a>
-    <a href="bites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Bites</a>
-    <a href="lites.html" class="px-4 py-2 rounded-full hover:bg-blue-100">Lites</a>
-    <a href="about.html" class="px-4 py-2 rounded-full hover:bg-blue-100">About</a>
-  </nav>
-</header>
-
-<!-- CAROUSEL -->
-<main class="flex-1 flex items-center justify-center">
-
-  <div class="w-full max-w-md text-center px-4">
-
-    <!-- DOTS -->
-    <div id="dotsContainer" class="flex justify-center gap-2 mb-3"></div>
-
-    <!-- IMAGE -->
-    <img id="slideImage"
-         class="rounded-xl shadow-md mx-auto mb-4 max-h-[60vh] object-contain">
-
-    <!-- PAGE -->
-    <div id="pageNumber" class="text-sm text-gray-500 mb-3"></div>
-
-    <!-- CONTROLS -->
-    <div class="flex justify-center gap-4">
-      <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
-      <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
-    </div>
-
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <div style="margin-top:10px; font-size:14px;">Loading...</div>
   </div>
 
-</main>
+  <!-- Content -->
+  <div id="content"></div>
 
-<!-- FOOTER -->
-<footer class="py-4 text-center text-sm text-gray-400">
-  Scrum & Coffee with Karthik • SCWK © 2026
-</footer>
+</div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const folder = params.get('folder');
 
-let current = 1;
-let total = 0;
-let prefix = folder.includes('bites') ? 'b' : 'l';
+// 🔥 AUTO LOAD BASED ON URL PARAM
+const urlParams = new URLSearchParams(window.location.search);
+const folder = urlParams.get("folder");
+const count = parseInt(urlParams.get("count")) || 6;
 
-/* detect slides */
-function detectTotalSlides(cb) {
-  let i = 1;
+// 🚀 MAIN FUNCTION
+function loadContent(folderPath, totalImages) {
 
-  function check() {
-    const img = new Image();
-    img.src = `images/${folder}/${prefix}${i}.png`;
+  const loader = document.getElementById("loader");
+  const content = document.getElementById("content");
 
-    img.onload = () => {
-      i++;
-      check();
+  loader.style.display = "block";
+  content.style.opacity = 0;
+  content.innerHTML = "";
+
+  let loaded = 0;
+
+  for (let i = 1; i <= totalImages; i++) {
+
+    let img = new Image();
+    img.src = `${folderPath}/b${i}.jpg`; // change to .png if needed
+
+    img.onload = function () {
+      loaded++;
+
+      if (loaded === totalImages) {
+        loader.style.display = "none";
+        content.style.opacity = 1;
+      }
     };
 
-    img.onerror = () => {
-      total = i - 1;
-      cb();
-    };
-  }
-
-  check();
-}
-
-function loadSlide() {
-  document.getElementById("slideImage").src =
-    `images/${folder}/${prefix}${current}.png`;
-
-  updateUI();
-}
-
-function nextSlide() {
-  if (current < total) {
-    current++;
-    loadSlide();
+    content.appendChild(img);
   }
 }
 
-function prevSlide() {
-  if (current > 1) {
-    current--;
-    loadSlide();
-  }
+// 👉 Trigger
+if (folder) {
+  loadContent(folder, count);
 }
 
-function updateUI() {
-  document.getElementById("pageNumber").innerText =
-    `${current} / ${total}`;
-
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((d, i) => {
-    d.classList.toggle("active", i + 1 === current);
-  });
-}
-
-function renderDots() {
-  const c = document.getElementById("dotsContainer");
-  c.innerHTML = "";
-
-  for (let i = 1; i <= total; i++) {
-    const d = document.createElement("span");
-    d.className = "dot";
-    if (i === current) d.classList.add("active");
-
-    d.onclick = () => {
-      current = i;
-      loadSlide();
-    };
-
-    c.appendChild(d);
-  }
-}
-
-/* init */
-detectTotalSlides(() => {
-  renderDots();
-  loadSlide();
-});
 </script>
 
 </body>
