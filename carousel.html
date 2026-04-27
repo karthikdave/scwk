@@ -23,7 +23,6 @@ body {
   justify-content: center;
 }
 
-/* Loader */
 #loader {
   position: absolute;
   text-align: center;
@@ -44,7 +43,6 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Slide */
 #slide {
   max-width: 90%;
   max-height: 90%;
@@ -52,14 +50,12 @@ body {
   display: none;
 }
 
-/* Nav */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   font-size: 26px;
   cursor: pointer;
-  user-select: none;
   padding: 10px;
   color: rgba(255,255,255,0.3);
   transition: all 0.2s ease;
@@ -73,7 +69,6 @@ body {
 #prev { left: 10px; }
 #next { right: 10px; }
 
-/* Counter */
 #counter {
   position: absolute;
   top: 10px;
@@ -82,7 +77,6 @@ body {
   color: #94a3b8;
 }
 
-/* Dots */
 #dots {
   position: absolute;
   top: 35px;
@@ -103,7 +97,6 @@ body {
   transform: scale(1.4);
 }
 </style>
-
 </head>
 
 <body>
@@ -136,10 +129,18 @@ if (folder && !folder.startsWith("images/")) {
   folder = "images/" + folder;
 }
 
-// Detect source page (bites / lites)
+// 👉 Detect type (FIX)
+let prefix = "b";
 let sourcePage = "index.html";
-if (folder.includes("bites")) sourcePage = "bites.html";
-if (folder.includes("lites")) sourcePage = "lites.html";
+
+if (folder.includes("lites")) {
+  prefix = "l";
+  sourcePage = "lites.html";
+}
+if (folder.includes("bites")) {
+  prefix = "b";
+  sourcePage = "bites.html";
+}
 
 // STATE
 let current = 0;
@@ -159,10 +160,10 @@ function preloadImages() {
 
   for (let i = 1; i <= total; i++) {
     let img = new Image();
-    img.src = `${folder}/b${i}.png`;
+    img.src = `${folder}/${prefix}${i}.png`;
 
     img.onerror = function () {
-      img.src = `${folder}/b${i}.jpg`;
+      img.src = `${folder}/${prefix}${i}.jpg`;
     };
 
     img.onload = function () {
@@ -206,17 +207,11 @@ function showSlide(index) {
 prevBtn.onclick = () => { if (current > 0) showSlide(current - 1); };
 nextBtn.onclick = () => { if (current < images.length - 1) showSlide(current + 1); };
 
-// KEYBOARD (← → + ESC FIX)
+// KEYBOARD
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft" && current > 0) {
-    showSlide(current - 1);
-  }
-  if (e.key === "ArrowRight" && current < images.length - 1) {
-    showSlide(current + 1);
-  }
-  if (e.key === "Escape") {
-    window.location.href = sourcePage;
-  }
+  if (e.key === "ArrowLeft" && current > 0) showSlide(current - 1);
+  if (e.key === "ArrowRight" && current < images.length - 1) showSlide(current + 1);
+  if (e.key === "Escape") window.location.href = sourcePage;
 });
 
 // DOTS
