@@ -38,20 +38,20 @@ body {
 
 <section class="max-w-xl mx-auto px-6 pt-20 text-center">
 
+  <!-- DOTS (TOP - FIXED) -->
+  <div id="dotsContainer" class="flex justify-center gap-2 mb-4"></div>
+
   <!-- IMAGE -->
   <img id="slideImage" src="" class="rounded-xl shadow-md mx-auto mb-6">
 
+  <!-- PAGE -->
+  <div id="pageNumber" class="text-sm text-gray-500 mb-4"></div>
+
   <!-- CONTROLS -->
-  <div class="flex justify-center gap-4 mb-4">
+  <div class="flex justify-center gap-4">
     <button onclick="prevSlide()" class="px-4 py-2 bg-gray-200 rounded">⬅</button>
     <button onclick="nextSlide()" class="px-4 py-2 bg-gray-200 rounded">➡</button>
   </div>
-
-  <!-- PAGE COUNT -->
-  <div id="pageNumber" class="text-sm text-gray-500 mb-2"></div>
-
-  <!-- DOTS -->
-  <div id="dotsContainer" class="flex justify-center gap-2"></div>
 
 </section>
 
@@ -64,22 +64,36 @@ const params = new URLSearchParams(window.location.search);
 const folder = params.get('folder');
 
 let current = 1;
-let total = 10;
+let total = 0;
 let prefix = folder.includes('bites') ? 'b' : 'l';
+
+function detectTotalSlides(callback) {
+  let i = 1;
+
+  function check() {
+    const img = new Image();
+    img.src = `images/${folder}/${prefix}${i}.png`;
+
+    img.onload = () => {
+      i++;
+      check();
+    };
+
+    img.onerror = () => {
+      total = i - 1;
+      callback();
+    };
+  }
+
+  check();
+}
 
 function loadSlide() {
   const img = document.getElementById("slideImage");
   img.src = `images/${folder}/${prefix}${current}.png`;
 
-  img.onerror = () => {
-    total = current - 1;
-    if (current > total) current = total;
-    img.src = `images/${folder}/${prefix}${current}.png`;
-    renderDots();
-    updatePage();
-  };
-
   updatePage();
+  highlightDot();
 }
 
 function nextSlide() {
@@ -98,7 +112,6 @@ function prevSlide() {
 
 function updatePage() {
   document.getElementById("pageNumber").innerText = `${current} / ${total}`;
-  highlightDot();
 }
 
 function renderDots() {
@@ -108,11 +121,14 @@ function renderDots() {
   for (let i = 1; i <= total; i++) {
     const dot = document.createElement("span");
     dot.classList.add("dot");
+
     if (i === current) dot.classList.add("active");
+
     dot.onclick = () => {
       current = i;
       loadSlide();
     };
+
     container.appendChild(dot);
   }
 }
@@ -124,8 +140,11 @@ function highlightDot() {
   });
 }
 
-loadSlide();
-setTimeout(renderDots, 500);
+/* INIT */
+detectTotalSlides(() => {
+  renderDots();
+  loadSlide();
+});
 </script>
 
 </body>
