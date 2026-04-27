@@ -14,7 +14,6 @@ body {
   background: linear-gradient(to bottom, #eff6ff, #ffffff);
 }
 
-/* subtle hover */
 .card {
   transition: all 0.3s ease;
 }
@@ -26,7 +25,6 @@ body {
 
 <body class="font-sans text-gray-900">
 
-<!-- HEADER -->
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-16 mx-auto mb-3">
 
@@ -38,7 +36,6 @@ body {
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="max-w-4xl mx-auto text-center pt-24 pb-12 px-6">
   <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
     Your team is doing Scrum.<br>
@@ -50,7 +47,6 @@ body {
   </p>
 </section>
 
-<!-- WHAT IS SCWK -->
 <section class="max-w-3xl mx-auto text-center px-6 py-10">
   <h2 class="text-2xl font-bold mb-4">What is SCWK?</h2>
 
@@ -60,52 +56,52 @@ body {
   </p>
 </section>
 
-<!-- START HERE -->
-<section class="max-w-5xl mx-auto px-6 py-16">
+<!-- COMPACT START HERE -->
+<section class="max-w-4xl mx-auto px-6 py-16">
 
   <h2 class="text-2xl font-bold text-center mb-4">
     Start here
   </h2>
 
-  <p class="text-center text-gray-600 mb-10">
-    If you’re new, begin with the latest insights.
+  <p class="text-center text-gray-600 mb-8">
+    Begin with the latest insight
   </p>
 
-  <div class="grid md:grid-cols-2 gap-8">
+  <div class="grid md:grid-cols-2 gap-6">
 
-    <!-- LATEST BITE -->
+    <!-- BITE -->
     <div onclick="location.href='carousel.html?folder=bites/bites-006'"
-         class="card cursor-pointer bg-white rounded-2xl shadow-md overflow-hidden relative">
+         class="card cursor-pointer bg-white rounded-xl shadow-sm overflow-hidden relative">
 
-      <span class="absolute top-3 left-3 bg-black text-white text-xs px-2 py-1 rounded">
+      <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
         NEW
       </span>
 
-      <img src="images/bites/bites-006/b1.png" class="w-full">
+      <img src="images/bites/bites-006/b1.png" class="w-full h-32 object-cover">
 
-      <div class="p-6">
-        <div class="text-sm text-blue-600 mb-2">⚡ Latest Bite</div>
-        <h3 class="font-semibold text-lg">
-          Start with the most recent pattern observed in teams
+      <div class="p-4">
+        <div class="text-xs text-blue-600 mb-1">⚡ Latest Bite</div>
+        <h3 class="font-semibold text-base leading-snug">
+          Start with the most recent pattern observed
         </h3>
       </div>
 
     </div>
 
-    <!-- LATEST LITE -->
+    <!-- LITE -->
     <div onclick="location.href='carousel.html?folder=lites/lites-006'"
-         class="card cursor-pointer bg-white rounded-2xl shadow-md overflow-hidden relative">
+         class="card cursor-pointer bg-white rounded-xl shadow-sm overflow-hidden relative">
 
-      <span class="absolute top-3 left-3 bg-black text-white text-xs px-2 py-1 rounded">
+      <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
         NEW
       </span>
 
-      <img src="images/lites/lites-006/l1.png" class="w-full">
+      <img src="images/lites/lites-006/l1.png" class="w-full h-32 object-cover">
 
-      <div class="p-6">
-        <div class="text-sm text-green-600 mb-2">☕ Latest Lite</div>
-        <h3 class="font-semibold text-lg">
-          A simple way to understand what’s actually happening
+      <div class="p-4">
+        <div class="text-xs text-green-600 mb-1">☕ Latest Lite</div>
+        <h3 class="font-semibold text-base leading-snug">
+          A simple way to understand what’s happening
         </h3>
       </div>
 
@@ -115,7 +111,6 @@ body {
 
 </section>
 
-<!-- ENTRY OPTIONS -->
 <section class="max-w-5xl mx-auto px-6 py-16">
 
   <h2 class="text-2xl font-bold text-center mb-10">
@@ -124,47 +119,36 @@ body {
 
   <div class="grid md:grid-cols-2 gap-8">
 
-    <!-- BITES -->
     <div onclick="location.href='bites.html'"
          class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
-
       <div class="p-6">
         <div class="text-sm text-blue-300 mb-2">⚡ Bites</div>
-
         <h3 class="text-xl font-semibold mb-3">
           When something feels off in your team
         </h3>
-
         <p class="text-sm text-gray-300">
-          Short moments where you suddenly realise — things aren’t working the way you thought.
+          Short moments where things don’t work as expected
         </p>
       </div>
-
     </div>
 
-    <!-- LITES -->
     <div onclick="location.href='lites.html'"
          class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
-
       <div class="p-6">
         <div class="text-sm text-green-300 mb-2">☕ Lites</div>
-
         <h3 class="text-xl font-semibold mb-3">
           When things finally make sense
         </h3>
-
         <p class="text-sm text-gray-300">
-          Simple explanations that bring clarity to messy Scrum problems.
+          Simple clarity to messy Scrum problems
         </p>
       </div>
-
     </div>
 
   </div>
 
 </section>
 
-<!-- CLOSING -->
 <section class="text-center py-12 px-6">
   <p class="text-gray-600 max-w-xl mx-auto">
     You don’t need more frameworks.  
@@ -172,12 +156,10 @@ body {
   </p>
 </section>
 
-<!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
 
-<!-- SCROLL FIX -->
 <script>
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
