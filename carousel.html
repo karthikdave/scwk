@@ -82,7 +82,7 @@ body {
   color: #94a3b8;
 }
 
-/* Dots (TOP under counter) */
+/* Dots */
 #dots {
   position: absolute;
   top: 35px;
@@ -96,7 +96,6 @@ body {
   height: 6px;
   background: #64748b;
   border-radius: 50%;
-  transition: all 0.2s ease;
 }
 
 .dot.active {
@@ -136,6 +135,11 @@ const total = parseInt(params.get("count")) || 6;
 if (folder && !folder.startsWith("images/")) {
   folder = "images/" + folder;
 }
+
+// Detect source page (bites / lites)
+let sourcePage = "index.html";
+if (folder.includes("bites")) sourcePage = "bites.html";
+if (folder.includes("lites")) sourcePage = "lites.html";
 
 // STATE
 let current = 0;
@@ -194,27 +198,24 @@ function showSlide(index) {
     d.classList.toggle("active", i === index);
   });
 
-  // Arrow visibility
   prevBtn.style.display = (index === 0) ? "none" : "block";
   nextBtn.style.display = (index === images.length - 1) ? "none" : "block";
 }
 
 // NAV
-prevBtn.onclick = () => {
-  if (current > 0) showSlide(current - 1);
-};
+prevBtn.onclick = () => { if (current > 0) showSlide(current - 1); };
+nextBtn.onclick = () => { if (current < images.length - 1) showSlide(current + 1); };
 
-nextBtn.onclick = () => {
-  if (current < images.length - 1) showSlide(current + 1);
-};
-
-// KEYBOARD (FIXED)
+// KEYBOARD (← → + ESC FIX)
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" && current > 0) {
     showSlide(current - 1);
   }
   if (e.key === "ArrowRight" && current < images.length - 1) {
     showSlide(current + 1);
+  }
+  if (e.key === "Escape") {
+    window.location.href = sourcePage;
   }
 });
 
