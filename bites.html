@@ -124,5 +124,19 @@ loadTitle("images/bites/bites-002/title.txt", "title-002");
 loadTitle("images/bites/bites-001/title.txt", "title-001");
 </script>
 
+<!-- Scroll Restore Fix -->
+<script>
+document.addEventListener("click", function() {
+  sessionStorage.setItem("bitesScroll", window.scrollY);
+});
+
+window.addEventListener("load", function() {
+  const scrollPos = sessionStorage.getItem("bitesScroll");
+  if (scrollPos !== null) {
+    window.scrollTo(0, parseInt(scrollPos));
+  }
+});
+</script>
+
 </body>
 </html>
