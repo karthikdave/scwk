@@ -123,13 +123,12 @@ body {
 // PARAMS
 const params = new URLSearchParams(window.location.search);
 let folder = params.get("folder");
-const total = parseInt(params.get("count")) || 6;
 
 if (folder && !folder.startsWith("images/")) {
   folder = "images/" + folder;
 }
 
-// 👉 Detect type (FIX)
+// Detect type
 let prefix = "b";
 let sourcePage = "index.html";
 
@@ -145,6 +144,7 @@ if (folder.includes("bites")) {
 // STATE
 let current = 0;
 let images = [];
+const MAX_CHECK = 20; // safe upper limit
 
 // ELEMENTS
 const loader = document.getElementById("loader");
@@ -154,33 +154,56 @@ const counter = document.getElementById("counter");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 
-// LOAD
-function preloadImages() {
+// 🔥 GAP SAFE LOAD
+function loadImages() {
+  let checked = 0;
   let loaded = 0;
 
-  for (let i = 1; i <= total; i++) {
+  for (let i = 1; i <= MAX_CHECK; i++) {
     let img = new Image();
-    img.src = `${folder}/${prefix}${i}.png`;
+    let png = `${folder}/${prefix}${i}.png`;
+    let jpg = `${folder}/${prefix}${i}.jpg`;
 
-    img.onerror = function () {
-      img.src = `${folder}/${prefix}${i}.jpg`;
-    };
+    img.src = png;
 
     img.onload = function () {
-      images.push(img.src);
+      images[i - 1] = png;
       loaded++;
-      if (loaded === total) init();
+      checkDone();
     };
 
     img.onerror = function () {
-      loaded++;
-      if (loaded === total) init();
+      let fallback = new Image();
+      fallback.src = jpg;
+
+      fallback.onload = function () {
+        images[i - 1] = jpg;
+        loaded++;
+        checkDone();
+      };
+
+      fallback.onerror = function () {
+        checkDone();
+      };
     };
+  }
+
+  function checkDone() {
+    checked++;
+    if (checked === MAX_CHECK) {
+      images = images.filter(Boolean); // remove gaps
+      init();
+    }
   }
 }
 
 // INIT
 function init() {
+  if (images.length === 0) {
+    loader.innerText = "No images found";
+    return;
+  }
+
   loader.style.display = "none";
   slide.style.display = "block";
 
@@ -225,25 +248,8 @@ function createDots() {
   });
 }
 
-// SWIPE
-let startX = 0;
-
-document.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-document.addEventListener("touchend", e => {
-  let endX = e.changedTouches[0].clientX;
-  if (endX - startX > 50 && current > 0) showSlide(current - 1);
-  if (startX - endX > 50 && current < images.length - 1) showSlide(current + 1);
-});
-
-document.addEventListener("mousedown", e => startX = e.clientX);
-document.addEventListener("mouseup", e => {
-  let endX = e.clientX;
-  if (endX - startX > 50 && current > 0) showSlide(current - 1);
-  if (startX - endX > 50 && current < images.length - 1) showSlide(current + 1);
-});
-
 // START
-preloadImages();
+loadImages();
 
 </script>
 
