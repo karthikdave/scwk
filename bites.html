@@ -56,43 +56,43 @@ body {
   <div class="grid md:grid-cols-3 gap-8">
 
     <!-- BITE 007 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-007'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-007')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-007/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-007" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 006 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-006'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-006')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-006/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-006" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 005 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-005'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-005')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-005/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-005" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 004 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-004'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-004')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-004/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-004" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 003 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-003'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-003')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-003/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-003" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 002 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-002'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-002')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-002/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-002" class="font-semibold text-lg">Loading...</h3>
     </div>
 
     <!-- BITE 001 -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-001'" class="cursor-pointer card-hover">
+    <div onclick="saveScrollAndGo('carousel.html?folder=bites/bites-001')" class="cursor-pointer card-hover">
       <img src="images/bites/bites-001/b1.png" class="rounded-xl shadow-md mb-4">
       <h3 id="title-001" class="font-semibold text-lg">Loading...</h3>
     </div>
@@ -122,18 +122,18 @@ loadTitle("images/bites/bites-004/title.txt", "title-004");
 loadTitle("images/bites/bites-003/title.txt", "title-003");
 loadTitle("images/bites/bites-002/title.txt", "title-002");
 loadTitle("images/bites/bites-001/title.txt", "title-001");
-</script>
 
-<!-- Scroll Restore Fix -->
-<script>
-document.addEventListener("click", function() {
+function saveScrollAndGo(url) {
   sessionStorage.setItem("bitesScroll", window.scrollY);
-});
+  window.location.href = url;
+}
 
 window.addEventListener("load", function() {
   const scrollPos = sessionStorage.getItem("bitesScroll");
   if (scrollPos !== null) {
-    window.scrollTo(0, parseInt(scrollPos));
+    setTimeout(function() {
+      window.scrollTo(0, parseInt(scrollPos));
+    }, 120);
   }
 });
 </script>
