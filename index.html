@@ -34,6 +34,7 @@ body {
 
 <body class="font-sans text-gray-900">
 
+<!-- HEADER -->
 <header class="bg-white shadow px-6 py-4 text-center">
   <img src="images/logo.png" class="h-16 mx-auto mb-3">
 
@@ -45,154 +46,92 @@ body {
   </nav>
 </header>
 
+<!-- HERO -->
 <section class="max-w-4xl mx-auto text-center pt-24 pb-12 px-6">
   <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
     Your team is doing Scrum.<br>
-    <span class="text-blue-700">But nothing is actually improving.</span>
+    <span class="text-blue-700">But nothing is actually changing.</span>
   </h1>
 
   <p class="text-lg text-gray-600 max-w-xl mx-auto">
-    SCWK captures real patterns from real teams — the moments where things feel “off”… but no one can clearly explain why.
+    Things aren’t broken.<br>
+    But they’re not improving either.<br><br>
+    SCWK captures those exact moments inside real teams.
   </p>
 </section>
 
+<!-- WHAT IS SCWK -->
 <section class="max-w-3xl mx-auto text-center px-6 py-10">
   <h2 class="text-2xl font-bold mb-4">What is SCWK?</h2>
 
   <p class="text-gray-600 leading-relaxed">
-    Scrum & Coffee with Karthik is a collection of real-world insights from working with Scrum teams.
+    Scrum & Coffee with Karthik is not about frameworks.<br><br>
+    It’s about the small patterns inside teams that quietly stop progress —
+    even when everything looks “right” on the surface.
   </p>
 </section>
 
-<!-- START HERE -->
-<section class="max-w-2xl mx-auto px-6 py-16">
-
-  <h2 class="text-2xl font-bold text-center mb-6">
-    Start here
-  </h2>
-
-  <div class="grid grid-cols-2 gap-4">
-
-    <!-- BITE -->
-    <div onclick="location.href='carousel.html?folder=bites/bites-006'"
-         class="card cursor-pointer bg-white rounded-xl shadow-md overflow-hidden relative h-48 flex flex-col">
-
-      <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
-        NEW
-      </span>
-
-      <div class="h-28 bg-gray-50 flex items-center justify-center">
-        <img src="images/bites/bites-006/b1.png"
-             class="max-h-full max-w-full object-contain">
-      </div>
-
-      <div class="p-3">
-        <div class="text-xs text-blue-600 mb-1">⚡ Bite</div>
-        <h3 id="title-bite" class="font-semibold text-sm leading-snug">
-          Loading...
-        </h3>
-      </div>
-
-    </div>
-
-    <!-- LITE -->
-    <div onclick="location.href='carousel.html?folder=lites/lites-006'"
-         class="card cursor-pointer bg-white rounded-xl shadow-md overflow-hidden relative h-48 flex flex-col">
-
-      <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">
-        NEW
-      </span>
-
-      <div class="h-28 bg-gray-50 flex items-center justify-center">
-        <img src="images/lites/lites-006/l1.png"
-             class="max-h-full max-w-full object-contain">
-      </div>
-
-      <div class="p-3">
-        <div class="text-xs text-green-600 mb-1">☕ Lite</div>
-        <h3 id="title-lite" class="font-semibold text-sm leading-snug">
-          Loading...
-        </h3>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
+<!-- ENTRY OPTIONS -->
 <section class="max-w-5xl mx-auto px-6 py-16">
 
   <h2 class="text-2xl font-bold text-center mb-10">
-    Or explore your way
+    Start where it clicks for you
   </h2>
 
   <div class="grid md:grid-cols-2 gap-8">
 
+    <!-- BITES -->
     <div onclick="location.href='bites.html'"
          class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
+
       <div class="p-6">
         <div class="text-sm text-blue-300 mb-2">⚡ Bites</div>
+
         <h3 class="text-xl font-semibold mb-3">
           When something feels off in your team
         </h3>
+
         <p class="text-sm text-gray-300">
-          Short moments where things don’t work as expected
+          When something feels off — but you can’t explain why.
         </p>
       </div>
+
     </div>
 
+    <!-- LITES -->
     <div onclick="location.href='lites.html'"
          class="card cursor-pointer bg-black text-white rounded-2xl overflow-hidden">
+
       <div class="p-6">
         <div class="text-sm text-green-300 mb-2">☕ Lites</div>
+
         <h3 class="text-xl font-semibold mb-3">
           When things finally make sense
         </h3>
+
         <p class="text-sm text-gray-300">
-          Simple clarity to messy Scrum problems
+          When things suddenly become clear.
         </p>
       </div>
+
     </div>
 
   </div>
 
 </section>
 
+<!-- CLOSING -->
 <section class="text-center py-12 px-6">
   <p class="text-gray-600 max-w-xl mx-auto">
-    You don’t need more frameworks.  
-    You need clearer thinking inside your team.
+    You don’t need better Scrum.<br><br>
+    You need to see what’s actually happening inside your team.
   </p>
 </section>
 
+<!-- FOOTER -->
 <section class="py-10 text-center text-sm text-gray-400">
   Scrum & Coffee with Karthik • SCWK © 2026
 </section>
-
-<script>
-async function loadTitle(path, elementId) {
-  try {
-    const res = await fetch(path);
-    if (!res.ok) return;
-    const text = await res.text();
-    const el = document.getElementById(elementId);
-    if (el && text.trim()) el.innerText = text.trim();
-  } catch {}
-}
-
-loadTitle("images/bites/bites-006/title.txt", "title-bite");
-loadTitle("images/lites/lites-006/title.txt", "title-lite");
-
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 0);
-});
-</script>
 
 </body>
 </html>
