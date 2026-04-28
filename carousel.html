@@ -21,6 +21,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
 }
 
 #loader {
@@ -101,7 +102,7 @@ body {
 
 <body>
 
-<div id="viewer">
+<div id="viewer" tabindex="0">
 
   <div id="loader">
     <div class="spinner"></div>
@@ -144,9 +145,10 @@ if (folder.includes("bites")) {
 // STATE
 let current = 0;
 let images = [];
-const MAX_CHECK = 20; // safe upper limit
+const MAX_CHECK = 20;
 
 // ELEMENTS
+const viewer = document.getElementById("viewer");
 const loader = document.getElementById("loader");
 const slide = document.getElementById("slide");
 const dotsContainer = document.getElementById("dots");
@@ -154,10 +156,14 @@ const counter = document.getElementById("counter");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 
-// 🔥 GAP SAFE LOAD
+// FORCE FOCUS (🔥 key fix)
+window.onload = function () {
+  viewer.focus();
+};
+
+// LOAD IMAGES
 function loadImages() {
   let checked = 0;
-  let loaded = 0;
 
   for (let i = 1; i <= MAX_CHECK; i++) {
     let img = new Image();
@@ -168,7 +174,6 @@ function loadImages() {
 
     img.onload = function () {
       images[i - 1] = png;
-      loaded++;
       checkDone();
     };
 
@@ -178,7 +183,6 @@ function loadImages() {
 
       fallback.onload = function () {
         images[i - 1] = jpg;
-        loaded++;
         checkDone();
       };
 
@@ -191,7 +195,7 @@ function loadImages() {
   function checkDone() {
     checked++;
     if (checked === MAX_CHECK) {
-      images = images.filter(Boolean); // remove gaps
+      images = images.filter(Boolean);
       init();
     }
   }
@@ -230,8 +234,8 @@ function showSlide(index) {
 prevBtn.onclick = () => { if (current > 0) showSlide(current - 1); };
 nextBtn.onclick = () => { if (current < images.length - 1) showSlide(current + 1); };
 
-// KEYBOARD
-document.addEventListener("keydown", (e) => {
+// KEYBOARD (🔥 fixed)
+window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" && current > 0) showSlide(current - 1);
   if (e.key === "ArrowRight" && current < images.length - 1) showSlide(current + 1);
   if (e.key === "Escape") window.location.href = sourcePage;
