@@ -156,7 +156,7 @@ const counter = document.getElementById("counter");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 
-// FORCE FOCUS (🔥 key fix)
+// FORCE FOCUS
 window.onload = function () {
   viewer.focus();
 };
@@ -234,11 +234,21 @@ function showSlide(index) {
 prevBtn.onclick = () => { if (current > 0) showSlide(current - 1); };
 nextBtn.onclick = () => { if (current < images.length - 1) showSlide(current + 1); };
 
-// KEYBOARD (🔥 fixed)
-window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft" && current > 0) showSlide(current - 1);
-  if (e.key === "ArrowRight" && current < images.length - 1) showSlide(current + 1);
-  if (e.key === "Escape") window.location.href = sourcePage;
+// KEYBOARD (🔥 FIXED PROPERLY)
+document.addEventListener("keydown", function(e) {
+  const key = e.key || e.code;
+
+  if ((key === "ArrowLeft" || key === "Left") && current > 0) {
+    showSlide(current - 1);
+  }
+
+  if ((key === "ArrowRight" || key === "Right") && current < images.length - 1) {
+    showSlide(current + 1);
+  }
+
+  if (key === "Escape" || key === "Esc") {
+    window.location.href = sourcePage;
+  }
 });
 
 // DOTS
