@@ -156,9 +156,9 @@ const counter = document.getElementById("counter");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 
-// FORCE FOCUS
+// FORCE FOCUS (delayed for Firefox)
 window.onload = function () {
-  viewer.focus();
+  setTimeout(() => viewer.focus(), 50);
 };
 
 // LOAD IMAGES
@@ -234,22 +234,29 @@ function showSlide(index) {
 prevBtn.onclick = () => { if (current > 0) showSlide(current - 1); };
 nextBtn.onclick = () => { if (current < images.length - 1) showSlide(current + 1); };
 
-// KEYBOARD (🔥 FIXED PROPERLY)
-document.addEventListener("keydown", function(e) {
+// 🔥 KEYBOARD (FINAL FIX)
+function handleKey(e) {
   const key = e.key || e.code;
 
+  if (key === "Escape" || key === "Esc") {
+    e.preventDefault();
+    window.location.href = sourcePage;
+  }
+
   if ((key === "ArrowLeft" || key === "Left") && current > 0) {
+    e.preventDefault();
     showSlide(current - 1);
   }
 
   if ((key === "ArrowRight" || key === "Right") && current < images.length - 1) {
+    e.preventDefault();
     showSlide(current + 1);
   }
+}
 
-  if (key === "Escape" || key === "Esc") {
-    window.location.href = sourcePage;
-  }
-});
+// Capture phase + both events (Firefox-safe)
+document.addEventListener("keydown", handleKey, true);
+document.addEventListener("keyup", handleKey, true);
 
 // DOTS
 function createDots() {
